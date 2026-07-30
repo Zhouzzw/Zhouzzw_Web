@@ -118,9 +118,24 @@ function initTechFilter() {
 }
 
 /* ===== 初始化 ===== */
+/* ===== 视频封面截取首帧 ===== */
+function initVideoCovers() {
+  const covers = document.querySelectorAll('.video-cover video');
+  covers.forEach(v => {
+    const seekAndPause = () => {
+      v.currentTime = 0.5;
+      v.removeEventListener('loadeddata', seekAndPause);
+    };
+    v.addEventListener('loadeddata', seekAndPause);
+    v.addEventListener('seeked', () => { v.pause(); }, { once: true });
+    v.load();
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
   initActiveLink();
   initVideoModal();
   initTechFilter();
+  initVideoCovers();
 });
