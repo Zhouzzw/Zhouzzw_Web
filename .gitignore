@@ -4,6 +4,9 @@ node_modules/
 # 构建输出
 dist/
 
+# 视频文件 (过大)
+assets/videos/
+
 # 系统文件
 .DS_Store
 Thumbs.db
