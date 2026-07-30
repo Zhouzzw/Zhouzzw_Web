@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="技术栈 - 周子惟 | 嵌入式 · 控制算法 · 仿真建模" />
+  <title>技术栈 - 周子惟</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/font/css/geist-sans.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/font/css/geist-mono.min.css" />
+
+  <link rel="stylesheet" href="/assets/css/style.css" />
+  <link rel="stylesheet" href="/assets/css/desktop.css" />
+</head>
+<body>
+
+  <header class="nav nav--scrolled" id="navbar">
+    <a href="index.html" class="nav__logo">Zhou Ziwei</a>
+    <nav>
+      <ul class="nav__links">
+        <li><a href="index.html">首页</a></li>
+        <li><a href="projects.html">项目</a></li>
+        <li><a href="techstack.html" class="nav--active">技术栈</a></li>
+        <li><a href="about.html">关于</a></li>
+      </ul>
+    </nav>
+    <button class="nav__toggle" aria-label="菜单">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <main>
+    <section class="section" style="padding-top: calc(var(--nav-height) + var(--space-4xl));">
+      <div class="section__header">
+        <p class="section__kicker">Tech Stack</p>
+        <h2 class="section__title">技术栈</h2>
+      </div>
+
+      <div class="section__body animate-on-scroll">
+        <div class="tech-filter">
+          <button class="tech-filter__btn is-active" data-filter="all">全部</button>
+          <button class="tech-filter__btn" data-filter="mcu">单片机</button>
+          <button class="tech-filter__btn" data-filter="control">控制算法</button>
+          <button class="tech-filter__btn" data-filter="sim">仿真建模</button>
+          <button class="tech-filter__btn" data-filter="lang">编程语言</button>
+        </div>
+      </div>
+
+      <div class="section__body">
+        <div class="tech-grid">
+
+          <!-- 单片机开发 -->
+          <div class="tech-category" data-category="mcu">
+            <h3 class="tech-category__title">单片机开发</h3>
+            <ul class="tech-list">
+              <li class="tech-list__item"><span class="tech-list__dot"></span>STM32 系列 (F4 / G4)</li>
+              <li class="tech-list__item"><span class="tech-list__dot"></span>ESP32</li>
+              <li class="tech-list__item"><span class="tech-list__dot"></span>MSP-M0</li>
+              <li class="tech-list__item"><span class="tech-list__dot"></span>FreeRTOS 实时操作系统</li>
+              <li class="tech-list__item"><span class="tech-list__dot"></span>多任务调度架构设计</li>
+            </ul>
+          </div>
+
+          <!-- 外设与通信 -->
+          <div class="tech-category" data-category="mcu">
+            <h3 class="tech-category__title">外设与通信</h3>
+            <ul class="tech-list">
+              <li class="tech-list__item"><span class="tech-list__dot"></span>UART</li>
+              <li class="tech-list__item"><span class="tech-list__dot"></span>IIC</li>
+              <li class="tech-list__item"><span class="tech-list__dot"></span>SPI</li>
+              <li class="tech-list__item"><span class="tech-list__dot"></span>CAN 总线</li>
+              <li class="tech-list__item"><span class="tech-list__dot"></span>整车通信网络设计</li>
+            </ul>
+          </div>
+
+          <!-- 控制算法 -->
+          <div class="tech-category" data-category="control">
+            <h3 class="tech-category__title">控制算法</h3>
+            <ul class="tech-list">
+              <li class="tech-list__item"><span class="tech-list__dot"></span>双环 PID (精通)</li>
+              <li class="tech-list__item"><span class="tech-list__dot"></span>前馈 PID (精通)</li>
+              <li class="tech-list__item"><span class="tech-list__dot"></span>LQR 最优控制 (掌握)</li>
+              <li class="tech-list__item"><span class="tech-list__dot"></span>VMC 虚拟模型控制 (掌握)</li>
+              <li class="tech-list__item"><span class="tech-list__dot"></span>MPC 模型预测控制 (了解)</li>
+              <li class="tech-list__item"><span class="tech-list__dot"></span>卡尔曼滤波 (熟悉)</li>
+            </ul>
+          </div>
+
+          <!-- 仿真与建模 -->
+          <div class="tech-category" data-category="sim">
+            <h3 class="tech-category__title">仿真与建模</h3>
+            <ul class="tech-list">
+              <li class="tech-list__item"><span class="tech-list__dot"></span>MATLAB / Simulink</li>
+              <li class="tech-list__item"><span class="tech-list__dot"></span>机器人运动建模</li>
+              <li class="tech-list__item"><span class="tech-list__dot"></span>动力学建模</li>
+              <li class="tech-list__item"><span class="tech-list__dot"></span>算法仿真验证</li>
+              <li class="tech-list__item"><span class="tech-list__dot"></span>数据拟合与分析</li>
+            </ul>
+          </div>
+
+          <!-- 编程语言 -->
+          <div class="tech-category" data-category="lang">
+            <h3 class="tech-category__title">编程语言</h3>
+            <ul class="tech-list">
+              <li class="tech-list__item"><span class="tech-list__dot"></span>C (精通)</li>
+              <li class="tech-list__item"><span class="tech-list__dot"></span>C++ (精通)</li>
+              <li class="tech-list__item"><span class="tech-list__dot"></span>Python</li>
+            </ul>
+          </div>
+
+          <!-- 工具链 -->
+          <div class="tech-category" data-category="mcu">
+            <h3 class="tech-category__title">工具链与调试</h3>
+            <ul class="tech-list">
+              <li class="tech-list__item"><span class="tech-list__dot"></span>Keil / STM32CubeIDE</li>
+              <li class="tech-list__item"><span class="tech-list__dot"></span>JLink / ST-Link</li>
+              <li class="tech-list__item"><span class="tech-list__dot"></span>逻辑分析仪 / 示波器</li>
+              <li class="tech-list__item"><span class="tech-list__dot"></span>CAN 分析仪</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>&copy; 2026 周子惟. All rights reserved.</span>
+    <ul class="footer__links">
+      <li><a href="https://github.com/Zhouzzw" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="mailto:2661762781@qq.com">Email</a></li>
+    </ul>
+  </footer>
+
+  <script type="module" src="/assets/js/main.js"></script>
+  <script type="module" src="/assets/js/animations.js"></script>
+</body>
+</html>
