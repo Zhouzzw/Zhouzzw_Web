@@ -14,6 +14,7 @@
 
   <link rel="stylesheet" href="/assets/css/style.css" />
   <link rel="stylesheet" href="/assets/css/desktop.css" />
+  <link rel="stylesheet" href="/assets/css/mobile.css" />
 </head>
 <body>
 
@@ -39,87 +40,107 @@
       <div class="hero__content">
         <p class="hero__kicker">Embedded · Robotics · Control</p>
         <h1 class="hero__title">
-          KeepLearning，<br>KeepImproving
+          从芯片到机器人<br>全栈控制工程师
         </h1>
         <p class="hero__subtitle">
-          武汉科技大学电子信息工程在读 — 专注于机器人运动控制、嵌入式系统与算法仿真。
+          武汉科技大学电子信息工程在读 — RoboMaster 战队电控组负责人。
+          专注于机器人运动控制、嵌入式系统与算法仿真。
         </p>
-        <a href="projects.html" class="hero__cta">Project</a>
+        <a href="projects.html" class="hero__cta">
+          <span>查看项目</span>
+        </a>
       </div>
-      <div class="hero__gradient-line"></div>
+
+      <!-- 滚动刻度指示器 -->
+      <div class="hero__scroll-indicator" aria-hidden="true">
+        <span>Scroll</span>
+        <div class="hero__scroll-track">
+          <div class="hero__scroll-cue"></div>
+        </div>
+      </div>
     </section>
 
     <!-- ========== 个人简介 ========== -->
     <section class="section" id="intro">
       <div class="section__header animate-on-scroll">
-        <p class="section__kicker">About Me</p>
-        <h2 class="section__title">从芯片到机器人 — 全栈控制</h2>
+        <p class="section__kicker">About</p>
+        <h2 class="section__title">让硬件听从算法的指挥</h2>
       </div>
-      <div class="section__body animate-on-scroll stagger-2" style="display: grid; grid-template-columns: 1fr 1.4fr; gap: var(--space-xl); align-items: start;">
-        <p>
-          我是周子惟，武汉科技大学电子信息工程专业大二在读（荆楚卓越人才计划）。
-          RoboMaster 战队电控组负责人，主导串联腿平衡步兵和全向轮步兵两款机器人的
-          电控系统开发。从 STM32 底层驱动到 LQR 最优控制、从 FreeRTOS 实时调度到
-          MATLAB 动力学仿真，我享受让硬件听从算法的过程。
-        </p>
-        <img src="/assets/images/比赛人物照.jpg" alt="比赛现场" style="width: 100%; border-radius: var(--radius-md); margin-top: -1.5rem;" />
+      <div class="section__body animate-on-scroll stagger-2" style="display: grid; grid-template-columns: 1fr; gap: var(--space-8); align-items: start;">
+        <div style="display: grid; grid-template-columns: 1fr; gap: var(--space-6);">
+          <p style="font-size: var(--text-body-large);">
+            我是周子惟，武汉科技大学电子信息工程专业大二在读（荆楚卓越人才计划）。
+            RoboMaster 战队电控组负责人，主导串联腿平衡步兵和全向轮步兵两款机器人的
+            电控系统开发。从 STM32 底层驱动到 LQR 最优控制、从 FreeRTOS 实时调度到
+            MATLAB 动力学仿真，我享受让硬件听从算法的过程。
+          </p>
+          <p style="font-family: var(--font-mono); font-size: var(--text-mono); text-transform: uppercase; color: var(--color-dark-grey);">
+            Wuhan University of Science & Technology · Class of 2028
+          </p>
+        </div>
+        <img src="/assets/images/比赛人物照.jpg" alt="比赛现场" style="width: 100%; border-radius: var(--radius-8); aspect-ratio: 4 / 3; object-fit: cover; object-position: center 35%;" />
       </div>
     </section>
 
     <!-- ========== 核心能力 ========== -->
-    <section class="section" id="skills-preview">
+    <section class="section section--dark" id="skills-preview">
       <div class="section__header animate-on-scroll">
         <p class="section__kicker">Core Skills</p>
-        <h2 class="section__title">核心能力</h2>
+        <h2 class="section__title">每一个决定都经过验证</h2>
       </div>
+
       <div class="section__body">
-        <div class="tech-grid animate-on-scroll stagger-2">
+        <ul class="skills-list">
 
-          <div class="tech-category">
-            <h3 class="tech-category__title">单片机开发</h3>
-            <ul class="tech-list">
-              <li class="tech-list__item"><span class="tech-list__dot"></span>STM32 / ESP32 / MSP-M0</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>FreeRTOS 实时操作系统</li>
-            </ul>
-          </div>
+          <li class="skills-list__item animate-on-scroll">
+            <div class="skills-list__num">
+              <span class="mono-label mono-label--dark">001</span>
+            </div>
+            <div class="skills-list__content">
+              <h3 class="skills-list__title">单片机开发</h3>
+              <p class="skills-list__desc">
+                精通 STM32 / ESP32 / MSP-M0 系列单片机开发，熟练运用 FreeRTOS 实时操作系统构建多任务调度架构。
+              </p>
+            </div>
+          </li>
 
-          <div class="tech-category">
-            <h3 class="tech-category__title">外设与通信</h3>
-            <ul class="tech-list">
-              <li class="tech-list__item"><span class="tech-list__dot"></span>UART / IIC / SPI / CAN</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>CAN 总线整车通信网络</li>
-            </ul>
-          </div>
+          <li class="skills-list__item animate-on-scroll stagger-2">
+            <div class="skills-list__num">
+              <span class="mono-label mono-label--dark">002</span>
+            </div>
+            <div class="skills-list__content">
+              <h3 class="skills-list__title">控制算法</h3>
+              <p class="skills-list__desc">
+                从双环 PID 到 LQR 最优控制、VMC 虚拟模型控制、MPC 模型预测控制，结合卡尔曼滤波实现稳定精准的机器人控制。
+              </p>
+            </div>
+          </li>
 
-          <div class="tech-category">
-            <h3 class="tech-category__title">控制算法</h3>
-            <ul class="tech-list">
-              <li class="tech-list__item"><span class="tech-list__dot"></span>双环/前馈 PID 控制</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>LQR 最优控制</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>VMC 虚拟模型控制</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>MPC 模型预测控制</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>卡尔曼滤波</li>
-            </ul>
-          </div>
+          <li class="skills-list__item animate-on-scroll stagger-3">
+            <div class="skills-list__num">
+              <span class="mono-label mono-label--dark">003</span>
+            </div>
+            <div class="skills-list__content">
+              <h3 class="skills-list__title">仿真与建模</h3>
+              <p class="skills-list__desc">
+                MATLAB / Simulink 动力学建模与仿真验证，数据拟合与分析，缩短实车调试周期约 30%。
+              </p>
+            </div>
+          </li>
 
-          <div class="tech-category">
-            <h3 class="tech-category__title">仿真与建模</h3>
-            <ul class="tech-list">
-              <li class="tech-list__item"><span class="tech-list__dot"></span>MATLAB / Simulink</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>机器人运动建模与仿真</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>数据拟合与分析</li>
-            </ul>
-          </div>
+          <li class="skills-list__item animate-on-scroll stagger-4">
+            <div class="skills-list__num">
+              <span class="mono-label mono-label--dark">004</span>
+            </div>
+            <div class="skills-list__content">
+              <h3 class="skills-list__title">外设与通信</h3>
+              <p class="skills-list__desc">
+                UART / IIC / SPI / CAN 总线协议开发，设计整车 CAN 通信网络，保证控制指令低延迟稳定传输。
+              </p>
+            </div>
+          </li>
 
-          <div class="tech-category">
-            <h3 class="tech-category__title">编程语言</h3>
-            <ul class="tech-list">
-              <li class="tech-list__item"><span class="tech-list__dot"></span>C / C++</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>Python</li>
-            </ul>
-          </div>
-
-        </div>
+        </ul>
       </div>
     </section>
 

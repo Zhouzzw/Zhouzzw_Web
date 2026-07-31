@@ -2,13 +2,15 @@
  * main.js — 导航栏、视频弹窗、技术栈筛选
  */
 
-/* ===== 导航栏滚动变色 ===== */
+/* ===== 导航栏滚动状态 =====
+   悬浮胶囊导航：滚动后微缩放 + 轻微透明
+*/
 function initNavbar() {
   const nav = document.getElementById('navbar');
   if (!nav) return;
 
   const updateNav = () => {
-    const scrolled = window.scrollY > 80;
+    const scrolled = window.scrollY > 60;
     nav.classList.toggle('nav--scrolled', scrolled);
   };
 
@@ -105,7 +107,7 @@ function initTechFilter() {
       btns.forEach(b => b.classList.remove('is-active'));
       btn.classList.add('is-active');
 
-      const categories = document.querySelectorAll('.tech-category');
+      const categories = document.querySelectorAll('.tech-cat');
       categories.forEach(cat => {
         if (filter === 'all' || cat.dataset.category === filter) {
           cat.style.display = '';

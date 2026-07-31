@@ -1,66 +1,106 @@
 /* ============================================
    style.css — 全局 CSS 变量 + 基础样式
-   暗色高级冷调 · 嵌入式工程师个人网站
+   参考 contentarchitecture.dev 设计语言
+   米白 + 纯黑 + 橙色点缀 · 编辑设计 · 工程师美学
    ============================================ */
 
 /* --- CSS 自定义属性 (设计令牌) --- */
 :root {
-  /* 色彩 — 4 色封顶 */
-  --color-bg:       #0D0D0F;
-  --color-surface:  #1A1A1E;
-  --color-text:     #EDEDF0;
-  --color-accent:   #0ABFB0;
-  --color-muted:    #888892;
-
-  /* 派生色 (不新增色相) */
-  --color-border:   rgba(237, 237, 240, 0.08);
-  --color-glass:    rgba(13, 13, 15, 0.85);
-  --color-overlay:  rgba(13, 13, 15, 0.60);
+  /* 色彩 — 米白/纯黑/橙 三色体系 */
+  --color-off-white:    #F1EEE7;   /* 浅色背景（温暖米白） */
+  --color-black:        #232323;   /* 深色背景（深灰黑） */
+  --color-black-deep:   #000000;   /* 纯黑（终端/卡片叠加） */
+  --color-white:        #FFFFFF;   /* 白色（深色上的文字） */
+  --color-text:         #1A1A1A;   /* 浅色上的主文字 */
+  --color-dark-grey:    #5B5A56;   /* 浅色上的次级文字 */
+  --color-ghost-grey:   #DEDEDE;   /* 深色上的次级文字 */
+  --color-mid-grey:     #CBCBCB;   /* 分隔线/弱化元素 */
+  --color-accent:       #FF9100;   /* 橙色点缀（极克制使用） */
+  --color-border:       rgba(0, 0, 0, 0.08);
+  --color-border-dark:  rgba(255, 255, 255, 0.12);
+  --color-glass:        rgba(241, 238, 231, 0.85);
+  --color-glass-dark:   rgba(13, 13, 15, 0.85);
 
   /* 排版 */
-  --font-display:   'Geist', 'Noto Sans SC', system-ui, sans-serif;
-  --font-body:      'Geist', 'Noto Sans SC', system-ui, sans-serif;
-  --font-mono:      'Geist Mono', 'JetBrains Mono', 'Fira Code', monospace;
-  --font-cjk:       'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-sans:          'Geist', 'Noto Sans SC', system-ui, sans-serif;
+  --font-mono:          'Geist Mono', 'JetBrains Mono', 'Fira Code', monospace;
+  --font-cjk:           'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
 
-  /* 字号阶梯 */
-  --text-hero:      clamp(3rem, 8vw, 7rem);
-  --text-h1:        clamp(2rem, 5vw, 3.5rem);
-  --text-h2:        clamp(1.5rem, 3vw, 2.25rem);
-  --text-h3:        1.25rem;
-  --text-body:      1rem;
-  --text-small:     0.875rem;
-  --text-xs:        0.75rem;
+  /* 流体排版 — 基于 clamp()，移动端 ~ 桌面端平滑过渡
+     基准：375px → 1440px，字号随视口线性增长 */
+  --text-headline-2:    clamp(2.5rem, 7vw, 5rem);       /* 超大标题 Hero */
+  --text-headline-1:    clamp(1.875rem, 5vw, 3.5rem);   /* Section 大标题 */
+  --text-h1:            clamp(1.75rem, 4vw, 2.75rem);
+  --text-h2:            clamp(1.375rem, 2.5vw, 2rem);
+  --text-h3:            clamp(1.125rem, 1.8vw, 1.375rem);
+  --text-body-large:    clamp(1rem, 1.4vw, 1.25rem);    /* 大正文 */
+  --text-body:          clamp(0.875rem, 1.1vw, 1rem);   /* 标准正文 */
+  --text-body-small:    clamp(0.8125rem, 1vw, 0.9375rem);/* 小正文 */
+  --text-mono-large:    clamp(0.875rem, 1vw, 1rem);     /* 大标签/编号 */
+  --text-mono:          clamp(0.75rem, 0.9vw, 0.875rem);/* 标准标签 */
+  --text-mono-small:    clamp(0.6875rem, 0.8vw, 0.75rem);/* 小标签 */
 
-  /* 间距 (4pt 网格) */
-  --space-xs:       0.25rem;
-  --space-sm:       0.5rem;
-  --space-md:       1rem;
-  --space-lg:       1.5rem;
-  --space-xl:       2rem;
-  --space-2xl:      3rem;
-  --space-3xl:      4rem;
-  --space-4xl:      6rem;
-  --space-5xl:      8rem;
+  /* 字重 */
+  --weight-regular:     400;
+  --weight-medium:      500;
+  --weight-semibold:    600;
+
+  /* 间距 — 4pt 网格，加大留白 */
+  --space-1:            0.25rem;   /* 4px */
+  --space-2:            0.5rem;    /* 8px */
+  --space-3:            0.75rem;   /* 12px */
+  --space-4:            1rem;      /* 16px */
+  --space-6:            1.5rem;    /* 24px */
+  --space-8:            2rem;      /* 32px */
+  --space-10:           2.5rem;    /* 40px */
+  --space-12:           3rem;      /* 48px */
+  --space-16:           4rem;      /* 64px */
+  --space-20:           5rem;      /* 80px */
+  --space-24:           6rem;      /* 96px */
+  --space-32:           8rem;      /* 128px */
+  --space-40:           10rem;     /* 160px */
+
+  /* 兼容旧变量名（平滑过渡） */
+  --space-xs:           0.25rem;
+  --space-sm:           0.5rem;
+  --space-md:           1rem;
+  --space-lg:           1.5rem;
+  --space-xl:           2rem;
+  --space-2xl:          3rem;
+  --space-3xl:          4rem;
+  --space-4xl:          6rem;
+  --space-5xl:          8rem;
 
   /* 导航 */
-  --nav-height:     60px;
+  --nav-height:         60px;
 
-  /* 圆角 */
-  --radius-sm:      4px;
-  --radius-md:      8px;
-  --radius-lg:      12px;
+  /* 圆角 — 极小、克制 */
+  --radius-2:           2px;
+  --radius-4:           4px;
+  --radius-8:           8px;
+  --radius-full:        9999px;
 
-  /* 过渡 */
-  --ease-out:       cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in-out:    cubic-bezier(0.65, 0, 0.35, 1);
-  --duration-fast:  180ms;
-  --duration-base:  280ms;
-  --duration-slow:  400ms;
+  /* 过渡曲线 — 参考站 cubic-bezier(0.23, 1, 0.32, 1) */
+  --ease-out:           cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out:        cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-standard:      cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast:      150ms;
+  --duration-base:      280ms;
+  --duration-slow:      500ms;
 
-  /* 阴影 */
-  --shadow-card:    0 1px 3px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.3);
-  --shadow-raised:  0 4px 8px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.4);
+  /* 阴影 — 极克制 */
+  --shadow-card:        0 1px 2px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.06);
+  --shadow-raised:      0 4px 8px rgba(0,0,0,0.08), 0 12px 32px rgba(0,0,0,0.1);
+  --shadow-dark:        0 1px 3px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.3);
+
+  /* 点阵纹理 — CRT/终端质感 */
+  --dotted-bg:          repeating-conic-gradient(rgba(255,255,255,0.22) 0% 25%, transparent 0% 50%);
+  --dotted-bg-dark:     repeating-conic-gradient(rgba(0,0,0,0.06) 0% 25%, transparent 0% 50%);
+
+  /* 容器最大宽 */
+  --container-max:      1440px;
+  --gutter-mobile:      1rem;    /* 16px */
+  --gutter-desktop:     5rem;    /* 80px */
 }
 
 /* --- Reset --- */
@@ -79,21 +119,30 @@ html {
 }
 
 body {
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   font-size: var(--text-body);
-  line-height: 1.7;
+  font-weight: var(--weight-regular);
+  line-height: 1.5;
   color: var(--color-text);
-  background-color: var(--color-bg);
+  background-color: var(--color-off-white);
   overflow-x: hidden;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
 }
 
 /* --- 排版 --- */
 h1, h2, h3, h4 {
-  font-family: var(--font-display);
-  font-weight: 500;
+  font-family: var(--font-sans);
+  font-weight: var(--weight-medium);
   letter-spacing: -0.02em;
-  line-height: 1.15;
+  line-height: 1.1;
   color: var(--color-text);
+  text-wrap: balance;
 }
 
 h1 { font-size: var(--text-h1); }
@@ -102,17 +151,22 @@ h3 { font-size: var(--text-h3); }
 
 p {
   max-width: 65ch;
-  color: var(--color-muted);
+  color: var(--color-dark-grey);
+  line-height: 1.6;
 }
 
 a {
-  color: var(--color-accent);
+  color: inherit;
   text-decoration: none;
-  transition: color var(--duration-fast) var(--ease-out);
+  transition: color var(--duration-fast) var(--ease-standard);
 }
 
-a:hover {
-  color: var(--color-text);
+/* 参考站虚线下划线链接风格 */
+a.link-dashed {
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  text-underline-offset: 3px;
+  text-decoration-thickness: from-font;
 }
 
 img {
@@ -121,12 +175,49 @@ img {
   height: auto;
 }
 
+/* 等宽标签类 — 参考站 kicker/caption 风格 */
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-mono);
+  font-weight: var(--weight-regular);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--color-dark-grey);
+}
+
+.mono-label--dark {
+  color: var(--color-ghost-grey);
+}
+
+.mono-label--accent {
+  color: var(--color-accent);
+}
+
 /* --- 工具类 --- */
 .container {
   width: 100%;
-  max-width: 1280px;
+  max-width: var(--container-max);
   margin: 0 auto;
-  padding: 0 var(--space-xl);
+  padding: 0 var(--gutter-mobile);
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 0 var(--gutter-desktop);
+  }
+}
+
+/* 12 列栅格 */
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--space-4);
+}
+
+@media (min-width: 1024px) {
+  .grid-12 {
+    gap: var(--space-4);
+  }
 }
 
 .sr-only {
@@ -139,26 +230,119 @@ img {
   border: 0;
 }
 
+/* 点阵纹理叠加 */
+.dotted-overlay {
+  position: relative;
+}
+
+.dotted-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--dotted-bg);
+  background-size: 4px 4px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.dotted-overlay > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* 文本平衡（防止孤行） */
+.text-balance {
+  text-wrap: balance;
+}
+
+/* 减少动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* --- 选择文本 --- */
 ::selection {
-  background-color: rgba(10, 191, 176, 0.3);
+  background-color: rgba(255, 145, 0, 0.25);
   color: var(--color-text);
 }
 
 /* --- 滚动条 --- */
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-bg);
+  background: var(--color-off-white);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(237, 237, 240, 0.15);
+  background: rgba(0, 0, 0, 0.15);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(237, 237, 240, 0.25);
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* 深色背景下的滚动条 */
+.bg-dark ::-webkit-scrollbar-track,
+.dark-bg ::-webkit-scrollbar-track {
+  background: var(--color-black);
+}
+
+.bg-dark ::-webkit-scrollbar-thumb,
+.dark-bg ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* --- 关键帧动画 --- */
+
+/* Hero 刻度滚动提示 */
+@keyframes heroScrollCue {
+  0% { transform: translateY(-8px); }
+  100% { transform: translateY(100%); }
+}
+
+/* 光标闪烁（终端风格） */
+@keyframes cursorBlink {
+  0%, 49.9% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* 状态脉冲点 */
+@keyframes statusPing {
+  0% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  75%, 100% {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+
+/* 渐入上移 */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 渐入 */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }

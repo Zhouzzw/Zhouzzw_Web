@@ -14,10 +14,11 @@
 
   <link rel="stylesheet" href="/assets/css/style.css" />
   <link rel="stylesheet" href="/assets/css/desktop.css" />
+  <link rel="stylesheet" href="/assets/css/mobile.css" />
 </head>
 <body>
 
-  <header class="nav nav--scrolled" id="navbar">
+  <header class="nav" id="navbar">
     <a href="index.html" class="nav__logo">Zhou Ziwei</a>
     <nav>
       <ul class="nav__links">
@@ -33,93 +34,131 @@
   </header>
 
   <main>
-    <section class="section" style="padding-top: calc(var(--nav-height) + var(--space-4xl));">
-      <div class="section__header">
+    <section class="section" style="padding-top: 8rem; padding-bottom: var(--space-12);">
+      <div class="section__header animate-on-scroll">
         <p class="section__kicker">Tech Stack</p>
-        <h2 class="section__title">技术栈</h2>
+        <h2 class="section__title">从底层到顶层的完整栈</h2>
       </div>
+      <div class="section__body animate-on-scroll stagger-2">
+        <p style="font-size: var(--text-body-large); max-width: 60ch;">
+          六个技术领域，覆盖从芯片驱动到控制算法的完整链路。
+          每一项都是实战中打磨过的硬技能。
+        </p>
+      </div>
+    </section>
 
-      <div class="section__body animate-on-scroll">
-        <div class="tech-filter">
+    <section class="section section--dark" style="padding-top: var(--space-20);">
+      <div class="section__body">
+        <!-- 筛选器 -->
+        <div class="tech-filter animate-on-scroll">
           <button class="tech-filter__btn is-active" data-filter="all">全部</button>
           <button class="tech-filter__btn" data-filter="mcu">单片机</button>
           <button class="tech-filter__btn" data-filter="control">控制算法</button>
           <button class="tech-filter__btn" data-filter="sim">仿真建模</button>
           <button class="tech-filter__btn" data-filter="lang">编程语言</button>
         </div>
-      </div>
 
-      <div class="section__body">
-        <div class="tech-grid">
+        <!-- 技术分类列表 -->
+        <div class="tech-stack">
 
-          <!-- 单片机开发 -->
-          <div class="tech-category" data-category="mcu">
-            <h3 class="tech-category__title">单片机开发</h3>
-            <ul class="tech-list">
-              <li class="tech-list__item"><span class="tech-list__dot"></span>STM32 系列 (F4 / G4)</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>ESP32</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>MSP-M0</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>FreeRTOS 实时操作系统</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>多任务调度架构设计</li>
-            </ul>
+          <!-- 001 单片机开发 -->
+          <div class="tech-cat animate-on-scroll" data-category="mcu">
+            <div class="tech-cat__num">
+              <span class="mono-label mono-label--dark">001</span>
+            </div>
+            <div class="tech-cat__body">
+              <h3 class="tech-cat__title">单片机开发</h3>
+              <ul class="tech-cat__list">
+                <li>STM32 系列 (F4 / G4)</li>
+                <li>ESP32</li>
+                <li>MSP-M0</li>
+                <li>FreeRTOS 实时操作系统</li>
+                <li>多任务调度架构设计</li>
+              </ul>
+            </div>
           </div>
 
-          <!-- 外设与通信 -->
-          <div class="tech-category" data-category="mcu">
-            <h3 class="tech-category__title">外设与通信</h3>
-            <ul class="tech-list">
-              <li class="tech-list__item"><span class="tech-list__dot"></span>UART</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>IIC</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>SPI</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>CAN 总线</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>整车通信网络设计</li>
-            </ul>
+          <!-- 002 外设与通信 -->
+          <div class="tech-cat animate-on-scroll stagger-2" data-category="mcu">
+            <div class="tech-cat__num">
+              <span class="mono-label mono-label--dark">002</span>
+            </div>
+            <div class="tech-cat__body">
+              <h3 class="tech-cat__title">外设与通信</h3>
+              <ul class="tech-cat__list">
+                <li>UART</li>
+                <li>IIC</li>
+                <li>SPI</li>
+                <li>CAN 总线</li>
+                <li>整车通信网络设计</li>
+              </ul>
+            </div>
           </div>
 
-          <!-- 控制算法 -->
-          <div class="tech-category" data-category="control">
-            <h3 class="tech-category__title">控制算法</h3>
-            <ul class="tech-list">
-              <li class="tech-list__item"><span class="tech-list__dot"></span>双环 PID</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>前馈 PID</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>LQR 最优控制</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>VMC 虚拟模型控制</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>MPC 模型预测控制</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>卡尔曼滤波</li>
-            </ul>
+          <!-- 003 控制算法 -->
+          <div class="tech-cat animate-on-scroll stagger-3" data-category="control">
+            <div class="tech-cat__num">
+              <span class="mono-label mono-label--dark">003</span>
+            </div>
+            <div class="tech-cat__body">
+              <h3 class="tech-cat__title">控制算法</h3>
+              <ul class="tech-cat__list">
+                <li>双环 PID</li>
+                <li>前馈 PID</li>
+                <li>LQR 最优控制</li>
+                <li>VMC 虚拟模型控制</li>
+                <li>MPC 模型预测控制</li>
+                <li>卡尔曼滤波</li>
+              </ul>
+            </div>
           </div>
 
-          <!-- 仿真与建模 -->
-          <div class="tech-category" data-category="sim">
-            <h3 class="tech-category__title">仿真与建模</h3>
-            <ul class="tech-list">
-              <li class="tech-list__item"><span class="tech-list__dot"></span>MATLAB / Simulink</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>机器人运动建模</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>动力学建模</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>算法仿真验证</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>数据拟合与分析</li>
-            </ul>
+          <!-- 004 仿真与建模 -->
+          <div class="tech-cat animate-on-scroll stagger-4" data-category="sim">
+            <div class="tech-cat__num">
+              <span class="mono-label mono-label--dark">004</span>
+            </div>
+            <div class="tech-cat__body">
+              <h3 class="tech-cat__title">仿真与建模</h3>
+              <ul class="tech-cat__list">
+                <li>MATLAB / Simulink</li>
+                <li>机器人运动建模</li>
+                <li>动力学建模</li>
+                <li>算法仿真验证</li>
+                <li>数据拟合与分析</li>
+              </ul>
+            </div>
           </div>
 
-          <!-- 编程语言 -->
-          <div class="tech-category" data-category="lang">
-            <h3 class="tech-category__title">编程语言</h3>
-            <ul class="tech-list">
-              <li class="tech-list__item"><span class="tech-list__dot"></span>C</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>C++</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>Python</li>
-            </ul>
+          <!-- 005 编程语言 -->
+          <div class="tech-cat animate-on-scroll" data-category="lang">
+            <div class="tech-cat__num">
+              <span class="mono-label mono-label--dark">005</span>
+            </div>
+            <div class="tech-cat__body">
+              <h3 class="tech-cat__title">编程语言</h3>
+              <ul class="tech-cat__list">
+                <li>C</li>
+                <li>C++</li>
+                <li>Python</li>
+              </ul>
+            </div>
           </div>
 
-          <!-- 工具链 -->
-          <div class="tech-category" data-category="mcu">
-            <h3 class="tech-category__title">工具链与调试</h3>
-            <ul class="tech-list">
-              <li class="tech-list__item"><span class="tech-list__dot"></span>Keil / STM32CubeIDE</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>JLink / ST-Link</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>逻辑分析仪 / 示波器</li>
-              <li class="tech-list__item"><span class="tech-list__dot"></span>CAN 分析仪</li>
-            </ul>
+          <!-- 006 工具链与调试 -->
+          <div class="tech-cat animate-on-scroll stagger-2" data-category="mcu">
+            <div class="tech-cat__num">
+              <span class="mono-label mono-label--dark">006</span>
+            </div>
+            <div class="tech-cat__body">
+              <h3 class="tech-cat__title">工具链与调试</h3>
+              <ul class="tech-cat__list">
+                <li>Keil / STM32CubeIDE</li>
+                <li>JLink / ST-Link</li>
+                <li>逻辑分析仪 / 示波器</li>
+                <li>CAN 分析仪</li>
+              </ul>
+            </div>
           </div>
 
         </div>

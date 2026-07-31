@@ -1,6 +1,124 @@
 /* ============================================
    mobile.css — 移动端布局 (<768px)
-   初版占位，后期精调
+   基于参考站设计语言的移动端适配
    ============================================ */
 
-/* TODO: 移动端适配 - 汉堡菜单、单列卡片、压缩间距 */
+@media (max-width: 768px) {
+
+  /* --- 导航栏 — 移动端稍小 --- */
+  .nav {
+    top: 1rem;
+    padding: 0.6rem 1rem;
+    gap: var(--space-4);
+    max-width: calc(100vw - 2rem);
+  }
+
+  .nav__logo {
+    font-size: var(--text-mono);
+  }
+
+  .nav__links {
+    gap: var(--space-4);
+  }
+
+  .nav__links a {
+    font-size: var(--text-mono-small);
+  }
+
+  /* --- Hero --- */
+  .hero {
+    padding-top: 6rem;
+    min-height: 90svh;
+  }
+
+  .hero__title {
+    line-height: 1.05;
+  }
+
+  /* --- Section 间距 --- */
+  .section {
+    padding: var(--space-16) var(--space-4);
+  }
+
+  .section__header {
+    margin-bottom: var(--space-8);
+  }
+
+  /* --- 项目页 --- */
+  .project-list {
+    gap: var(--space-16);
+  }
+
+  .project-list > .project-item + .project-item {
+    padding-top: var(--space-16);
+  }
+
+  .project-item__title {
+    font-size: var(--text-h1);
+  }
+
+  /* --- 技术栈 --- */
+  .tech-cat__title {
+    font-size: var(--text-h2);
+  }
+
+  .tech-filter {
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: var(--space-2);
+  }
+
+  .tech-filter__btn {
+    flex-shrink: 0;
+    font-size: var(--text-mono-small);
+  }
+
+  /* --- 关于页 --- */
+  .timeline-list__item {
+    padding: var(--space-6) 0;
+  }
+
+  .timeline-list__title {
+    font-size: var(--text-h3);
+  }
+
+  .contact-item-big {
+    padding: var(--space-6) 0;
+    gap: var(--space-4);
+  }
+
+  .contact-item-big__icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .contact-item-big__value {
+    font-size: var(--text-h3);
+  }
+
+  /* --- Footer --- */
+  .footer {
+    padding: var(--space-16) var(--space-4);
+    gap: var(--space-6);
+  }
+
+  /* --- 视频网格 --- */
+  .video-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 更小屏幕优化 (<480px) */
+@media (max-width: 480px) {
+  .nav__links li:nth-child(1) {
+    display: none;
+  }
+
+  .hero__cta {
+    width: 100%;
+    justify-content: center;
+  }
+}

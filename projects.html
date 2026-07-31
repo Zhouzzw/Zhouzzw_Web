@@ -14,10 +14,11 @@
 
   <link rel="stylesheet" href="/assets/css/style.css" />
   <link rel="stylesheet" href="/assets/css/desktop.css" />
+  <link rel="stylesheet" href="/assets/css/mobile.css" />
 </head>
 <body>
 
-  <header class="nav nav--scrolled" id="navbar">
+  <header class="nav" id="navbar">
     <a href="index.html" class="nav__logo">Zhou Ziwei</a>
     <nav>
       <ul class="nav__links">
@@ -33,102 +34,138 @@
   </header>
 
   <main>
-    <section class="section" style="padding-top: calc(var(--nav-height) + var(--space-4xl));">
-      <div class="section__header">
+    <!-- 页面标题 -->
+    <section class="section" style="padding-top: 8rem; padding-bottom: var(--space-12);">
+      <div class="section__header animate-on-scroll">
         <p class="section__kicker">Projects</p>
-        <h2 class="section__title">项目经历</h2>
+        <h2 class="section__title">两款机器人，一套电控体系</h2>
+      </div>
+      <div class="section__body animate-on-scroll stagger-2">
+        <p style="font-size: var(--text-body-large); max-width: 60ch;">
+          从底层驱动到顶层控制策略，从零搭建完整的机器人电控系统。
+          每一行代码都经过仿真验证，每一次调参都有数据支撑。
+        </p>
       </div>
     </section>
 
-    <section class="section" style="padding-top: 0;">
-      <div class="project-grid">
+    <!-- 项目列表 -->
+    <section class="section section--dark" style="padding-top: var(--space-20);">
+      <div class="section__body">
+        <div class="project-list">
 
-        <!-- ===== 项目一：串联腿平衡步兵 ===== -->
-        <article class="project-card animate-on-scroll">
-          <img class="project-card__image" src="/assets/images/平衡轮腿机器人项目照片1.jpg" alt="串联腿平衡步兵" style="object-position: center 90%;" />
-          <div class="project-card__body">
-            <h3 class="project-card__title">RoboMaster 串联腿平衡步兵机器人</h3>
-            <p class="project-card__role" style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-accent); margin-bottom: var(--space-sm);">电控组负责人</p>
-            <p class="project-card__desc">
+          <!-- ===== 项目一：串联腿平衡步兵 ===== -->
+          <article class="project-item animate-on-scroll">
+            <div class="project-item__header">
+              <span class="project-item__num">
+                <span class="mono-label mono-label--dark">001</span>
+              </span>
+              <div class="project-item__meta">
+                <p class="project-item__role">电控组负责人</p>
+              </div>
+            </div>
+
+            <h3 class="project-item__title">RoboMaster 串联腿平衡步兵机器人</h3>
+
+            <p class="project-item__desc">
               独立完成平衡步兵动力学建模，推导腿部连杆机构运动学模型，建立系统状态空间方程。
               设计 VMC + LQR 控制器实现双腿 12 状态量、4 关节电机 2 轮电机协同控制。
               开发卡尔曼滤波器融合 IMU 数据、轮足跳跃算法（稳定跳跃 40cm）、底盘功率控制配合超级电容。
             </p>
-            <div class="project-card__tags">
-              <span class="project-card__tag">LQR</span>
-              <span class="project-card__tag">VMC</span>
-              <span class="project-card__tag">卡尔曼滤波</span>
-              <span class="project-card__tag">MATLAB/Simulink</span>
-              <span class="project-card__tag">STM32</span>
+
+            <div class="project-item__tags">
+              <span class="project-tag">LQR</span>
+              <span class="project-tag">VMC</span>
+              <span class="project-tag">卡尔曼滤波</span>
+              <span class="project-tag">MATLAB/Simulink</span>
+              <span class="project-tag">STM32</span>
             </div>
+
             <!-- 演示视频 -->
-            <div style="margin-top: var(--space-md); padding-top: var(--space-md); border-top: 1px solid var(--color-border);">
-              <p style="font-size: var(--text-small); color: var(--color-muted); margin-bottom: var(--space-sm);">演示视频</p>
-              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-sm);">
+            <div class="project-item__section">
+              <p class="mono-label mono-label--dark" style="margin-bottom: var(--space-4);">演示视频</p>
+              <div class="video-grid">
                 <div class="video-cover" data-video-src="/assets/videos/串联腿小跳上台阶演示视频.mp4" data-video-type="local">
                   <video src="/assets/videos/串联腿小跳上台阶演示视频.mp4" preload="metadata" muted style="width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; pointer-events: none;"></video>
                   <div class="video-cover__play">
                     <div class="video-cover__play-icon"></div>
                   </div>
-                  <p style="font-size: var(--text-xs); color: var(--color-muted); text-align: center; margin-top: var(--space-xs);">跳跃上台阶</p>
+                  <p class="video-cover__label">跳跃上台阶</p>
                 </div>
                 <div class="video-cover" data-video-src="/assets/videos/串联腿跳跃演示视频.mp4" data-video-type="local">
                   <video src="/assets/videos/串联腿跳跃演示视频.mp4" preload="metadata" muted style="width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; pointer-events: none;"></video>
                   <div class="video-cover__play">
                     <div class="video-cover__play-icon"></div>
                   </div>
-                  <p style="font-size: var(--text-xs); color: var(--color-muted); text-align: center; margin-top: var(--space-xs);">旋转跳跃演示</p>
+                  <p class="video-cover__label">旋转跳跃演示</p>
                 </div>
                 <div class="video-cover" data-video-src="/assets/videos/串联腿飞坡演示视频.mp4" data-video-type="local">
                   <video src="/assets/videos/串联腿飞坡演示视频.mp4" preload="metadata" muted style="width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; pointer-events: none;"></video>
                   <div class="video-cover__play">
                     <div class="video-cover__play-icon"></div>
                   </div>
-                  <p style="font-size: var(--text-xs); color: var(--color-muted); text-align: center; margin-top: var(--space-xs);">飞坡演示</p>
+                  <p class="video-cover__label">飞坡演示</p>
                 </div>
               </div>
             </div>
 
-            <div style="margin-top: var(--space-md); padding-top: var(--space-md); border-top: 1px solid var(--color-border);">
-              <p style="font-size: var(--text-small); color: var(--color-muted); margin-bottom: var(--space-xs);">成果</p>
-              <ul style="font-size: var(--text-small); color: var(--color-muted); padding-left: var(--space-lg); display: flex; flex-direction: column; gap: var(--space-xs);">
+            <!-- 成果 -->
+            <div class="project-item__section">
+              <p class="mono-label mono-label--dark" style="margin-bottom: var(--space-4);">成果</p>
+              <ul class="project-item__results">
                 <li>控制精度及稳定性提升约 40%</li>
                 <li>仿真验证缩短实车调试周期约 30%</li>
                 <li>RoboMaster 2026 超级对抗赛中发挥优异</li>
               </ul>
             </div>
-          </div>
-        </article>
 
-        <!-- ===== 项目二：全向轮步兵 ===== -->
-        <article class="project-card animate-on-scroll stagger-2">
-          <img class="project-card__image" src="/assets/images/全向轮机器人项目照片.jpg" alt="全向轮步兵" />
-          <div class="project-card__body">
-            <h3 class="project-card__title">RoboMaster 全向轮步兵机器人</h3>
-            <p class="project-card__role" style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-accent); margin-bottom: var(--space-sm);">电控组负责人</p>
-            <p class="project-card__desc">
+            <div class="project-item__image">
+              <img src="/assets/images/平衡轮腿机器人项目照片1.jpg" alt="串联腿平衡步兵" style="object-position: center 90%;" />
+            </div>
+          </article>
+
+          <!-- ===== 项目二：全向轮步兵 ===== -->
+          <article class="project-item animate-on-scroll stagger-2">
+            <div class="project-item__header">
+              <span class="project-item__num">
+                <span class="mono-label mono-label--dark">002</span>
+              </span>
+              <div class="project-item__meta">
+                <p class="project-item__role">电控组负责人</p>
+              </div>
+            </div>
+
+            <h3 class="project-item__title">RoboMaster 全向轮步兵机器人</h3>
+
+            <p class="project-item__desc">
               基于 STM32G4 完成全向轮底盘运动学解算，实现复杂战场环境下的平滑移动与精准定位。
               采用 FreeRTOS 设计多任务调度架构，设计双环 PID + 前馈控制策略提升云台轨迹跟踪精度。
               基于 CAN 总线设计整车通信网络，保证控制指令低延迟传输。
             </p>
-            <div class="project-card__tags">
-              <span class="project-card__tag">STM32G4</span>
-              <span class="project-card__tag">FreeRTOS</span>
-              <span class="project-card__tag">PID + 前馈</span>
-              <span class="project-card__tag">CAN 总线</span>
-              <span class="project-card__tag">运动学解算</span>
+
+            <div class="project-item__tags">
+              <span class="project-tag">STM32G4</span>
+              <span class="project-tag">FreeRTOS</span>
+              <span class="project-tag">PID + 前馈</span>
+              <span class="project-tag">CAN 总线</span>
+              <span class="project-tag">运动学解算</span>
             </div>
-            <div style="margin-top: var(--space-md); padding-top: var(--space-md); border-top: 1px solid var(--color-border);">
-              <p style="font-size: var(--text-small); color: var(--color-muted); margin-bottom: var(--space-xs);">成果</p>
-              <ul style="font-size: var(--text-small); color: var(--color-muted); padding-left: var(--space-lg); display: flex; flex-direction: column; gap: var(--space-xs);">
+
+            <!-- 成果 -->
+            <div class="project-item__section">
+              <p class="mono-label mono-label--dark" style="margin-bottom: var(--space-4);">成果</p>
+              <ul class="project-item__results">
                 <li>底盘运动精度提升 30%，响应速度提升 25%</li>
                 <li>高校联盟赛 3v3 (安徽站) 国家一等奖</li>
                 <li>步兵对抗赛 国家二等奖</li>
               </ul>
             </div>
-          </div>
-        </article>
 
+            <div class="project-item__image">
+              <img src="/assets/images/全向轮机器人项目照片.jpg" alt="全向轮步兵" />
+            </div>
+          </article>
+
+        </div>
       </div>
     </section>
   </main>
