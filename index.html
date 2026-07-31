@@ -18,8 +18,16 @@
 </head>
 <body>
 
+  <!-- ========== 导航栏 v2.1 ========== -->
   <header class="nav" id="navbar">
-    <a href="index.html" class="nav__logo">Zhou Ziwei</a>
+    <a href="index.html" class="nav__brand-link" aria-label="首页">
+      <svg class="nav__brand" viewBox="0 0 24 24" fill="none" width="20" height="20">
+        <rect x="5" y="5" width="14" height="14" rx="2" stroke="#FF9100" stroke-width="1.5"/>
+        <path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3" stroke="#FF9100" stroke-width="1.5"/>
+        <rect x="9.5" y="9.5" width="5" height="5" fill="#FF9100"/>
+      </svg>
+    </a>
+    <span class="nav__logo">Zhou Ziwei</span>
     <nav>
       <ul class="nav__links">
         <li><a href="index.html" class="nav--active">首页</a></li>
@@ -35,7 +43,7 @@
 
   <main>
 
-    <!-- ========== Hero ========== -->
+    <!-- ========== Hero v2.1 ========== -->
     <section class="hero" id="hero">
       <div class="hero__content">
         <p class="hero__kicker">Embedded · Robotics · Control</p>
@@ -46,9 +54,69 @@
           武汉科技大学电子信息工程在读 — RoboMaster 战队电控组负责人。
           专注于机器人运动控制、嵌入式系统与算法仿真。
         </p>
-        <a href="projects.html" class="hero__cta">
-          <span>查看项目</span>
+        <a href="projects.html" class="hero__cta cta-split">
+          <span class="cta-split__left">查看项目</span>
+          <span class="cta-split__right" aria-hidden="true">→</span>
         </a>
+      </div>
+
+      <!-- 环形文字装饰 -->
+      <div class="hero__visual" aria-hidden="true">
+        <svg class="radial-text__svg" viewBox="0 0 420 420" fill="none">
+          <defs>
+            <path id="ring-outer" d="M 210 210 m -190 0 a 190 190 0 1 1 380 0 a 190 190 0 1 1 -380 0"/>
+            <path id="ring-mid"   d="M 210 210 m -150 0 a 150 150 0 1 1 300 0 a 150 150 0 1 1 -300 0"/>
+            <path id="ring-inner" d="M 210 210 m -105 0 a 105 105 0 1 1 210 0 a 105 105 0 1 1 -210 0"/>
+          </defs>
+
+          <g class="radial-text__ring radial-text__ring--outer">
+            <text font-family="Geist Mono, monospace" font-size="10" letter-spacing="3" fill="rgba(0,0,0,0.32)">
+              <textPath href="#ring-outer" textLength="1194" lengthAdjust="spacingAndGlyphs">
+                ZHOU ZIWEI · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER ·
+                ZHOU ZIWEI · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER ·
+                ZHOU ZIWEI · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER ·
+              </textPath>
+            </text>
+          </g>
+
+          <g class="radial-text__ring radial-text__ring--mid">
+            <text font-family="Geist Mono, monospace" font-size="11" letter-spacing="2" fill="rgba(0,0,0,0.5)">
+              <textPath href="#ring-mid" textLength="942" lengthAdjust="spacingAndGlyphs">
+                EMBEDDED · ROBOTICS · CONTROL · EMBEDDED · ROBOTICS · CONTROL ·
+                EMBEDDED · ROBOTICS · CONTROL · EMBEDDED · ROBOTICS · CONTROL ·
+              </textPath>
+            </text>
+          </g>
+
+          <g class="radial-text__ring radial-text__ring--inner">
+            <text font-family="Geist Mono, monospace" font-size="12" letter-spacing="1.5" fill="rgba(0,0,0,0.6)">
+              <textPath href="#ring-inner" textLength="660" lengthAdjust="spacingAndGlyphs">
+                EST. 2024 · WUST · ROBOMASTER · EST. 2024 · WUST · ROBOMASTER · EST. 2024 · WUST · ROBOMASTER ·
+              </textPath>
+            </text>
+          </g>
+
+          <!-- 中心芯片 monogram -->
+          <circle cx="210" cy="210" r="40" fill="none" stroke="rgba(0,0,0,0.35)" stroke-width="1.5" stroke-dasharray="3 3"/>
+          <text x="210" y="219" text-anchor="middle" font-family="Geist Mono, monospace" font-size="22" letter-spacing="2" fill="#FF9100">ZW</text>
+        </svg>
+      </div>
+
+      <!-- 状态栏 -->
+      <div class="hero__status-bar" aria-label="技术栈状态">
+        <div class="status-bar__item">
+          <span class="status-bar__dot"></span>
+          <span class="status-bar__label">MCU :</span>
+          <span class="status-bar__value">STM32F4 / G4</span>
+        </div>
+        <div class="status-bar__item">
+          <span class="status-bar__label">RTOS :</span>
+          <span class="status-bar__value">FREERTOS</span>
+        </div>
+        <div class="status-bar__item">
+          <span class="status-bar__label">CONTROL :</span>
+          <span class="status-bar__value">LQR / VMC / PID</span>
+        </div>
       </div>
 
       <!-- 滚动刻度指示器 -->
@@ -83,7 +151,7 @@
     </section>
 
     <!-- ========== 核心能力 ========== -->
-    <section class="section section--dark" id="skills-preview">
+    <section class="section section--dark text-watermark" id="skills-preview">
       <div class="section__header animate-on-scroll">
         <p class="section__kicker">Core Skills</p>
         <h2 class="section__title">每一个决定都经过验证</h2>
@@ -146,12 +214,48 @@
 
   </main>
 
+  <!-- ========== 页脚 v2.1 ========== -->
   <footer class="footer">
-    <span>&copy; 2026 周子惟. All rights reserved.</span>
-    <ul class="footer__links">
-      <li><a href="https://github.com/Zhouzzw" target="_blank" rel="noopener">GitHub</a></li>
-      <li><a href="mailto:2661762781@qq.com">Email</a></li>
-    </ul>
+    <pre class="footer__ascii" aria-hidden="true">██╗  ██╗███████╗ ██████╗ ██╗   ██╗
+██║  ██║╚══███╔╝██╔═══██╗██║   ██║
+███████║  ███╔╝ ██║   ██║██║   ██║
+██╔══██║ ███╔╝  ██║   ██║██║   ██║
+██║  ██║███████║╚██████╔╝╚██████╔╝
+╚═╝  ╚═╝╚══════╝ ╚═════╝  ╚═════╝
+██╗    ██╗██╗███████╗███████╗
+██║    ██║██║██╔════╝██╔════╝
+██║ █╗ ██║██║█████╗  █████╗
+██║███╗██║██║██╔══╝  ██╔══╝
+╚███╔███╔╝██║██║     ██║
+ ╚══╝╚══╝ ╚═╝╚═╝     ╚═╝</pre>
+
+    <div class="footer__grid">
+      <div class="footer__cta">
+        <p class="footer__cta-title">有想法一起做机器人？</p>
+        <a href="about.html" class="cta-split">
+          <span class="cta-split__left">联系我</span>
+          <span class="cta-split__right" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <nav class="footer__nav">
+        <ul class="footer__col">
+          <li><a href="index.html">首页</a></li>
+          <li><a href="projects.html">项目</a></li>
+          <li><a href="techstack.html">技术栈</a></li>
+          <li><a href="about.html">关于</a></li>
+        </ul>
+        <ul class="footer__col">
+          <li><a href="https://github.com/Zhouzzw" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="mailto:2661762781@qq.com">Email</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="footer__bottom">
+      <span>&copy; 2026 周子惟. All rights reserved.</span>
+      <span>BUILT WITH VITE · EMBEDDED · ROBOTICS · CONTROL</span>
+    </div>
   </footer>
 
   <script type="module" src="/assets/js/main.js"></script>

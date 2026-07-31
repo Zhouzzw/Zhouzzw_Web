@@ -18,8 +18,16 @@
 </head>
 <body>
 
+  <!-- ========== 导航栏 v2.1 ========== -->
   <header class="nav" id="navbar">
-    <a href="index.html" class="nav__logo">Zhou Ziwei</a>
+    <a href="index.html" class="nav__brand-link" aria-label="首页">
+      <svg class="nav__brand" viewBox="0 0 24 24" fill="none" width="20" height="20">
+        <rect x="5" y="5" width="14" height="14" rx="2" stroke="#FF9100" stroke-width="1.5"/>
+        <path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3" stroke="#FF9100" stroke-width="1.5"/>
+        <rect x="9.5" y="9.5" width="5" height="5" fill="#FF9100"/>
+      </svg>
+    </a>
+    <span class="nav__logo">Zhou Ziwei</span>
     <nav>
       <ul class="nav__links">
         <li><a href="index.html">首页</a></li>
@@ -47,7 +55,7 @@
       </div>
     </section>
 
-    <section class="section section--dark" style="padding-top: var(--space-20);">
+    <section class="section section--dark text-watermark" style="padding-top: var(--space-20);">
       <div class="section__body">
         <!-- 筛选器 -->
         <div class="tech-filter animate-on-scroll">
@@ -166,12 +174,48 @@
     </section>
   </main>
 
+  <!-- ========== 页脚 v2.1 ========== -->
   <footer class="footer">
-    <span>&copy; 2026 周子惟. All rights reserved.</span>
-    <ul class="footer__links">
-      <li><a href="https://github.com/Zhouzzw" target="_blank" rel="noopener">GitHub</a></li>
-      <li><a href="mailto:2661762781@qq.com">Email</a></li>
-    </ul>
+    <pre class="footer__ascii" aria-hidden="true">██╗  ██╗███████╗ ██████╗ ██╗   ██╗
+██║  ██║╚══███╔╝██╔═══██╗██║   ██║
+███████║  ███╔╝ ██║   ██║██║   ██║
+██╔══██║ ███╔╝  ██║   ██║██║   ██║
+██║  ██║███████║╚██████╔╝╚██████╔╝
+╚═╝  ╚═╝╚══════╝ ╚═════╝  ╚═════╝
+██╗    ██╗██╗███████╗███████╗
+██║    ██║██║██╔════╝██╔════╝
+██║ █╗ ██║██║█████╗  █████╗
+██║███╗██║██║██╔══╝  ██╔══╝
+╚███╔███╔╝██║██║     ██║
+ ╚══╝╚══╝ ╚═╝╚═╝     ╚═╝</pre>
+
+    <div class="footer__grid">
+      <div class="footer__cta">
+        <p class="footer__cta-title">有想法一起做机器人？</p>
+        <a href="about.html" class="cta-split">
+          <span class="cta-split__left">联系我</span>
+          <span class="cta-split__right" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <nav class="footer__nav">
+        <ul class="footer__col">
+          <li><a href="index.html">首页</a></li>
+          <li><a href="projects.html">项目</a></li>
+          <li><a href="techstack.html">技术栈</a></li>
+          <li><a href="about.html">关于</a></li>
+        </ul>
+        <ul class="footer__col">
+          <li><a href="https://github.com/Zhouzzw" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="mailto:2661762781@qq.com">Email</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="footer__bottom">
+      <span>&copy; 2026 周子惟. All rights reserved.</span>
+      <span>BUILT WITH VITE · EMBEDDED · ROBOTICS · CONTROL</span>
+    </div>
   </footer>
 
   <script type="module" src="/assets/js/main.js"></script>

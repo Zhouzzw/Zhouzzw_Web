@@ -1,28 +1,36 @@
 /* ============================================
    mobile.css — 移动端布局 (<768px)
-   基于参考站设计语言的移动端适配
+   v2.1 导航药丸化 + 芯片卡片 + IDE窗口 + 页脚升级
    ============================================ */
 
 @media (max-width: 768px) {
 
-  /* --- 导航栏 — 移动端稍小 --- */
+  /* --- 导航栏 — 移动端药丸缩小 --- */
   .nav {
-    top: 1rem;
-    padding: 0.6rem 1rem;
-    gap: var(--space-4);
+    top: 16px;
+    height: 44px;
+    padding: 6px 14px 6px 10px;
+    gap: 8px;
     max-width: calc(100vw - 2rem);
+    border-radius: var(--radius-full);
+  }
+
+  .nav__brand {
+    width: 20px;
+    height: 20px;
   }
 
   .nav__logo {
-    font-size: var(--text-mono);
+    font-size: 11px;
   }
 
   .nav__links {
-    gap: var(--space-4);
+    gap: 2px;
   }
 
   .nav__links a {
-    font-size: var(--text-mono-small);
+    font-size: 10px;
+    padding: 6px 8px;
   }
 
   /* --- Hero --- */
@@ -33,6 +41,44 @@
 
   .hero__title {
     line-height: 1.05;
+  }
+
+  /* Hero 视觉区移动端隐藏 */
+  .hero__visual {
+    display: none;
+  }
+
+  /* Hero 状态栏移动端纵向堆叠 */
+  .hero__status-bar {
+    flex-wrap: wrap;
+    padding: 12px 16px;
+    border-radius: 12px;
+    gap: 8px;
+  }
+
+  .hero__status-bar .status-bar__item {
+    padding: 6px 0;
+    width: 100%;
+  }
+
+  .hero__status-bar .status-bar__item + .status-bar__item {
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  /* --- CTA 双药丸移动端保持 --- */
+  .cta-split {
+    height: 44px;
+  }
+
+  .cta-split__left {
+    padding: 0 20px;
+    font-size: 11px;
+  }
+
+  .cta-split__right {
+    width: 44px;
+    font-size: 16px;
   }
 
   /* --- Section 间距 --- */
@@ -55,6 +101,39 @@
 
   .project-item__title {
     font-size: var(--text-h1);
+  }
+
+  /* --- 芯片卡片移动端 --- */
+  .chip-card {
+    padding: 32px 20px;
+    margin-bottom: 48px;
+    border-radius: var(--radius-8);
+  }
+
+  .chip-card::before,
+  .chip-card::after {
+    display: none;
+  }
+
+  /* --- IDE 窗口移动端 --- */
+  .ide-window__sidebar {
+    display: none;
+  }
+
+  .ide-window__tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ide-window__code {
+    font-size: 10px;
+    padding: 12px 14px;
+  }
+
+  .ide-window__footer {
+    gap: 12px;
+    font-size: 9px;
+    padding: 0 12px;
   }
 
   /* --- 技术栈 --- */
@@ -99,10 +178,35 @@
     font-size: var(--text-h3);
   }
 
-  /* --- Footer --- */
+  /* --- 页脚移动端 --- */
   .footer {
-    padding: var(--space-16) var(--space-4);
-    gap: var(--space-6);
+    padding: 64px 20px 32px;
+    gap: 32px;
+  }
+
+  .footer__ascii {
+    font-size: 3px;
+    overflow: hidden;
+  }
+
+  .footer__grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .footer__nav {
+    justify-content: flex-start;
+    gap: 48px;
+  }
+
+  .footer__col a {
+    text-align: left;
+  }
+
+  .footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
 
   /* --- 视频网格 --- */
@@ -117,8 +221,16 @@
     display: none;
   }
 
-  .hero__cta {
+  .hero__cta .cta-split {
     width: 100%;
-    justify-content: center;
+  }
+
+  .footer__ascii {
+    display: none;
+  }
+
+  .footer__nav {
+    flex-direction: column;
+    gap: 24px;
   }
 }
