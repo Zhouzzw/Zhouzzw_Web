@@ -115,6 +115,30 @@
     grid-template-rows: 1fr auto;
     padding: 0 var(--gutter-desktop);
     gap: 0;
+    /* 左右分屏：左米白 / 右水泥灰 */
+    background: linear-gradient(
+      to right,
+      var(--color-off-white) 0%,
+      var(--color-off-white) 50%,
+      #242423 50%,
+      #242423 100%
+    );
+  }
+
+  /* 右侧深色区颗粒噪点纹理叠加 */
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 50%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.12'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+    background-repeat: repeat;
+    pointer-events: none;
+    z-index: 0;
+    mix-blend-mode: overlay;
   }
 }
 
@@ -124,7 +148,7 @@
 
 @media (min-width: 1024px) {
   .hero__content {
-    grid-column: 1 / span 7;
+    grid-column: 1 / span 6;
     padding-top: 4rem;
   }
 }
@@ -170,23 +194,37 @@
   display: inline-flex;
 }
 
-/* --- Hero 视觉区 — 环形文字 SVG（≥1024px 可见） --- */
+/* --- Hero 视觉区 — 螺旋文字 SVG（≥1024px 可见，填满四周自然截断） --- */
 @media (min-width: 1024px) {
   .hero__visual {
-    grid-column: 8 / span 5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    grid-column: 7 / span 6;
+    grid-row: 1 / -1;
+    display: block;                 /* 覆盖全局 display:none */
+    position: static;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .hero__visual .spiral-text__svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: 25vw;              /* 中心靠右 ≈ 屏幕 72%，保持原位置 */
+    transform: translate(-50%, -50%);
+    width: 72.5vw;                  /* 直径保持原大小，四周自然溢出 */
+    height: auto;
     aspect-ratio: 1 / 1;
-    max-width: 440px;
-    margin: 0 auto;
+    max-height: none;
+    /* 左圆弧越过中分线的部分被深色背景边界截断。
+       裁剪线坐标相对 SVG 左上角：屏幕 50vw - svg左边缘(38.75vw - 80px) = 11.25vw + 80px */
+    clip-path: inset(0 0 0 calc(7.25vw + 80px));
   }
 }
 
 /* --- Hero 状态栏（≥1024px 在文字区底部） --- */
 @media (min-width: 1024px) {
   .hero__status-bar {
-    grid-column: 1 / span 7;
+    grid-column: 1 / span 6;
     align-self: end;
     margin-bottom: 48px;
   }
@@ -208,7 +246,7 @@
     bottom: 4rem;
     font-family: var(--font-mono);
     font-size: var(--text-mono);
-    color: var(--color-dark-grey);
+    color: rgba(255, 255, 255, 0.5);
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
@@ -219,7 +257,7 @@
     height: 80px;
     background-image: repeating-linear-gradient(
       to bottom,
-      rgba(0, 0, 0, 0.12) 0 1px,
+      rgba(255, 255, 255, 0.15) 0 1px,
       transparent 1px 8px
     );
     overflow: hidden;
@@ -231,7 +269,7 @@
     left: 0;
     right: 0;
     height: 16px;
-    background: var(--color-text);
+    background: rgba(255, 255, 255, 0.7);
     animation: heroScrollCue 1.4s steps(7, end) infinite;
   }
 }

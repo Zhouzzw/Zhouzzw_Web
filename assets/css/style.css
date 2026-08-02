@@ -387,6 +387,21 @@ img {
   z-index: 1;
 }
 
+/* --- 动态字符矩阵背景（Canvas） --- */
+.char-matrix-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.char-matrix-bg canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 /* --- 双药丸 CTA 按钮 --- */
 .cta-split {
   display: inline-flex;
@@ -681,6 +696,40 @@ img {
 
 .radial-text__ring--inner {
   animation: radialSpin 70s linear infinite;
+}
+
+/* --- Hero 螺旋文字 SVG（多圈同心环 + 同向差速旋转，模拟螺旋转动） --- */
+.spiral-text__svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 60px rgba(0, 0, 0, 0.4));
+}
+
+.spiral-text__ring {
+  transform-origin: 50% 50%;
+  transform-box: fill-box;
+}
+
+/* 16 圈螺旋：全部同方向旋转，外圈快内圈慢，形成螺旋卷入感 */
+.spiral-text__ring--r1  { animation: spiralSpin 160s linear infinite; }
+.spiral-text__ring--r2  { animation: spiralSpin 150s linear infinite; }
+.spiral-text__ring--r3  { animation: spiralSpin 140s linear infinite; }
+.spiral-text__ring--r4  { animation: spiralSpin 130s linear infinite; }
+.spiral-text__ring--r5  { animation: spiralSpin 120s linear infinite; }
+.spiral-text__ring--r6  { animation: spiralSpin 110s linear infinite; }
+.spiral-text__ring--r7  { animation: spiralSpin 100s linear infinite; }
+.spiral-text__ring--r8  { animation: spiralSpin 90s linear infinite; }
+.spiral-text__ring--r9  { animation: spiralSpin 80s linear infinite; }
+.spiral-text__ring--r10 { animation: spiralSpin 70s linear infinite; }
+.spiral-text__ring--r11 { animation: spiralSpin 60s linear infinite; }
+.spiral-text__ring--r12 { animation: spiralSpin 55s linear infinite; }
+.spiral-text__ring--r13 { animation: spiralSpin 50s linear infinite; }
+.spiral-text__ring--r14 { animation: spiralSpin 45s linear infinite; }
+.spiral-text__ring--r15 { animation: spiralSpin 42s linear infinite; }
+.spiral-text__ring--r16 { animation: spiralSpin 40s linear infinite; }
+
+@keyframes spiralSpin {
+  to { transform: rotate(360deg); }
 }
 
 /* --- 页脚升级 --- */

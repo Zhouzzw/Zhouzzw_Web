@@ -60,46 +60,157 @@
         </a>
       </div>
 
-      <!-- 环形文字装饰 -->
+      <!-- 螺旋文字装饰（v2.1+ 分屏深色区） -->
       <div class="hero__visual" aria-hidden="true">
-        <svg class="radial-text__svg" viewBox="0 0 420 420" fill="none">
-          <defs>
-            <path id="ring-outer" d="M 210 210 m -190 0 a 190 190 0 1 1 380 0 a 190 190 0 1 1 -380 0"/>
-            <path id="ring-mid"   d="M 210 210 m -150 0 a 150 150 0 1 1 300 0 a 150 150 0 1 1 -300 0"/>
-            <path id="ring-inner" d="M 210 210 m -105 0 a 105 105 0 1 1 210 0 a 105 105 0 1 1 -210 0"/>
-          </defs>
-
-          <g class="radial-text__ring radial-text__ring--outer">
-            <text font-family="Geist Mono, monospace" font-size="10" letter-spacing="3" fill="rgba(0,0,0,0.32)">
-              <textPath href="#ring-outer" textLength="1194" lengthAdjust="spacingAndGlyphs">
-                ZHOU ZIWEI · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER ·
-                ZHOU ZIWEI · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER ·
-                ZHOU ZIWEI · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER ·
-              </textPath>
-            </text>
-          </g>
-
-          <g class="radial-text__ring radial-text__ring--mid">
-            <text font-family="Geist Mono, monospace" font-size="11" letter-spacing="2" fill="rgba(0,0,0,0.5)">
-              <textPath href="#ring-mid" textLength="942" lengthAdjust="spacingAndGlyphs">
-                EMBEDDED · ROBOTICS · CONTROL · EMBEDDED · ROBOTICS · CONTROL ·
-                EMBEDDED · ROBOTICS · CONTROL · EMBEDDED · ROBOTICS · CONTROL ·
-              </textPath>
-            </text>
-          </g>
-
-          <g class="radial-text__ring radial-text__ring--inner">
-            <text font-family="Geist Mono, monospace" font-size="12" letter-spacing="1.5" fill="rgba(0,0,0,0.6)">
-              <textPath href="#ring-inner" textLength="660" lengthAdjust="spacingAndGlyphs">
-                EST. 2024 · WUST · ROBOMASTER · EST. 2024 · WUST · ROBOMASTER · EST. 2024 · WUST · ROBOMASTER ·
-              </textPath>
-            </text>
-          </g>
-
-          <!-- 中心芯片 monogram -->
-          <circle cx="210" cy="210" r="40" fill="none" stroke="rgba(0,0,0,0.35)" stroke-width="1.5" stroke-dasharray="3 3"/>
-          <text x="210" y="219" text-anchor="middle" font-family="Geist Mono, monospace" font-size="22" letter-spacing="2" fill="#FF9100">ZW</text>
-        </svg>
+        <svg class="spiral-text__svg" viewBox="0 0 800 800" fill="none">
+  <defs>
+    <!-- 螺旋路径：16 圈，长句 70% + 横线 30%，闭合 -->
+    <path id="spiral-r1" d="M 400 400 m -360 0 a 360 360 0 1 1 720 0 a 360 360 0 1 1 -720 0"/>
+    <path id="spiral-r2" d="M 400 400 m -340 0 a 340 340 0 1 1 680 0 a 340 340 0 1 1 -680 0"/>
+    <path id="spiral-r3" d="M 400 400 m -320 0 a 320 320 0 1 1 640 0 a 320 320 0 1 1 -640 0"/>
+    <path id="spiral-r4" d="M 400 400 m -300 0 a 300 300 0 1 1 600 0 a 300 300 0 1 1 -600 0"/>
+    <path id="spiral-r5" d="M 400 400 m -280 0 a 280 280 0 1 1 560 0 a 280 280 0 1 1 -560 0"/>
+    <path id="spiral-r6" d="M 400 400 m -260 0 a 260 260 0 1 1 520 0 a 260 260 0 1 1 -520 0"/>
+    <path id="spiral-r7" d="M 400 400 m -240 0 a 240 240 0 1 1 480 0 a 240 240 0 1 1 -480 0"/>
+    <path id="spiral-r8" d="M 400 400 m -220 0 a 220 220 0 1 1 440 0 a 220 220 0 1 1 -440 0"/>
+    <path id="spiral-r9" d="M 400 400 m -200 0 a 200 200 0 1 1 400 0 a 200 200 0 1 1 -400 0"/>
+    <path id="spiral-r10" d="M 400 400 m -180 0 a 180 180 0 1 1 360 0 a 180 180 0 1 1 -360 0"/>
+    <path id="spiral-r11" d="M 400 400 m -160 0 a 160 160 0 1 1 320 0 a 160 160 0 1 1 -320 0"/>
+    <path id="spiral-r12" d="M 400 400 m -140 0 a 140 140 0 1 1 280 0 a 140 140 0 1 1 -280 0"/>
+    <path id="spiral-r13" d="M 400 400 m -120 0 a 120 120 0 1 1 240 0 a 120 120 0 1 1 -240 0"/>
+    <path id="spiral-r14" d="M 400 400 m -100 0 a 100 100 0 1 1 200 0 a 100 100 0 1 1 -200 0"/>
+    <path id="spiral-r15" d="M 400 400 m -80 0 a 80 80 0 1 1 160 0 a 80 80 0 1 1 -160 0"/>
+    <path id="spiral-r16" d="M 400 400 m -60 0 a 60 60 0 1 1 120 0 a 60 60 0 1 1 -120 0"/>
+  </defs>
+  <!-- 第 1 圈：17px 18词 + 横线x4 -->
+  <g class="spiral-text__ring spiral-text__ring--r1">
+    <text font-family="Geist Mono, monospace" font-size="17" letter-spacing="3.5" fill="rgba(255,255,255,0.62)">
+      <textPath href="#spiral-r1" textLength="2262" lengthAdjust="spacingAndGlyphs">
+        EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN ·------------------------------------------------------------------------
+      </textPath>
+    </text>
+  </g>
+  <!-- 第 2 圈：16.5px 17词 + 横线x4 -->
+  <g class="spiral-text__ring spiral-text__ring--r2">
+    <text font-family="Geist Mono, monospace" font-size="16.5" letter-spacing="3.5" fill="rgba(255,255,255,0.64)">
+      <textPath href="#spiral-r2" textLength="2136" lengthAdjust="spacingAndGlyphs">
+        LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER ·------------------------------------------------------------------------
+      </textPath>
+    </text>
+  </g>
+  <!-- 第 3 圈：16px 17词 + 横线x4 -->
+  <g class="spiral-text__ring spiral-text__ring--r3">
+    <text font-family="Geist Mono, monospace" font-size="16" letter-spacing="3" fill="rgba(255,255,255,0.66)">
+      <textPath href="#spiral-r3" textLength="2011" lengthAdjust="spacingAndGlyphs">
+        MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL ·------------------------------------------------------------------------
+      </textPath>
+    </text>
+  </g>
+  <!-- 第 4 圈：15.5px 16词 + 横线x4 -->
+  <g class="spiral-text__ring spiral-text__ring--r4">
+    <text font-family="Geist Mono, monospace" font-size="15.5" letter-spacing="3" fill="rgba(255,255,255,0.68)">
+      <textPath href="#spiral-r4" textLength="1885" lengthAdjust="spacingAndGlyphs">
+        ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC ·------------------------------------------------------------------------
+      </textPath>
+    </text>
+  </g>
+  <!-- 第 5 圈：15px 16词 + 横线x4 -->
+  <g class="spiral-text__ring spiral-text__ring--r5">
+    <text font-family="Geist Mono, monospace" font-size="15" letter-spacing="3" fill="rgba(255,255,255,0.7)">
+      <textPath href="#spiral-r5" textLength="1759" lengthAdjust="spacingAndGlyphs">
+        VMC · CAN · FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER ·------------------------------------------------------------------------
+      </textPath>
+    </text>
+  </g>
+  <!-- 第 6 圈：14.5px 15词 + 横线x4 -->
+  <g class="spiral-text__ring spiral-text__ring--r6">
+    <text font-family="Geist Mono, monospace" font-size="14.5" letter-spacing="2.5" fill="rgba(255,255,255,0.72)">
+      <textPath href="#spiral-r6" textLength="1634" lengthAdjust="spacingAndGlyphs">
+        ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS ·------------------------------------------------------------------------
+      </textPath>
+    </text>
+  </g>
+  <!-- 第 7 圈：14px 14词 + 横线x3 -->
+  <g class="spiral-text__ring spiral-text__ring--r7">
+    <text font-family="Geist Mono, monospace" font-size="14" letter-spacing="2.5" fill="rgba(255,255,255,0.74)">
+      <textPath href="#spiral-r7" textLength="1508" lengthAdjust="spacingAndGlyphs">
+        CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR ·------------------------------------------------------
+      </textPath>
+    </text>
+  </g>
+  <!-- 第 8 圈：13.5px 14词 + 横线x3 -->
+  <g class="spiral-text__ring spiral-text__ring--r8">
+    <text font-family="Geist Mono, monospace" font-size="13.5" letter-spacing="2.5" fill="rgba(255,255,255,0.76)">
+      <textPath href="#spiral-r8" textLength="1382" lengthAdjust="spacingAndGlyphs">
+        CAN · FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB ·------------------------------------------------------
+      </textPath>
+    </text>
+  </g>
+  <!-- 第 9 圈：13px 13词 + 横线x3 -->
+  <g class="spiral-text__ring spiral-text__ring--r9">
+    <text font-family="Geist Mono, monospace" font-size="13" letter-spacing="2" fill="rgba(255,255,255,0.78)">
+      <textPath href="#spiral-r9" textLength="1257" lengthAdjust="spacingAndGlyphs">
+        ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED ·------------------------------------------------------
+      </textPath>
+    </text>
+  </g>
+  <!-- 第 10 圈：12.5px 12词 + 横线x3 -->
+  <g class="spiral-text__ring spiral-text__ring--r10">
+    <text font-family="Geist Mono, monospace" font-size="12.5" letter-spacing="2" fill="rgba(255,255,255,0.8)">
+      <textPath href="#spiral-r10" textLength="1131" lengthAdjust="spacingAndGlyphs">
+        STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 ·------------------------------------------------------
+      </textPath>
+    </text>
+  </g>
+  <!-- 第 11 圈：12px 11词 + 横线x3 -->
+  <g class="spiral-text__ring spiral-text__ring--r11">
+    <text font-family="Geist Mono, monospace" font-size="12" letter-spacing="2" fill="rgba(255,255,255,0.82)">
+      <textPath href="#spiral-r11" textLength="1005" lengthAdjust="spacingAndGlyphs">
+        FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN ·------------------------------------------------------
+      </textPath>
+    </text>
+  </g>
+  <!-- 第 12 圈：11.5px 10词 + 横线x3 -->
+  <g class="spiral-text__ring spiral-text__ring--r12">
+    <text font-family="Geist Mono, monospace" font-size="11.5" letter-spacing="2" fill="rgba(255,255,255,0.85)">
+      <textPath href="#spiral-r12" textLength="880" lengthAdjust="spacingAndGlyphs">
+        EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER ·------------------------------------------------------
+      </textPath>
+    </text>
+  </g>
+  <!-- 第 13 圈：11px 9词 + 横线x2 -->
+  <g class="spiral-text__ring spiral-text__ring--r13">
+    <text font-family="Geist Mono, monospace" font-size="11" letter-spacing="2" fill="rgba(255,255,255,0.88)">
+      <textPath href="#spiral-r13" textLength="754" lengthAdjust="spacingAndGlyphs">
+        LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS ·------------------------------------
+      </textPath>
+    </text>
+  </g>
+  <!-- 第 14 圈：10.5px 8词 + 横线x2 -->
+  <g class="spiral-text__ring spiral-text__ring--r14">
+    <text font-family="Geist Mono, monospace" font-size="10.5" letter-spacing="1.5" fill="rgba(255,255,255,0.92)">
+      <textPath href="#spiral-r14" textLength="628" lengthAdjust="spacingAndGlyphs">
+        MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR ·------------------------------------
+      </textPath>
+    </text>
+  </g>
+  <!-- 第 15 圈：10px 7词 + 横线x2 -->
+  <g class="spiral-text__ring spiral-text__ring--r15">
+    <text font-family="Geist Mono, monospace" font-size="10" letter-spacing="1.5" fill="rgba(255,255,255,0.95)">
+      <textPath href="#spiral-r15" textLength="503" lengthAdjust="spacingAndGlyphs">
+        ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS ·------------------------------------
+      </textPath>
+    </text>
+  </g>
+  <!-- 第 16 圈：9.5px 6词 + 横线x2 -->
+  <g class="spiral-text__ring spiral-text__ring--r16">
+    <text font-family="Geist Mono, monospace" font-size="9.5" letter-spacing="1.5" fill="rgba(255,255,255,0.98)">
+      <textPath href="#spiral-r16" textLength="377" lengthAdjust="spacingAndGlyphs">
+        VMC · CAN · FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI ·------------------------------------
+      </textPath>
+    </text>
+  </g>
+</svg>
       </div>
 
       <!-- 状态栏 -->
