@@ -46,7 +46,7 @@
 
 ### 交互功能
 - [x] 导航栏滚动缩放（`.nav--scrolled` → `scale(0.96); opacity:0.92`）
-- [x] IntersectionObserver 滚动入场动画
+- [x] 滚动入场动画已禁用，内容直接显示（简单滚动；曾尝试 fadeUp/回弹 overshoot，触发时机不佳后移除）
 - [x] 项目卡片 hover 微动效
 - [x] 技术栈分类筛选
 - [x] 视频封面首帧截取 + 点击弹窗播放
