@@ -291,6 +291,11 @@
                 <span class="project-tag">STM32</span>
               </div>
 
+              <!-- 项目照片 -->
+              <div class="project-item__image">
+                <img src="/assets/images/平衡轮腿机器人项目照片1.jpg" alt="串联腿平衡步兵" style="object-position: center 90%;" />
+              </div>
+
               <!-- 演示视频 -->
               <div class="project-item__section">
                 <p class="mono-label mono-label--dark" style="margin-bottom: var(--space-4);">演示视频</p>
@@ -327,52 +332,6 @@
                   <li>仿真验证缩短实车调试周期约 30%</li>
                   <li>RoboMaster 2026 超级对抗赛中发挥优异</li>
                 </ul>
-              </div>
-
-              <!-- IDE 代码窗口 -->
-              <div class="project-item__section">
-                <p class="mono-label mono-label--dark" style="margin-bottom: var(--space-4);">控制代码</p>
-                <div class="ide-window animate-on-scroll">
-                  <div class="ide-window__tabs">
-                    <span class="ide-window__tab is-active">main.c</span>
-                    <span class="ide-window__tab">lqr_control.c</span>
-                    <span class="ide-window__tab">pid.h</span>
-                  </div>
-                  <div class="ide-window__body">
-                    <div class="ide-window__sidebar">
-                      <span class="ide-window__dir">Src/</span>
-                      <span class="ide-window__file is-current">main.c</span>
-                      <span class="ide-window__file">lqr_control.c</span>
-                      <span class="ide-window__file">can_bus.c</span>
-                      <span class="ide-window__dir">Drivers/</span>
-                      <span class="ide-window__file">stm32g4xx_hal.c</span>
-                      <span class="ide-window__dir">Inc/</span>
-                      <span class="ide-window__file">pid.h</span>
-                      <span class="ide-window__file">imu_filter.h</span>
-                    </div>
-                    <pre class="ide-window__code"><code><span class="tok-c">/* LQR 平衡控制器 · 每 1ms 中断调用 */</span>
-<span class="tok-k">void</span> <span class="tok-f">lqr_balance_loop</span>(<span class="tok-k">void</span>)
-{
-    <span class="tok-f">update_sensors</span>();              <span class="tok-c">// IMU + 编码器</span>
-    x_k[<span class="tok-n">0</span>] = gimbal_pitch;              <span class="tok-c">// 俯仰角</span>
-    x_k[<span class="tok-n">1</span>] = pitch_rate;               <span class="tok-c">// 俯仰角速度</span>
-    x_k[<span class="tok-n">2</span>] = wheel_vel;                <span class="tok-c">// 轮速</span>
-
-    u_k = <span class="tok-f">K_lqr</span> · x_k;                 <span class="tok-c">// LQR 最优控制律</span>
-    <span class="tok-f">set_motor_duty</span>(&amp;motor[<span class="tok-n">0</span>], u_k);
-    <span class="tok-f">set_motor_duty</span>(&amp;motor[<span class="tok-n">1</span>], -u_k);
-}</code></pre>
-                  </div>
-                  <div class="ide-window__footer">
-                    <span>UTF-8 · C99</span>
-                    <span>Ln 12, Col 4</span>
-                    <span>SPACES: 4</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="project-item__image">
-                <img src="/assets/images/平衡轮腿机器人项目照片1.jpg" alt="串联腿平衡步兵" style="object-position: center 90%;" />
               </div>
             </article>
 
@@ -555,28 +514,8 @@
     </section>
 
     <!-- ========== 关于我 ========== -->
-    <section class="section section--dark text-watermark" id="about">
-      <div class="section__header animate-on-scroll">
-        <p class="section__kicker">Education</p>
-        <h2 class="section__title">教育背景</h2>
-      </div>
-      <div class="section__body">
-        <div class="timeline-list animate-on-scroll stagger-2">
-
-          <div class="timeline-list__item">
-            <p class="timeline-list__date">2024.09 — 至今</p>
-            <h3 class="timeline-list__title">武汉科技大学 · 电子信息工程</h3>
-            <p class="timeline-list__desc">
-              荆楚卓越人才计划 — 本科在读（大二）。RoboMaster 战队电控组负责人。
-            </p>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
     <!-- 荣誉奖项 -->
-    <section class="section">
+    <section class="section" id="about">
       <div class="section__header animate-on-scroll">
         <p class="section__kicker">Honors & Awards</p>
         <h2 class="section__title">荣誉奖项</h2>
@@ -638,26 +577,29 @@
               </div>
               <pre class="term-board__body"><code><span class="tok-c"># 工作之外 · 生活侧写</span>
 <span class="tok-f">$ cat personality.txt</span>
-[待补充：自我评价关键词]
+独立自主 · 热衷新技术 · 肯钻研 · 自学能力强 · 上手快
 
 <span class="tok-f">$ cat hobbies.txt</span>
-[待补充：个人爱好]
+拳击 · 游泳 · 足球 · 徒步 · 骑行 · 乒乓球
 
 <span class="tok-f">$ cat motto.txt</span>
-[待补充：一句话生活态度]</code></pre>
+热爱运动 · 享受户外 · 顺其自然</code></pre>
             </div>
           </div>
 
           <!-- 生活照片墙 -->
           <div class="life-gallery">
-            <figure class="life-gallery__item life-gallery__item--wide">
-              <div class="life-gallery__placeholder">照片待补充</div>
+            <figure class="life-gallery__item">
+              <img src="/assets/images/徒步照1.jpg" alt="徒步" loading="lazy" />
             </figure>
             <figure class="life-gallery__item">
-              <div class="life-gallery__placeholder">照片待补充</div>
+              <img src="/assets/images/徒步照2.jpg" alt="徒步" loading="lazy" />
             </figure>
             <figure class="life-gallery__item">
-              <div class="life-gallery__placeholder">照片待补充</div>
+              <img src="/assets/images/攀岩照.jpg" alt="攀岩" loading="lazy" />
+            </figure>
+            <figure class="life-gallery__item">
+              <img src="/assets/images/骑行照.jpg" alt="骑行" loading="lazy" />
             </figure>
           </div>
 

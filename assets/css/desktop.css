@@ -766,7 +766,7 @@
   border: 2px solid rgba(255, 255, 255, 0.14);
   border-radius: var(--radius-8);
   background: rgba(0, 0, 0, 0.3);
-  padding: 24px;
+  padding: 34px 28px;
 }
 
 .chip-board__header {
@@ -775,7 +775,7 @@
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
-  padding-bottom: 14px;
+  padding-bottom: 16px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
@@ -796,8 +796,8 @@
 .chip-board__grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
-  padding-top: 16px;
+  gap: 18px;
+  padding-top: 20px;
 }
 
 @media (min-width: 768px) {
@@ -815,8 +815,9 @@
 /* 芯片内模块（覆盖通用 tech-cat 为纵向卡片） */
 .chip-board .tech-cat {
   flex-direction: column;
-  gap: 8px;
-  padding: 16px;
+  gap: 12px;
+  padding: 24px 20px;
+  min-height: 150px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 6px;
@@ -849,22 +850,21 @@
 
 .chip-board .tech-cat__title {
   font-size: var(--text-h3);
-  margin: 2px 0 10px;
+  margin: 4px 0 14px;
 }
 
 .chip-board .tech-cat__list {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
 }
 
 .chip-board .tech-cat__list li {
-  padding: 3px 10px;
+  padding: 6px 14px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 4px;
   font-size: var(--text-mono-small);
   color: var(--color-ghost-grey);
-  padding-left: 10px;
   line-height: 1.5;
 }
 
@@ -961,22 +961,12 @@
   margin: 0;
 }
 
-.life-gallery__item--wide {
-  grid-column: span 2;
-}
-
-.life-gallery__placeholder {
+.life-gallery__item img {
   width: 100%;
   aspect-ratio: 4 / 3;
-  border: 1px dashed rgba(255, 255, 255, 0.25);
+  object-fit: cover;
   border-radius: var(--radius-8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-mono);
-  font-size: var(--text-mono-small);
-  color: rgba(255, 255, 255, 0.35);
-  background: rgba(255, 255, 255, 0.02);
+  display: block;
 }
 
 /* --- 时间线列表 — 极简大号日期 + 标题 --- */
@@ -1196,8 +1186,8 @@
 .contact-item-big {
   display: flex;
   align-items: center;
-  gap: var(--space-6);
-  padding: var(--space-8) 0;
+  gap: var(--space-4);
+  padding: var(--space-6) 0;
   border-bottom: 1px solid var(--color-border-dark);
   transition: all var(--duration-base) var(--ease-out);
 }
@@ -1220,8 +1210,8 @@
 }
 
 .contact-item-big__icon {
-  width: 56px;
-  height: 56px;
+  width: 40px;
+  height: 40px;
   flex-shrink: 0;
   transition: transform var(--duration-base) var(--ease-out);
 }
@@ -1240,7 +1230,7 @@
 }
 
 .contact-item-big__value {
-  font-size: var(--text-h3);
+  font-size: var(--text-body-large);
   font-weight: var(--weight-medium);
   color: var(--color-white);
   letter-spacing: -0.01em;
