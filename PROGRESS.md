@@ -158,6 +158,10 @@ d:/DSEKTOP/个人网页/
 ## Git 提交历史
 
 ```
+65b2404 v2.2: 单页化改造 — 四页合并为长滚动单页 + scrollspy 导航
+94ff45a v2.1: 项目页背景统一水泥灰 + 首页细节调整
+a24b1aa v2.1: 首页分屏升级 — 水泥灰背景 + 16 圈螺旋文字复刻参考图
+75cd22b docs: 更新 PROGRESS.md，同步 v2.1 当前进度
 930340a v2.1: 视觉增强迭代 — 导航药丸化 + 环形文字 + 芯片卡片 + IDE 窗口 + 页脚升级
 bf2c5a4 v2: 全站视觉迭代，对齐 contentarchitecture.dev 设计语言
 d650b72 docs: 更新 PROGRESS.md，同步当前进度
