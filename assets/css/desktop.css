@@ -106,6 +106,7 @@
   align-items: center;
   padding: 8rem var(--gutter-mobile) 4rem;
   position: relative;
+  overflow: hidden;                 /* 螺旋上下/右侧溢出被 hero 边界截断 */
   background: var(--color-off-white);
 }
 
