@@ -887,6 +887,107 @@
   border-radius: 50%;
 }
 
+/* --- 开发工具箱 --- */
+.tools-shelf {
+  margin-top: 40px;
+  padding: 28px 24px;
+  border: 2px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-8);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.tools-shelf__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  margin-bottom: 24px;
+}
+
+.tools-shelf__label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.tools-shelf__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px 12px;
+  justify-items: center;
+}
+
+@media (min-width: 768px) {
+  .tools-shelf__grid {
+    grid-template-columns: repeat(8, 1fr);
+    gap: 20px 10px;
+  }
+}
+
+.tool-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  transition: transform var(--duration-base) var(--ease-out);
+  cursor: default;
+}
+
+.tool-icon:hover {
+  transform: translateY(-3px);
+}
+
+.tool-icon__img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+}
+
+@media (min-width: 1280px) {
+  .tool-icon__img {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+.tool-icon__name {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--color-ghost-grey);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.tool-icon:hover .tool-icon__name {
+  color: var(--color-white);
+}
+
+/* 深色图标加白底衬 */
+.tool-icon--light {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border-radius: 12px;
+}
+
+@media (min-width: 1280px) {
+  .tool-icon--light {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+  }
+}
+
 /* --- 终端呈现窗口 --- */
 .term-board {
   border: 1px solid var(--color-border-dark);
