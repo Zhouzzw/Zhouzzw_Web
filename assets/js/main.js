@@ -18,17 +18,62 @@ function initNavbar() {
   updateNav();
 }
 
-/* ===== 当前页面高亮 ===== */
-function initActiveLink() {
-  const current = window.location.pathname.split('/').pop() || 'index.html';
+/* ===== 滚动区域高亮（scrollspy） =====
+   监听滚动，根据当前所在 section 高亮导航链接
+*/
+function initScrollSpy() {
   const links = document.querySelectorAll('.nav__links a');
+  if (!links.length) return;
 
+  // href="#xxx" → 对应链接
+  const linkByHref = {};
   links.forEach(link => {
     const href = link.getAttribute('href');
-    if (href === current) {
-      link.classList.add('nav--active');
-    }
+    if (href && href.startsWith('#')) linkByHref[href.slice(1)] = link;
   });
+
+  // 只观察有对应导航链接的 section（intro 等无独立导航项的归入前一个区域）
+  const sections = Array.from(document.querySelectorAll('section[id]'))
+    .filter(s => linkByHref[s.id]);
+  if (!sections.length) return;
+
+  const NAV_OFFSET = 120; // 固定导航高度 + 缓冲
+
+  // 滑动指示器：跟随当前链接平滑移动（top/height 垂直对齐链接，translateX 水平滑动）
+  const indicator = document.querySelector('.nav__links-indicator');
+  const placeIndicator = (link) => {
+    if (!indicator || !link) return;
+    indicator.style.width = `${link.offsetWidth}px`;
+    indicator.style.height = `${link.offsetHeight}px`;
+    indicator.style.top = `${link.offsetTop}px`;
+    indicator.style.transform = `translateX(${link.offsetLeft}px)`;
+  };
+
+  const update = () => {
+    const pos = window.scrollY + NAV_OFFSET;
+    let currentId = sections[0].id;
+
+    for (const s of sections) {
+      if (s.offsetTop <= pos) currentId = s.id;
+      else break;
+    }
+
+    // 滚动到底部时锁定最后一个 section
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
+      currentId = sections[sections.length - 1].id;
+    }
+
+    links.forEach(l => l.classList.remove('nav--active'));
+    const active = linkByHref[currentId];
+    if (active) {
+      active.classList.add('nav--active');
+      placeIndicator(active);
+    }
+  };
+
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update, { passive: true });
+  update();
 }
 
 /* ===== 视频弹窗 ===== */
@@ -136,7 +181,7 @@ function initVideoCovers() {
 
 document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
-  initActiveLink();
+  initScrollSpy();
   initVideoModal();
   initTechFilter();
   initVideoCovers();

@@ -20,7 +20,7 @@
   background-image: var(--dotted-bg);
   background-size: 4px 4px;
   border: 1px solid var(--color-border-dark);
-  border-radius: var(--radius-full);
+  border-radius: 10px;
   box-shadow: var(--shadow-dark);
   transition: transform var(--duration-base) var(--ease-out),
               opacity var(--duration-base) var(--ease-out);
@@ -63,12 +63,32 @@
 }
 
 .nav__links {
+  position: relative;
   display: flex;
   gap: 4px;
   list-style: none;
 }
 
+/* 滑动指示器：高亮切换时平滑滑到当前链接 */
+.nav__links-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 0;
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  z-index: 0;
+  pointer-events: none;
+  transition: transform var(--duration-base) var(--ease-out),
+              width var(--duration-base) var(--ease-out),
+              height var(--duration-base) var(--ease-out),
+              top var(--duration-base) var(--ease-out);
+}
+
 .nav__links a {
+  position: relative;
+  z-index: 1;
   font-family: var(--font-mono);
   font-size: 11px;
   color: rgba(255, 255, 255, 0.55);
@@ -76,7 +96,7 @@
   text-transform: uppercase;
   letter-spacing: 0.02em;
   padding: 8px 12px;
-  border-radius: var(--radius-full);
+  border-radius: 10px;
   white-space: nowrap;
   transition: color var(--duration-fast) var(--ease-standard),
               background var(--duration-fast) var(--ease-standard);
@@ -89,7 +109,6 @@
 
 .nav__links a.nav--active {
   color: var(--color-white);
-  background: rgba(255, 255, 255, 0.14);
 }
 
 /* 移动端汉堡 (桌面隐藏) */

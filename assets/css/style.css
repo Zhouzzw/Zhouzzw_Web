@@ -264,6 +264,11 @@ img {
   text-wrap: balance;
 }
 
+/* 锚点滚动偏移 — 避开固定导航，避免标题被遮挡 */
+section[id] {
+  scroll-margin-top: 96px;
+}
+
 /* 减少动画偏好 */
 @media (prefers-reduced-motion: reduce) {
   *,

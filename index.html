@@ -18,9 +18,9 @@
 </head>
 <body>
 
-  <!-- ========== 导航栏 v2.1 ========== -->
+  <!-- ========== 导航栏 v2.1（单页锚点 + scrollspy） ========== -->
   <header class="nav" id="navbar">
-    <a href="index.html" class="nav__brand-link" aria-label="首页">
+    <a href="#hero" class="nav__brand-link" aria-label="首页">
       <svg class="nav__brand" viewBox="0 0 24 24" fill="none" width="20" height="20">
         <rect x="5" y="5" width="14" height="14" rx="2" stroke="#FF9100" stroke-width="1.5"/>
         <path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3" stroke="#FF9100" stroke-width="1.5"/>
@@ -30,10 +30,11 @@
     <span class="nav__logo">Zhou Ziwei</span>
     <nav>
       <ul class="nav__links">
-        <li><a href="index.html" class="nav--active">首页</a></li>
-        <li><a href="projects.html">项目</a></li>
-        <li><a href="techstack.html">技术栈</a></li>
-        <li><a href="about.html">关于</a></li>
+        <span class="nav__links-indicator" aria-hidden="true"></span>
+        <li><a href="#hero">首页</a></li>
+        <li><a href="#projects">项目</a></li>
+        <li><a href="#techstack">技术栈</a></li>
+        <li><a href="#about">关于</a></li>
       </ul>
     </nav>
     <button class="nav__toggle" aria-label="菜单">
@@ -43,7 +44,7 @@
 
   <main>
 
-    <!-- ========== Hero v2.1 ========== -->
+    <!-- ========== Hero 首页 ========== -->
     <section class="hero" id="hero">
       <div class="hero__content">
         <p class="hero__kicker">Embedded · Robotics · Control</p>
@@ -54,13 +55,13 @@
           武汉科技大学电子信息工程在读 — RoboMaster 战队电控组负责人。
           专注于机器人运动控制、嵌入式系统与算法仿真。
         </p>
-        <a href="projects.html" class="hero__cta cta-split">
+        <a href="#projects" class="hero__cta cta-split">
           <span class="cta-split__left">查看项目</span>
           <span class="cta-split__right" aria-hidden="true">→</span>
         </a>
       </div>
 
-      <!-- 螺旋文字装饰（v2.1+ 分屏深色区） -->
+      <!-- 螺旋文字装饰 -->
       <div class="hero__visual" aria-hidden="true">
         <svg class="spiral-text__svg" viewBox="0 0 800 800" fill="none">
   <defs>
@@ -244,65 +245,449 @@
       </div>
     </section>
 
-    <!-- ========== 核心能力 ========== -->
-    <section class="section section--dark text-watermark" id="skills-preview">
+    <!-- ========== 项目经历 ========== -->
+    <section class="section" id="projects" style="padding-bottom: var(--space-12);">
       <div class="section__header animate-on-scroll">
-        <p class="section__kicker">Core Skills</p>
-        <h2 class="section__title">每一个决定都经过验证</h2>
+        <p class="section__kicker">Projects</p>
+        <h2 class="section__title">两款机器人，一套电控体系</h2>
       </div>
+      <div class="section__body animate-on-scroll stagger-2">
+        <p style="font-size: var(--text-body-large); max-width: 60ch;">
+          从底层驱动到顶层控制策略，从零搭建完整的机器人电控系统。
+          每一行代码都经过仿真验证，每一次调参都有数据支撑。
+        </p>
+      </div>
+    </section>
 
+    <!-- 项目列表 -->
+    <section class="section section--dark text-watermark" style="padding-top: var(--space-20); background: #242423;">
       <div class="section__body">
-        <ul class="skills-list">
+        <div class="project-list">
 
-          <li class="skills-list__item animate-on-scroll">
-            <div class="skills-list__num">
+          <!-- ===== 项目一：串联腿平衡步兵 ===== -->
+            <article class="project-item animate-on-scroll">
+              <div class="project-item__header">
+                <span class="project-item__num">
+                  <span class="mono-label mono-label--dark">001</span>
+                </span>
+                <div class="project-item__meta">
+                  <p class="project-item__role">电控组负责人</p>
+                </div>
+              </div>
+
+              <h3 class="project-item__title">RoboMaster 串联腿平衡步兵机器人</h3>
+
+              <p class="project-item__desc">
+                独立完成平衡步兵动力学建模，推导腿部连杆机构运动学模型，建立系统状态空间方程。
+                设计 VMC + LQR 控制器实现双腿 12 状态量、4 关节电机 2 轮电机协同控制。
+                开发卡尔曼滤波器融合 IMU 数据、轮足跳跃算法（稳定跳跃 40cm）、底盘功率控制配合超级电容。
+              </p>
+
+              <div class="project-item__tags">
+                <span class="project-tag">LQR</span>
+                <span class="project-tag">VMC</span>
+                <span class="project-tag">卡尔曼滤波</span>
+                <span class="project-tag">MATLAB/Simulink</span>
+                <span class="project-tag">STM32</span>
+              </div>
+
+              <!-- 演示视频 -->
+              <div class="project-item__section">
+                <p class="mono-label mono-label--dark" style="margin-bottom: var(--space-4);">演示视频</p>
+                <div class="video-grid">
+                  <div class="video-cover" data-video-src="/assets/videos/串联腿小跳上台阶演示视频.mp4" data-video-type="local">
+                    <video src="/assets/videos/串联腿小跳上台阶演示视频.mp4" preload="metadata" muted style="width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; pointer-events: none;"></video>
+                    <div class="video-cover__play">
+                      <div class="video-cover__play-icon"></div>
+                    </div>
+                    <p class="video-cover__label">跳跃上台阶</p>
+                  </div>
+                  <div class="video-cover" data-video-src="/assets/videos/串联腿跳跃演示视频.mp4" data-video-type="local">
+                    <video src="/assets/videos/串联腿跳跃演示视频.mp4" preload="metadata" muted style="width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; pointer-events: none;"></video>
+                    <div class="video-cover__play">
+                      <div class="video-cover__play-icon"></div>
+                    </div>
+                    <p class="video-cover__label">旋转跳跃演示</p>
+                  </div>
+                  <div class="video-cover" data-video-src="/assets/videos/串联腿飞坡演示视频.mp4" data-video-type="local">
+                    <video src="/assets/videos/串联腿飞坡演示视频.mp4" preload="metadata" muted style="width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; pointer-events: none;"></video>
+                    <div class="video-cover__play">
+                      <div class="video-cover__play-icon"></div>
+                    </div>
+                    <p class="video-cover__label">飞坡演示</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 成果 -->
+              <div class="project-item__section">
+                <p class="mono-label mono-label--dark" style="margin-bottom: var(--space-4);">成果</p>
+                <ul class="project-item__results">
+                  <li>控制精度及稳定性提升约 40%</li>
+                  <li>仿真验证缩短实车调试周期约 30%</li>
+                  <li>RoboMaster 2026 超级对抗赛中发挥优异</li>
+                </ul>
+              </div>
+
+              <!-- IDE 代码窗口 -->
+              <div class="project-item__section">
+                <p class="mono-label mono-label--dark" style="margin-bottom: var(--space-4);">控制代码</p>
+                <div class="ide-window animate-on-scroll">
+                  <div class="ide-window__tabs">
+                    <span class="ide-window__tab is-active">main.c</span>
+                    <span class="ide-window__tab">lqr_control.c</span>
+                    <span class="ide-window__tab">pid.h</span>
+                  </div>
+                  <div class="ide-window__body">
+                    <div class="ide-window__sidebar">
+                      <span class="ide-window__dir">Src/</span>
+                      <span class="ide-window__file is-current">main.c</span>
+                      <span class="ide-window__file">lqr_control.c</span>
+                      <span class="ide-window__file">can_bus.c</span>
+                      <span class="ide-window__dir">Drivers/</span>
+                      <span class="ide-window__file">stm32g4xx_hal.c</span>
+                      <span class="ide-window__dir">Inc/</span>
+                      <span class="ide-window__file">pid.h</span>
+                      <span class="ide-window__file">imu_filter.h</span>
+                    </div>
+                    <pre class="ide-window__code"><code><span class="tok-c">/* LQR 平衡控制器 · 每 1ms 中断调用 */</span>
+<span class="tok-k">void</span> <span class="tok-f">lqr_balance_loop</span>(<span class="tok-k">void</span>)
+{
+    <span class="tok-f">update_sensors</span>();              <span class="tok-c">// IMU + 编码器</span>
+    x_k[<span class="tok-n">0</span>] = gimbal_pitch;              <span class="tok-c">// 俯仰角</span>
+    x_k[<span class="tok-n">1</span>] = pitch_rate;               <span class="tok-c">// 俯仰角速度</span>
+    x_k[<span class="tok-n">2</span>] = wheel_vel;                <span class="tok-c">// 轮速</span>
+
+    u_k = <span class="tok-f">K_lqr</span> · x_k;                 <span class="tok-c">// LQR 最优控制律</span>
+    <span class="tok-f">set_motor_duty</span>(&amp;motor[<span class="tok-n">0</span>], u_k);
+    <span class="tok-f">set_motor_duty</span>(&amp;motor[<span class="tok-n">1</span>], -u_k);
+}</code></pre>
+                  </div>
+                  <div class="ide-window__footer">
+                    <span>UTF-8 · C99</span>
+                    <span>Ln 12, Col 4</span>
+                    <span>SPACES: 4</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="project-item__image">
+                <img src="/assets/images/平衡轮腿机器人项目照片1.jpg" alt="串联腿平衡步兵" style="object-position: center 90%;" />
+              </div>
+            </article>
+
+          <!-- ===== 项目二：全向轮步兵 ===== -->
+            <article class="project-item animate-on-scroll stagger-2">
+              <div class="project-item__header">
+                <span class="project-item__num">
+                  <span class="mono-label mono-label--dark">002</span>
+                </span>
+                <div class="project-item__meta">
+                  <p class="project-item__role">电控组负责人</p>
+                </div>
+              </div>
+
+              <h3 class="project-item__title">RoboMaster 全向轮步兵机器人</h3>
+
+              <p class="project-item__desc">
+                基于 STM32G4 完成全向轮底盘运动学解算，实现复杂战场环境下的平滑移动与精准定位。
+                采用 FreeRTOS 设计多任务调度架构，设计双环 PID + 前馈控制策略提升云台轨迹跟踪精度。
+                基于 CAN 总线设计整车通信网络，保证控制指令低延迟传输。
+              </p>
+
+              <div class="project-item__tags">
+                <span class="project-tag">STM32G4</span>
+                <span class="project-tag">FreeRTOS</span>
+                <span class="project-tag">PID + 前馈</span>
+                <span class="project-tag">CAN 总线</span>
+                <span class="project-tag">运动学解算</span>
+              </div>
+
+              <!-- 成果 -->
+              <div class="project-item__section">
+                <p class="mono-label mono-label--dark" style="margin-bottom: var(--space-4);">成果</p>
+                <ul class="project-item__results">
+                  <li>底盘运动精度提升 30%，响应速度提升 25%</li>
+                  <li>高校联盟赛 3v3 (安徽站) 国家一等奖</li>
+                  <li>步兵对抗赛 国家二等奖</li>
+                </ul>
+              </div>
+
+              <div class="project-item__image">
+                <img src="/assets/images/全向轮机器人项目照片.jpg" alt="全向轮步兵" />
+              </div>
+            </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 技术栈 ========== -->
+    <section class="section" id="techstack" style="padding-bottom: var(--space-12);">
+      <div class="section__header animate-on-scroll">
+        <p class="section__kicker">Tech Stack</p>
+        <h2 class="section__title">从底层到顶层的完整栈</h2>
+      </div>
+      <div class="section__body animate-on-scroll stagger-2">
+        <p style="font-size: var(--text-body-large); max-width: 60ch;">
+          六个技术领域，覆盖从芯片驱动到控制算法的完整链路。
+          每一项都是实战中打磨过的硬技能。
+        </p>
+      </div>
+    </section>
+
+    <!-- 技术分类 -->
+    <section class="section section--dark text-watermark" style="padding-top: var(--space-20);">
+      <div class="section__body">
+        <!-- 筛选器 -->
+        <div class="tech-filter animate-on-scroll">
+          <button class="tech-filter__btn is-active" data-filter="all">全部</button>
+          <button class="tech-filter__btn" data-filter="mcu">单片机</button>
+          <button class="tech-filter__btn" data-filter="control">控制算法</button>
+          <button class="tech-filter__btn" data-filter="sim">仿真建模</button>
+          <button class="tech-filter__btn" data-filter="lang">编程语言</button>
+        </div>
+
+        <!-- 技术分类列表 -->
+        <div class="tech-stack">
+
+          <!-- 001 单片机开发 -->
+          <div class="tech-cat animate-on-scroll" data-category="mcu">
+            <div class="tech-cat__num">
               <span class="mono-label mono-label--dark">001</span>
             </div>
-            <div class="skills-list__content">
-              <h3 class="skills-list__title">单片机开发</h3>
-              <p class="skills-list__desc">
-                精通 STM32 / ESP32 / MSP-M0 系列单片机开发，熟练运用 FreeRTOS 实时操作系统构建多任务调度架构。
-              </p>
+            <div class="tech-cat__body">
+              <h3 class="tech-cat__title">单片机开发</h3>
+              <ul class="tech-cat__list">
+                <li>STM32 系列 (F4 / G4)</li>
+                <li>ESP32</li>
+                <li>MSP-M0</li>
+                <li>FreeRTOS 实时操作系统</li>
+                <li>多任务调度架构设计</li>
+              </ul>
             </div>
-          </li>
+          </div>
 
-          <li class="skills-list__item animate-on-scroll stagger-2">
-            <div class="skills-list__num">
+          <!-- 002 外设与通信 -->
+          <div class="tech-cat animate-on-scroll stagger-2" data-category="mcu">
+            <div class="tech-cat__num">
               <span class="mono-label mono-label--dark">002</span>
             </div>
-            <div class="skills-list__content">
-              <h3 class="skills-list__title">控制算法</h3>
-              <p class="skills-list__desc">
-                从双环 PID 到 LQR 最优控制、VMC 虚拟模型控制、MPC 模型预测控制，结合卡尔曼滤波实现稳定精准的机器人控制。
-              </p>
+            <div class="tech-cat__body">
+              <h3 class="tech-cat__title">外设与通信</h3>
+              <ul class="tech-cat__list">
+                <li>UART</li>
+                <li>IIC</li>
+                <li>SPI</li>
+                <li>CAN 总线</li>
+                <li>整车通信网络设计</li>
+              </ul>
             </div>
-          </li>
+          </div>
 
-          <li class="skills-list__item animate-on-scroll stagger-3">
-            <div class="skills-list__num">
+          <!-- 003 控制算法 -->
+          <div class="tech-cat animate-on-scroll stagger-3" data-category="control">
+            <div class="tech-cat__num">
               <span class="mono-label mono-label--dark">003</span>
             </div>
-            <div class="skills-list__content">
-              <h3 class="skills-list__title">仿真与建模</h3>
-              <p class="skills-list__desc">
-                MATLAB / Simulink 动力学建模与仿真验证，数据拟合与分析，缩短实车调试周期约 30%。
-              </p>
+            <div class="tech-cat__body">
+              <h3 class="tech-cat__title">控制算法</h3>
+              <ul class="tech-cat__list">
+                <li>双环 PID</li>
+                <li>前馈 PID</li>
+                <li>LQR 最优控制</li>
+                <li>VMC 虚拟模型控制</li>
+                <li>MPC 模型预测控制</li>
+                <li>卡尔曼滤波</li>
+              </ul>
             </div>
-          </li>
+          </div>
 
-          <li class="skills-list__item animate-on-scroll stagger-4">
-            <div class="skills-list__num">
+          <!-- 004 仿真与建模 -->
+          <div class="tech-cat animate-on-scroll stagger-4" data-category="sim">
+            <div class="tech-cat__num">
               <span class="mono-label mono-label--dark">004</span>
             </div>
-            <div class="skills-list__content">
-              <h3 class="skills-list__title">外设与通信</h3>
-              <p class="skills-list__desc">
-                UART / IIC / SPI / CAN 总线协议开发，设计整车 CAN 通信网络，保证控制指令低延迟稳定传输。
-              </p>
+            <div class="tech-cat__body">
+              <h3 class="tech-cat__title">仿真与建模</h3>
+              <ul class="tech-cat__list">
+                <li>MATLAB / Simulink</li>
+                <li>机器人运动建模</li>
+                <li>动力学建模</li>
+                <li>算法仿真验证</li>
+                <li>数据拟合与分析</li>
+              </ul>
             </div>
-          </li>
+          </div>
 
-        </ul>
+          <!-- 005 编程语言 -->
+          <div class="tech-cat animate-on-scroll" data-category="lang">
+            <div class="tech-cat__num">
+              <span class="mono-label mono-label--dark">005</span>
+            </div>
+            <div class="tech-cat__body">
+              <h3 class="tech-cat__title">编程语言</h3>
+              <ul class="tech-cat__list">
+                <li>C</li>
+                <li>C++</li>
+                <li>Python</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 006 工具链与调试 -->
+          <div class="tech-cat animate-on-scroll stagger-2" data-category="mcu">
+            <div class="tech-cat__num">
+              <span class="mono-label mono-label--dark">006</span>
+            </div>
+            <div class="tech-cat__body">
+              <h3 class="tech-cat__title">工具链与调试</h3>
+              <ul class="tech-cat__list">
+                <li>Keil / STM32CubeIDE</li>
+                <li>JLink / ST-Link</li>
+                <li>逻辑分析仪 / 示波器</li>
+                <li>CAN 分析仪</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 关于我 ========== -->
+    <section class="section" id="about" style="padding-bottom: var(--space-12);">
+      <div class="section__header animate-on-scroll">
+        <p class="section__kicker">About</p>
+        <h2 class="section__title">周子惟</h2>
+      </div>
+    </section>
+
+    <!-- 个人简介 -->
+    <section class="section" style="padding-top: 0;">
+      <div class="section__body animate-on-scroll">
+        <div class="about-intro">
+          <div class="about-intro__text">
+            <p class="about-intro__lead">
+              武汉科技大学 · 电子信息工程（荆楚卓越人才计划）· 大二在读
+            </p>
+            <p>
+              RoboMaster 战队电控组负责人，主导两款机器人的电控系统从零到完整落地。
+              从 STM32 底层驱动到顶层的 LQR/VMC 控制策略，享受全栈控制的成就感。
+              正在深入学习具身智能与 Sim-to-Real 方向，希望将控制理论应用于更广泛的机器人场景。
+            </p>
+          </div>
+          <div class="about-intro__photo">
+            <img src="/assets/images/白底证件照.jpg" alt="周子惟" style="aspect-ratio: 3 / 4; object-fit: cover; object-position: center 15%; border-radius: var(--radius-8); width: 100%;" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 教育背景 -->
+    <section class="section section--dark text-watermark">
+      <div class="section__header animate-on-scroll">
+        <p class="section__kicker">Education</p>
+        <h2 class="section__title">教育背景</h2>
+      </div>
+      <div class="section__body">
+        <div class="timeline-list animate-on-scroll stagger-2">
+
+          <div class="timeline-list__item">
+            <p class="timeline-list__date">2024.09 — 至今</p>
+            <h3 class="timeline-list__title">武汉科技大学 · 电子信息工程</h3>
+            <p class="timeline-list__desc">
+              荆楚卓越人才计划 — 本科在读（大二）。RoboMaster 战队电控组负责人。
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 荣誉奖项 -->
+    <section class="section">
+      <div class="section__header animate-on-scroll">
+        <p class="section__kicker">Honors & Awards</p>
+        <h2 class="section__title">荣誉奖项</h2>
+      </div>
+      <div class="section__body">
+        <div class="timeline-list animate-on-scroll stagger-2">
+
+          <div class="timeline-list__item">
+            <p class="timeline-list__date">2026</p>
+            <h3 class="timeline-list__title">RoboMaster 高校联盟赛 3v3 (安徽站) — 国家一等奖</h3>
+          </div>
+
+          <div class="timeline-list__item">
+            <p class="timeline-list__date">2026</p>
+            <h3 class="timeline-list__title">RoboMaster 超级对抗赛 (南部赛区) — 国家二等奖</h3>
+          </div>
+
+          <div class="timeline-list__item">
+            <p class="timeline-list__date">2026</p>
+            <h3 class="timeline-list__title">RoboMaster 高校步兵对抗赛 — 国家二等奖</h3>
+          </div>
+
+          <div class="timeline-list__item">
+            <p class="timeline-list__date">2025</p>
+            <h3 class="timeline-list__title">蓝桥杯嵌入式设计与开发 — 省级三等奖</h3>
+          </div>
+
+          <div class="timeline-list__item">
+            <p class="timeline-list__date">2025</p>
+            <h3 class="timeline-list__title">全国计算机等级考试二级 (C 语言)</h3>
+          </div>
+
+          <div class="timeline-list__item">
+            <p class="timeline-list__date">2025</p>
+            <h3 class="timeline-list__title">大学英语六级 (CET-6) 462分</h3>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 联系方式 -->
+    <section class="section section--dark text-watermark">
+      <div class="section__header animate-on-scroll">
+        <p class="section__kicker">Contact</p>
+        <h2 class="section__title">联系方式</h2>
+      </div>
+      <div class="section__body">
+        <div class="contact-list animate-on-scroll stagger-2">
+
+          <a href="https://github.com/Zhouzzw" target="_blank" rel="noopener" class="contact-item-big" style="text-decoration: none;">
+            <svg class="contact-item-big__icon" viewBox="0 0 24 24" fill="currentColor" style="color: var(--color-white);">
+              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+            </svg>
+            <div>
+              <p class="contact-item-big__label">GitHub</p>
+              <p class="contact-item-big__value">github.com/Zhouzzw</p>
+            </div>
+          </a>
+
+          <a href="tel:13035102279" class="contact-item-big" style="text-decoration: none;">
+            <svg class="contact-item-big__icon" viewBox="0 0 24 24" fill="currentColor" style="color: var(--color-white);">
+              <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.58.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z"/>
+            </svg>
+            <div>
+              <p class="contact-item-big__label">Phone</p>
+              <p class="contact-item-big__value">13035102279</p>
+            </div>
+          </a>
+
+          <a href="mailto:2661762781@qq.com" class="contact-item-big" style="text-decoration: none;">
+            <svg class="contact-item-big__icon" viewBox="0 0 24 24" fill="currentColor" style="color: var(--color-white);">
+              <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+            <div>
+              <p class="contact-item-big__label">Email</p>
+              <p class="contact-item-big__value">2661762781@qq.com</p>
+            </div>
+          </a>
+
+        </div>
       </div>
     </section>
 
@@ -326,7 +711,7 @@
     <div class="footer__grid">
       <div class="footer__cta">
         <p class="footer__cta-title">有想法一起做机器人？</p>
-        <a href="about.html" class="cta-split">
+        <a href="#about" class="cta-split">
           <span class="cta-split__left">联系我</span>
           <span class="cta-split__right" aria-hidden="true">→</span>
         </a>
@@ -334,10 +719,10 @@
 
       <nav class="footer__nav">
         <ul class="footer__col">
-          <li><a href="index.html">首页</a></li>
-          <li><a href="projects.html">项目</a></li>
-          <li><a href="techstack.html">技术栈</a></li>
-          <li><a href="about.html">关于</a></li>
+          <li><a href="#hero">首页</a></li>
+          <li><a href="#projects">项目</a></li>
+          <li><a href="#techstack">技术栈</a></li>
+          <li><a href="#about">关于</a></li>
         </ul>
         <ul class="footer__col">
           <li><a href="https://github.com/Zhouzzw" target="_blank" rel="noopener">GitHub</a></li>

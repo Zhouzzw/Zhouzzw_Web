@@ -5,12 +5,7 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     rollupOptions: {
-      input: {
-        main: 'index.html',
-        projects: 'projects.html',
-        techstack: 'techstack.html',
-        about: 'about.html',
-      },
+      input: 'index.html',
     },
   },
 });
