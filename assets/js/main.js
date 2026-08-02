@@ -154,11 +154,8 @@ function initTechFilter() {
 
       const categories = document.querySelectorAll('.tech-cat');
       categories.forEach(cat => {
-        if (filter === 'all' || cat.dataset.category === filter) {
-          cat.style.display = '';
-        } else {
-          cat.style.display = 'none';
-        }
+        const match = filter === 'all' || cat.dataset.category === filter;
+        cat.classList.toggle('is-dimmed', !match);
       });
     });
   });

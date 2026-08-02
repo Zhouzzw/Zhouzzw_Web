@@ -448,144 +448,114 @@
           <button class="tech-filter__btn" data-filter="lang">编程语言</button>
         </div>
 
-        <!-- 技术分类列表 -->
-        <div class="tech-stack">
+        <!-- 技术分类列表：芯片框图 -->
+        <div class="chip-board">
+          <div class="chip-board__header">
+            <span class="chip-board__title">TECH STACK</span>
+            <span class="chip-board__sub">STM32G4 · FreeRTOS · CAN · LQR</span>
+              </div>
+              <div class="chip-board__grid">
 
-          <!-- 001 单片机开发 -->
-          <div class="tech-cat animate-on-scroll" data-category="mcu">
-            <div class="tech-cat__num">
-              <span class="mono-label mono-label--dark">001</span>
-            </div>
-            <div class="tech-cat__body">
-              <h3 class="tech-cat__title">单片机开发</h3>
-              <ul class="tech-cat__list">
-                <li>STM32 系列 (F4 / G4)</li>
-                <li>ESP32</li>
-                <li>MSP-M0</li>
-                <li>FreeRTOS 实时操作系统</li>
-                <li>多任务调度架构设计</li>
-              </ul>
-            </div>
-          </div>
+                <div class="tech-cat" data-category="mcu">
+                  <div class="tech-cat__head">
+                    <span class="tech-cat__label">MCU CORE</span>
+                    <span class="mono-label mono-label--dark">001</span>
+                  </div>
+                  <h3 class="tech-cat__title">单片机开发</h3>
+                  <ul class="tech-cat__list">
+                    <li>STM32 系列 (F4 / G4)</li>
+                    <li>ESP32</li>
+                    <li>MSP-M0</li>
+                    <li>FreeRTOS 实时操作系统</li>
+                    <li>多任务调度架构设计</li>
+                  </ul>
+                </div>
 
-          <!-- 002 外设与通信 -->
-          <div class="tech-cat animate-on-scroll stagger-2" data-category="mcu">
-            <div class="tech-cat__num">
-              <span class="mono-label mono-label--dark">002</span>
-            </div>
-            <div class="tech-cat__body">
-              <h3 class="tech-cat__title">外设与通信</h3>
-              <ul class="tech-cat__list">
-                <li>UART</li>
-                <li>IIC</li>
-                <li>SPI</li>
-                <li>CAN 总线</li>
-                <li>整车通信网络设计</li>
-              </ul>
-            </div>
-          </div>
+                <div class="tech-cat" data-category="mcu">
+                  <div class="tech-cat__head">
+                    <span class="tech-cat__label">PERIPHERAL BUS</span>
+                    <span class="mono-label mono-label--dark">002</span>
+                  </div>
+                  <h3 class="tech-cat__title">外设与通信</h3>
+                  <ul class="tech-cat__list">
+                    <li>UART</li>
+                    <li>IIC</li>
+                    <li>SPI</li>
+                    <li>CAN 总线</li>
+                    <li>整车通信网络设计</li>
+                  </ul>
+                </div>
 
-          <!-- 003 控制算法 -->
-          <div class="tech-cat animate-on-scroll stagger-3" data-category="control">
-            <div class="tech-cat__num">
-              <span class="mono-label mono-label--dark">003</span>
-            </div>
-            <div class="tech-cat__body">
-              <h3 class="tech-cat__title">控制算法</h3>
-              <ul class="tech-cat__list">
-                <li>双环 PID</li>
-                <li>前馈 PID</li>
-                <li>LQR 最优控制</li>
-                <li>VMC 虚拟模型控制</li>
-                <li>MPC 模型预测控制</li>
-                <li>卡尔曼滤波</li>
-              </ul>
-            </div>
-          </div>
+                <div class="tech-cat" data-category="control">
+                  <div class="tech-cat__head">
+                    <span class="tech-cat__label">CONTROL ENGINE</span>
+                    <span class="mono-label mono-label--dark">003</span>
+                  </div>
+                  <h3 class="tech-cat__title">控制算法</h3>
+                  <ul class="tech-cat__list">
+                    <li>双环 PID</li>
+                    <li>前馈 PID</li>
+                    <li>LQR 最优控制</li>
+                    <li>VMC 虚拟模型控制</li>
+                    <li>MPC 模型预测控制</li>
+                    <li>卡尔曼滤波</li>
+                  </ul>
+                </div>
 
-          <!-- 004 仿真与建模 -->
-          <div class="tech-cat animate-on-scroll stagger-4" data-category="sim">
-            <div class="tech-cat__num">
-              <span class="mono-label mono-label--dark">004</span>
-            </div>
-            <div class="tech-cat__body">
-              <h3 class="tech-cat__title">仿真与建模</h3>
-              <ul class="tech-cat__list">
-                <li>MATLAB / Simulink</li>
-                <li>机器人运动建模</li>
-                <li>动力学建模</li>
-                <li>算法仿真验证</li>
-                <li>数据拟合与分析</li>
-              </ul>
-            </div>
-          </div>
+                <div class="tech-cat" data-category="sim">
+                  <div class="tech-cat__head">
+                    <span class="tech-cat__label">SIMULATION</span>
+                    <span class="mono-label mono-label--dark">004</span>
+                  </div>
+                  <h3 class="tech-cat__title">仿真与建模</h3>
+                  <ul class="tech-cat__list">
+                    <li>MATLAB / Simulink</li>
+                    <li>机器人运动建模</li>
+                    <li>动力学建模</li>
+                    <li>算法仿真验证</li>
+                    <li>数据拟合与分析</li>
+                  </ul>
+                </div>
 
-          <!-- 005 编程语言 -->
-          <div class="tech-cat animate-on-scroll" data-category="lang">
-            <div class="tech-cat__num">
-              <span class="mono-label mono-label--dark">005</span>
-            </div>
-            <div class="tech-cat__body">
-              <h3 class="tech-cat__title">编程语言</h3>
-              <ul class="tech-cat__list">
-                <li>C</li>
-                <li>C++</li>
-                <li>Python</li>
-              </ul>
-            </div>
-          </div>
+                <div class="tech-cat" data-category="lang">
+                  <div class="tech-cat__head">
+                    <span class="tech-cat__label">LANGUAGES</span>
+                    <span class="mono-label mono-label--dark">005</span>
+                  </div>
+                  <h3 class="tech-cat__title">编程语言</h3>
+                  <ul class="tech-cat__list">
+                    <li>C</li>
+                    <li>C++</li>
+                    <li>Python</li>
+                  </ul>
+                </div>
 
-          <!-- 006 工具链与调试 -->
-          <div class="tech-cat animate-on-scroll stagger-2" data-category="mcu">
-            <div class="tech-cat__num">
-              <span class="mono-label mono-label--dark">006</span>
-            </div>
-            <div class="tech-cat__body">
-              <h3 class="tech-cat__title">工具链与调试</h3>
-              <ul class="tech-cat__list">
-                <li>Keil / STM32CubeIDE</li>
-                <li>JLink / ST-Link</li>
-                <li>逻辑分析仪 / 示波器</li>
-                <li>CAN 分析仪</li>
-              </ul>
-            </div>
-          </div>
+                <div class="tech-cat" data-category="mcu">
+                  <div class="tech-cat__head">
+                    <span class="tech-cat__label">TOOLS &amp; DEBUG</span>
+                    <span class="mono-label mono-label--dark">006</span>
+                  </div>
+                  <h3 class="tech-cat__title">工具链与调试</h3>
+                  <ul class="tech-cat__list">
+                    <li>Keil / STM32CubeIDE</li>
+                    <li>JLink / ST-Link</li>
+                    <li>逻辑分析仪 / 示波器</li>
+                    <li>CAN 分析仪</li>
+                  </ul>
+                </div>
 
+              </div>
+              <div class="chip-board__pins" aria-hidden="true">
+                <span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span>
+              </div>
+            </div>
         </div>
       </div>
     </section>
 
     <!-- ========== 关于我 ========== -->
-    <section class="section" id="about" style="padding-bottom: var(--space-12);">
-      <div class="section__header animate-on-scroll">
-        <p class="section__kicker">About</p>
-        <h2 class="section__title">周子惟</h2>
-      </div>
-    </section>
-
-    <!-- 个人简介 -->
-    <section class="section" style="padding-top: 0;">
-      <div class="section__body animate-on-scroll">
-        <div class="about-intro">
-          <div class="about-intro__text">
-            <p class="about-intro__lead">
-              武汉科技大学 · 电子信息工程（荆楚卓越人才计划）· 大二在读
-            </p>
-            <p>
-              从 RoboMaster 赛场走出来的电控工程师，多款机器人从零到落地、从硬件到算法全程亲历，
-              沉淀下的是从仿真到实车的完整闭环经验。
-              当前正深入学习具身智能与 Sim-to-Real 方向，希望把控制理论带到更广阔的机器人场景。
-            </p>
-          </div>
-          <div class="about-intro__photo">
-            <img src="/assets/images/白底证件照.jpg" alt="周子惟" style="aspect-ratio: 3 / 4; object-fit: cover; object-position: center 15%; border-radius: var(--radius-8); width: 100%;" />
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 教育背景 -->
-    <section class="section section--dark text-watermark">
+    <section class="section section--dark text-watermark" id="about">
       <div class="section__header animate-on-scroll">
         <p class="section__kicker">Education</p>
         <h2 class="section__title">教育背景</h2>
@@ -642,6 +612,53 @@
           <div class="timeline-list__item">
             <p class="timeline-list__date">2025</p>
             <h3 class="timeline-list__title">大学英语六级 (CET-6) 462分</h3>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 生活侧写 -->
+    <section class="section section--dark text-watermark">
+      <div class="section__header animate-on-scroll">
+        <p class="section__kicker">Beyond the Lab</p>
+        <h2 class="section__title">工作之外的我</h2>
+      </div>
+      <div class="section__body">
+        <div class="life-grid">
+
+          <!-- 终端档案 -->
+          <div class="life-terminal">
+            <div class="term-board">
+              <div class="term-board__bar">
+                <span class="term-board__dot"></span>
+                <span class="term-board__dot"></span>
+                <span class="term-board__dot"></span>
+                <span class="term-board__title">life.txt</span>
+              </div>
+              <pre class="term-board__body"><code><span class="tok-c"># 工作之外 · 生活侧写</span>
+<span class="tok-f">$ cat personality.txt</span>
+[待补充：自我评价关键词]
+
+<span class="tok-f">$ cat hobbies.txt</span>
+[待补充：个人爱好]
+
+<span class="tok-f">$ cat motto.txt</span>
+[待补充：一句话生活态度]</code></pre>
+            </div>
+          </div>
+
+          <!-- 生活照片墙 -->
+          <div class="life-gallery">
+            <figure class="life-gallery__item life-gallery__item--wide">
+              <div class="life-gallery__placeholder">照片待补充</div>
+            </figure>
+            <figure class="life-gallery__item">
+              <div class="life-gallery__placeholder">照片待补充</div>
+            </figure>
+            <figure class="life-gallery__item">
+              <div class="life-gallery__placeholder">照片待补充</div>
+            </figure>
           </div>
 
         </div>

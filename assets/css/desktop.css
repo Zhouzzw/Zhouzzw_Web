@@ -761,38 +761,222 @@
   font-family: var(--font-mono);
 }
 
-/* --- 关于页 个人简介布局 --- */
-.about-intro {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-10);
-  align-items: start;
+/* --- 技术栈呈现：芯片框图 --- */
+.chip-board {
+  border: 2px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-8);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 24px;
 }
 
-@media (min-width: 1024px) {
-  .about-intro {
-    grid-template-columns: 2fr 1fr;
-    gap: var(--space-16);
+.chip-board__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.chip-board__title {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.25em;
+  color: var(--color-white);
+}
+
+.chip-board__sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--color-ghost-grey);
+}
+
+.chip-board__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding-top: 16px;
+}
+
+@media (min-width: 768px) {
+  .chip-board__grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-.about-intro__text {
-  display: flex;
+@media (min-width: 1280px) {
+  .chip-board__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* 芯片内模块（覆盖通用 tech-cat 为纵向卡片） */
+.chip-board .tech-cat {
   flex-direction: column;
-  gap: var(--space-6);
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  transition: opacity var(--duration-base) var(--ease-out),
+              border-color var(--duration-base) var(--ease-out);
 }
 
-.about-intro__lead {
+.chip-board .tech-cat:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.chip-board .tech-cat.is-dimmed {
+  opacity: 0.2;
+}
+
+.chip-board .tech-cat__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chip-board .tech-cat__label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.chip-board .tech-cat__title {
   font-size: var(--text-h3);
-  color: var(--color-text);
-  font-weight: var(--weight-medium);
-  line-height: 1.4;
-  max-width: 30ch;
+  margin: 2px 0 10px;
 }
 
-.about-intro__photo img {
-  width: 100%;
+.chip-board .tech-cat__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip-board .tech-cat__list li {
+  padding: 3px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  font-size: var(--text-mono-small);
+  color: var(--color-ghost-grey);
+  padding-left: 10px;
+  line-height: 1.5;
+}
+
+.chip-board .tech-cat__list li::before {
+  content: none;
+}
+
+/* 芯片引脚 */
+.chip-board__pins {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  padding: 14px 8px 0;
+}
+
+.chip-board__pins span {
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+}
+
+/* --- 终端呈现窗口 --- */
+.term-board {
+  border: 1px solid var(--color-border-dark);
   border-radius: var(--radius-8);
+  background: #0A0A0A;
+  overflow: hidden;
+  box-shadow: var(--shadow-dark);
+}
+
+.term-board__bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: #141414;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.term-board__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.term-board__dot:nth-child(1) { background: #FF5F57; }
+.term-board__dot:nth-child(2) { background: #FEBC2E; }
+.term-board__dot:nth-child(3) { background: #28C840; }
+
+.term-board__title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-left: 8px;
+  letter-spacing: 0.04em;
+}
+
+.term-board__body {
+  margin: 0;
+  padding: 16px 20px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: var(--color-tok-default);
+  overflow-x: auto;
+}
+
+.term-board__body .tok-f {
+  color: var(--color-tok-function);
+}
+
+/* --- 生活侧写：终端档案 + 照片墙 --- */
+.life-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-12);
+}
+
+@media (min-width: 1024px) {
+  .life-grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+.life-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.life-gallery__item {
+  margin: 0;
+}
+
+.life-gallery__item--wide {
+  grid-column: span 2;
+}
+
+.life-gallery__placeholder {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius-8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: var(--text-mono-small);
+  color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 /* --- 时间线列表 — 极简大号日期 + 标题 --- */
@@ -805,8 +989,8 @@
 .timeline-list__item {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-  padding: var(--space-8) 0;
+  gap: var(--space-2);
+  padding: 28px 0;
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -826,8 +1010,8 @@
 @media (min-width: 1024px) {
   .timeline-list__item {
     flex-direction: row;
-    gap: var(--space-10);
-    padding: var(--space-10) 0;
+    gap: var(--space-8);
+    padding: 32px 0;
   }
 }
 
@@ -847,7 +1031,7 @@
 }
 
 .timeline-list__title {
-  font-size: var(--text-h2);
+  font-size: clamp(1.25rem, 2.1vw, 1.625rem);
   font-weight: var(--weight-medium);
   color: var(--color-text);
   letter-spacing: -0.01em;
