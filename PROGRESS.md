@@ -2,9 +2,10 @@
 
 ## 当前状态
 
-**阶段**: v2.3 视觉丰富迭代中
+**阶段**: v2.4 已上线（GitHub Pages 自动部署）
 **分支**: `v2`
-**最后更新**: 2026-08-02
+**线上地址**: https://zhouzzw.github.io/Zhouzzw_Web/
+**最后更新**: 2026-09-10
 
 ---
 
@@ -42,10 +43,19 @@
 - [x] 深色 section 背景水印
 - [x] 页脚 ASCII 艺术字 + 双列 grid
 
-### v2.3 视觉丰富（进行中）
+### v2.3 视觉丰富（已完成）
 - [x] **开发工具箱** — 芯片框图下方新增图标墙，8 个官方品牌图标（MATLAB / Python / VS Code / Visual Studio / Git / GitHub / Linux / Raspberry Pi），devicon CDN
 - [x] `char-matrix.js` — Canvas 动态字符矩阵背景（备用，未接入页面）
-- [x] 新增生活照素材 2 张（`生活照1.jpg` / `生活照2.jpg`，未接入页面）
+- [x] 生活照 2 张接入生活侧写（左列终端下方竖版排列，左右等高对齐）
+
+### v2.4 部署上线（2026-09-10）
+- [x] **GitHub Actions 自动部署** — `.github/workflows/deploy.yml`，push 到 `v2` 即自动构建并发布到 Pages，无需手动跑部署命令
+- [x] **适配 Pages 子路径** — `vite.config.js` 加 `base: '/Zhouzzw_Web/'`；少了这个，所有 `/assets/...` 在项目站点下都会 404
+- [x] **修复视频弹窗路径 bug** — 原先读 `data-video-src`，但 Vite 会重写 `<video src>` 却不会碰自定义 data 属性，构建后弹窗必然指向不存在的文件；改为读内部 `<video>` 已重写好的 `src`
+- [x] **媒体压缩** — 视频 322MB→16MB（4K60 HEVC 转 1080p H.264 CRF 26），图片 58MB→3.8MB（长边 ≤1920 + `-q:v 3`）；`dist` 从 378MB 降到 20MB
+- [x] 压缩质量用 SSIM/PSNR 对照近无损上限验证，确认损失可忽略
+- [x] 视频纳入版本控制（体积已可入库，且 Actions 构建需要这些文件）
+- [x] **线上生效** — https://zhouzzw.github.io/Zhouzzw_Web/ 及全部 14 个资源均返回 200
 
 ### 交互功能
 - [x] 导航栏滚动缩放（`.nav--scrolled`）
@@ -63,7 +73,7 @@
 - [x] RoboMaster 项目详情 + 荣誉奖项
 - [x] 个人证件照 + 比赛照片
 - [x] 3 个演示视频嵌入
-- [x] 视频文件加入 `.gitignore`
+- [x] 视频文件一度加入 `.gitignore`（v2.4 压到 16MB 后改为入库，因为 Actions 构建需要）
 - [x] 生活照素材（徒步×2 / 攀岩 / 骑行 / 生活照×2）
 
 ### CSS 架构
@@ -76,13 +86,12 @@
 ## 待完成
 
 ### 高优先级
-- [ ] **图片压缩** — 项目照片较大，需转 WebP/压缩
-- [ ] **部署** — GitHub Pages / Vercel
+- [ ] 无 —— 原有的「图片压缩」与「部署」已在 v2.4 完成
 
 ### 中优先级
 - [ ] char-matrix.js 接入技术栈区（替换静态 text-watermark）
-- [ ] 生活侧写补充新照片（已有 2 张新素材）
 - [ ] 全向轮步兵项目添加演示视频
+- [ ] 「旋转跳跃演示」视频是竖版（2160×3840），但封面容器是 16/9 + `object-fit: cover`，被裁成中间一条横带；考虑给它单独换竖版容器
 - [ ] SEO meta 标签优化
 
 ### 低优先级
@@ -127,24 +136,34 @@ d:/DSEKTOP/个人网页/
 │   │   ├── main.js               # scrollspy + 视频弹窗 + 筛选
 │   │   ├── animations.js         # IntersectionObserver（已禁用入场）
 │   │   └── char-matrix.js        # Canvas 字符矩阵（备用）
-│   ├── images/                   # 证件照 / 比赛照 / 项目照 / 生活照
-│   └── videos/                   # 3 个演示视频（git ignored）
-└── dist/                         # 构建输出
+│   ├── images/                   # 证件照 / 比赛照 / 项目照 / 生活照（长边 ≤1920 压缩）
+│   └── videos/                   # 3 个演示视频，1080p H.264，共 16MB（已入库）
+├── .github/
+│   └── workflows/deploy.yml      # push 到 v2 自动构建 + 部署到 Pages
+└── dist/                         # 构建输出（git ignored）
 ```
 
 ---
 
 ## Git 提交历史
 
+> ⚠️ 2026-09-10 为清除超限视频做过一次 `git filter-repo` 历史重写（`assets/videos/` 从全部历史中剥离），**所有提交的 SHA 都已改变**，之前文档里记录的旧 SHA 不再有效。
+
 ```
-a4d528e feat: 关于页生活侧写完善 + 项目/联系方式细节调整
-13dffda feat: 技术栈芯片框图 + 关于页生活侧写
-c43057a feat: impeccable 优化 — 产品上下文 + 内容表达力打磨
-51144a6 docs: 同步 CLAUDE.md/PROGRESS.md 到当前状态 + 禁用滚动入场动画
-2744af3 docs: 更新 PROGRESS.md，同步单页化改造进度
-65b2404 v2.2: 单页化改造 — 四页合并为长滚动单页 + scrollspy 导航
-94ff45a v2.1: 项目页背景统一水泥灰 + 首页细节调整
-a24b1aa v2.1: 首页分屏升级 — 水泥灰背景 + 16 圈螺旋文字
-bf2c5a4 v2: 全站视觉迭代，对齐 contentarchitecture.dev 设计语言
-87f0c74 init: 个人网站初版
+c0ba964 ci: configure-pages 开启 enablement，首次部署免手动开 Pages
+5b0733d feat: 部署上线 — GitHub Pages 构建配置 + 自动部署 workflow
+e04a321 feat: 生活侧写新增 2 张生活照（左列终端下方竖版排列，左右等高对齐）
+7660e2e feat: 技术栈新增开发工具箱（8 个官方品牌图标） + char-matrix 备用 + 生活照素材入库
+0f93efc feat: 关于页生活侧写完善 + 项目/联系方式细节调整
+dbe6c69 feat: 技术栈芯片框图 + 关于页生活侧写
+161b6bb feat: impeccable 优化 — 产品上下文 + 内容表达力打磨
+70ac067 docs: 同步 CLAUDE.md/PROGRESS.md 到当前状态 + 禁用滚动入场动画
+ad72010 docs: 更新 PROGRESS.md，同步单页化改造进度
+d393ede v2.2: 单页化改造 — 四页合并为长滚动单页 + scrollspy 导航
+65f7c50 v2.1: 项目页背景统一水泥灰 + 首页细节调整
+d7870c6 v2.1: 首页分屏升级 — 水泥灰背景 + 16 圈螺旋文字复刻参考图
+19be405 docs: 更新 PROGRESS.md，同步 v2.1 当前进度
+a929a6f v2.1: 视觉增强迭代 — 导航药丸化 + 环形文字 + 芯片卡片 + IDE 窗口 + 页脚升级
+d6fa4e5 v2: 全站视觉迭代，对齐 contentarchitecture.dev 设计语言
+f3283f2 docs: 更新 PROGRESS.md，同步当前进度
 ```

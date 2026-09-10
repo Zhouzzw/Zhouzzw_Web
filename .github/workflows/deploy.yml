@@ -3,6 +3,10 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [v2]
+    paths-ignore:
+      # 纯文档改动不影响站点，没必要重新部署
+      - '**.md'
+      - '.gitignore'
   workflow_dispatch:
 
 permissions:
