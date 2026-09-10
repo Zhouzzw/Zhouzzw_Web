@@ -101,7 +101,10 @@ function initVideoModal() {
 
   covers.forEach(cover => {
     cover.addEventListener('click', () => {
-      const src = cover.dataset.videoSrc;
+      // 本地视频从内部 <video> 读 src —— Vite 构建时已重写过这个属性（含 hash 和 base），
+      // data-video-src 只用于外链封面
+      const inlineVideo = cover.querySelector('video');
+      const src = inlineVideo?.getAttribute('src') || cover.dataset.videoSrc;
       const type = cover.dataset.videoType || 'youtube';
 
       if (type === 'youtube') {
