@@ -917,14 +917,14 @@
 
 .tools-shelf__grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 18px 12px;
   justify-items: center;
 }
 
 @media (min-width: 768px) {
   .tools-shelf__grid {
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(9, 1fr);
     gap: 20px 10px;
   }
 }
