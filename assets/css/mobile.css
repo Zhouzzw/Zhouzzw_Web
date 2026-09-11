@@ -213,12 +213,6 @@
   .video-grid {
     grid-template-columns: 1fr;
   }
-
-  /* 竖版视频封面单列时限宽居中，避免 9:16 占满整屏高 */
-  .video-grid--mixed .video-cover--portrait {
-    width: min(280px, 70%);
-    justify-self: center;
-  }
 }
 
 /* 更小屏幕优化 (<480px) */

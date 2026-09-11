@@ -110,10 +110,6 @@ function initVideoModal() {
       const src = inlineVideo?.getAttribute('src') || cover.dataset.videoSrc;
       const type = cover.dataset.videoType || 'youtube';
 
-      // 竖版封面弹窗换 9:16 容器，避免 16/9 容器上下裁切
-      const inner = modal.querySelector('.video-modal__inner');
-      inner.classList.toggle('video-modal__inner--portrait', cover.classList.contains('video-cover--portrait'));
-
       if (type === 'youtube') {
         content.innerHTML = `
           <iframe

@@ -9,13 +9,13 @@
 
 | 日期 | 主题 | 摘要 | 状态 |
 |------|------|------|------|
-| 09-11 | P2 清一轮：竖版视频 + 字符矩阵 + SEO | 竖版视频容器自适应、char-matrix 接入技术栈区、SEO meta/OG/JSON-LD、CLAUDE 路径修正 | ✅ 完成 |
+| 09-11 | P2 清一轮：字符矩阵 + SEO（竖版修复被否决退回） | char-matrix 接入技术栈区、SEO meta/OG/JSON-LD、CLAUDE 路径修正；竖版视频适配经预览后退回原样 | ✅ 完成 |
 | 09-11 | G1-D 工业项目区 + 实习模块落地 | 工业项目区 003/004、实习骨架、技术栈 6→8 分类、全站方向偏移为嵌软+ROS 全栈 | ✅ 完成 |
 | 09-11 | 文档体系 v2 主线化 + TODO 建立 | 建 TODO.md、v3 降为风格实验分支、PROGRESS 快照化、设计令牌迁 CLAUDE | ✅ 完成 |
 
 ## 🏷️ 2026-09-11 · P2 清一轮：竖版视频裁切修复 + char-matrix 接入 + SEO meta
 
-**结论**：TODO 中四项可自主完成的待办一次清掉（竖版视频 [!] 修复、char-matrix 接入、SEO meta、CLAUDE 记忆路径）。视觉验证通过。实习内容与分支合并仍待用户。
+**结论**：TODO 四项中三项落地（char-matrix 接入、SEO meta、CLAUDE 记忆路径）；竖版视频修复经用户预览后被否决退回，原样保留。实习内容与分支合并仍待用户。
 
 | 维度 | 状态 |
 |------|------|
@@ -27,7 +27,7 @@
 
 | 项 | 位置 | 说明 |
 |----|------|------|
-| 竖版视频裁切修复 | `index.html` + `desktop.css` + `mobile.css` + `main.js` | 实测源视频 1080×1920。「旋转跳跃演示」封面加 `video-cover--portrait`（9:16）；三封面布局改「两横版并排 + 竖版下方居中限宽 280px」；视频尺寸从 HTML 内联样式迁到 CSS（`.video-cover video`）；弹窗加 `video-modal__inner--portrait`（9:16 + 85vh 限高），JS 按封面类名切换 |
+| ~~竖版视频裁切修复~~ → 已退回 | `index.html` + CSS + JS | 用户预览后决定保留原 16:9 三列并列展示，竖版适配代码全部移除（见「决策」与 TODO [-] 条目） |
 | char-matrix 接入 | `index.html` + `style.css` + `main.js` | 技术分类深色 section 换 `char-matrix-section` + `<canvas id="charMatrix">`，替代静态 SVG 水印；`main.js` 顶部 `import './char-matrix.js'`（该模块导入即自初始化，勿重复调用） |
 | SEO meta | `index.html` `<head>` | description/keywords/author/canonical + Open Graph 7 项 + Twitter Card + Person JSON-LD；OG 图用比赛人物照 |
 | CLAUDE 路径修正 | `CLAUDE.md` | 记忆路径 `D:\...`（Windows 残留）→ `/home/qskj-2/.zcode/cli/memories/projects/personal_web-4ea9280a70183293/memory/` |
@@ -37,8 +37,8 @@
 
 | 决策 | 结论 | 沉淀 |
 |------|------|------|
-| 竖版封面布局 | 不让竖版挤 3 列等宽网格，改「2 横版一行 + 竖版换行居中」，竖版宽度 `min(280px, 55%)`（移动端 70%） | 本次生效 |
-| 弹窗适配方式 | JS 读封面 `video-cover--portrait` 类切换弹窗容器类，而非按视频元数据探测——构建期确定、零运行时开销 | 本次生效 |
+| 竖版封面布局 | ~~不让竖版挤 3 列等宽网格~~ → **用户预览后退回**：三视频恢复 16:9 三列并列原样（含弹窗 16:9），接受竖版裁切 | ✅ 用户拍板，TODO 记 [-] |
+| 弹窗适配方式 | JS 读封面类切换弹窗容器类（已随退回移除）；若未来再做，此思路仍可用 | 留档 |
 | char-matrix 接入方式 | 导入即用（模块自带 DOMContentLoaded 自初始化），不显式调用 `initCharMatrix()` 防双实例双 rAF | 本次生效 |
 
 ### 🔴 坑（勿重踩）
