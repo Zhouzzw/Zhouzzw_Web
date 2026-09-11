@@ -407,24 +407,6 @@ section[id] {
   height: 100%;
 }
 
-/* 使用字符矩阵背景的 section：替代 text-watermark（静态 SVG 水印） */
-.char-matrix-section {
-  position: relative;
-  overflow: hidden;
-}
-
-.char-matrix-section > * {
-  position: relative;
-  z-index: 1;
-}
-
-.char-matrix-section .char-matrix-bg {
-  position: absolute; /* 覆盖上面 > * 的 relative，背景层必须绝对定位贴满 section */
-  z-index: 0;
-}
-
-/* reduced-motion 或无 JS：canvas 保持空白，可读性不受影响 */
-
 /* --- 双药丸 CTA 按钮 --- */
 .cta-split {
   display: inline-flex;
