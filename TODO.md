@@ -1,7 +1,7 @@
 # 个人网页项目 TODO
 
 文档维护人：agent
-最后更新时间：2026-09-11（v2 主线化：移除全部 v3 条目）
+最后更新时间：2026-09-11（全面同步：v2 主线化 + P1 提升 + PROGRESS 快照化，迁移条目完成）
 范围：项目级 TODO，汇总 **v2 主线**未决事项与已知风险。会话过程记录见 PROGRESS.md。
 > 分支定位：`v2` 为开发主线（当前线上）。`v3-rig-style` 分支是 rig.ai 红黑风格实验，仅供查看不同风格效果参考，**不作为开发主线，不排期**。
 
@@ -57,9 +57,6 @@
 
 - [ ] 全局图片升级 `<picture>` + WebP + fallback
   处理：图片换 picture 标签 + WebP，保留 JPG fallback
-- [ ] PROGRESS.md 迁移到 progress skill 快照格式
-  影响：当前为旧式长文档（无快照索引）
-  处理：按 progress skill 重构（索引 + ≤3 快照），旧内容归档 docs/archive/
 - [ ] CLAUDE.md 记忆路径与当前环境不符
   影响：文档指向 `D:\...`（Windows），实际环境为 `/home/qskj-2/...`
   处理：改指实际记忆路径
