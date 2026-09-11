@@ -628,6 +628,19 @@
   }
 }
 
+/* 混排网格：横版视频并排一行，竖版视频换行居中（避免 9:16 被 16/9 容器裁成横带） */
+@media (min-width: 768px) {
+  .video-grid--mixed {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .video-grid--mixed .video-cover--portrait {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: min(280px, 55%);
+  }
+}
+
 .video-cover__label {
   font-family: var(--font-mono);
   font-size: var(--text-mono-small);
@@ -1213,6 +1226,14 @@
   aspect-ratio: 16 / 9;
 }
 
+/* 竖版视频：弹窗换 9:16 容器并限制高度不超出视口 */
+.video-modal__inner--portrait {
+  max-width: none;
+  height: min(85vh, 1600px);
+  width: auto;
+  aspect-ratio: 9 / 16;
+}
+
 .video-modal__inner iframe,
 .video-modal__inner video {
   width: 100%;
@@ -1248,6 +1269,19 @@
 .video-cover img {
   width: 100%;
   aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.video-cover video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.video-cover--portrait video {
+  aspect-ratio: 9 / 16;
   object-fit: cover;
 }
 

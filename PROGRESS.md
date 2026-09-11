@@ -9,8 +9,59 @@
 
 | 日期 | 主题 | 摘要 | 状态 |
 |------|------|------|------|
+| 09-11 | P2 清一轮：竖版视频 + 字符矩阵 + SEO | 竖版视频容器自适应、char-matrix 接入技术栈区、SEO meta/OG/JSON-LD、CLAUDE 路径修正 | ✅ 完成 |
 | 09-11 | G1-D 工业项目区 + 实习模块落地 | 工业项目区 003/004、实习骨架、技术栈 6→8 分类、全站方向偏移为嵌软+ROS 全栈 | ✅ 完成 |
 | 09-11 | 文档体系 v2 主线化 + TODO 建立 | 建 TODO.md、v3 降为风格实验分支、PROGRESS 快照化、设计令牌迁 CLAUDE | ✅ 完成 |
+
+## 🏷️ 2026-09-11 · P2 清一轮：竖版视频裁切修复 + char-matrix 接入 + SEO meta
+
+**结论**：TODO 中四项可自主完成的待办一次清掉（竖版视频 [!] 修复、char-matrix 接入、SEO meta、CLAUDE 记忆路径）。视觉验证通过。实习内容与分支合并仍待用户。
+
+| 维度 | 状态 |
+|------|------|
+| 主线 | ✅ 完成 代码改动 — 仍在分支 `feature/g1d-industry-and-resume`，未合并、未推送 |
+| commit | 本快照对应最后一个 feat 提交（见 git log） |
+| 遗留 | 🟡 实习内容待补 · 工业卡片素材待补 · 分支待合并（需用户确认） |
+
+### ✅ 完成（Δ 自 G1-D 工业项目区落地）
+
+| 项 | 位置 | 说明 |
+|----|------|------|
+| 竖版视频裁切修复 | `index.html` + `desktop.css` + `mobile.css` + `main.js` | 实测源视频 1080×1920。「旋转跳跃演示」封面加 `video-cover--portrait`（9:16）；三封面布局改「两横版并排 + 竖版下方居中限宽 280px」；视频尺寸从 HTML 内联样式迁到 CSS（`.video-cover video`）；弹窗加 `video-modal__inner--portrait`（9:16 + 85vh 限高），JS 按封面类名切换 |
+| char-matrix 接入 | `index.html` + `style.css` + `main.js` | 技术分类深色 section 换 `char-matrix-section` + `<canvas id="charMatrix">`，替代静态 SVG 水印；`main.js` 顶部 `import './char-matrix.js'`（该模块导入即自初始化，勿重复调用） |
+| SEO meta | `index.html` `<head>` | description/keywords/author/canonical + Open Graph 7 项 + Twitter Card + Person JSON-LD；OG 图用比赛人物照 |
+| CLAUDE 路径修正 | `CLAUDE.md` | 记忆路径 `D:\...`（Windows 残留）→ `/home/qskj-2/.zcode/cli/memories/projects/personal_web-4ea9280a70183293/memory/` |
+| TODO 对账 | `TODO.md` | 已完成四条移除；剩余 P1 实习内容、P2 素材两类 |
+
+### 🧭 决策
+
+| 决策 | 结论 | 沉淀 |
+|------|------|------|
+| 竖版封面布局 | 不让竖版挤 3 列等宽网格，改「2 横版一行 + 竖版换行居中」，竖版宽度 `min(280px, 55%)`（移动端 70%） | 本次生效 |
+| 弹窗适配方式 | JS 读封面 `video-cover--portrait` 类切换弹窗容器类，而非按视频元数据探测——构建期确定、零运行时开销 | 本次生效 |
+| char-matrix 接入方式 | 导入即用（模块自带 DOMContentLoaded 自初始化），不显式调用 `initCharMatrix()` 防双实例双 rAF | 本次生效 |
+
+### 🔴 坑（勿重踩）
+
+| 现象 | 根因 | 解决 | tag |
+|------|------|------|-----|
+| 字符矩阵 canvas 只画满 section 顶部 ~640px，下方全空 | `.char-matrix-section > *`（`position: relative`）与 `.char-matrix-bg`（`position: absolute`）同为 (0,1,0) 特异性，声明在后把背景层打回文档流，`inset: 0` 失效 | 加 `.char-matrix-section .char-matrix-bg { position: absolute; z-index: 0; }`（0,2,0）压回 | #tag: css |
+| 无头 Chrome `--virtual-time-budget` 下截图时序不确定：同页面 8s/15s/30s 三次截图 canvas 覆盖范围不一致 | 虚拟时间会加速/跳过 rAF 与 ResizeObserver 回调，不适合验证「多帧后才稳定」的 canvas | 用探针法验尺寸：`setTimeout` 5s 后把 `canvas.width/parent.clientHeight` 写进 DOM，`--virtual-time-budget` + `--dump-dom` 读数值（尺寸确定）；视觉效果再配合截图 | #tag: 视觉验证 |
+
+### 💡 关键发现
+
+- #tag: css — 给 section 直接子元素统一提 z-index 时，若其中混有绝对定位背景层，`> *` 通配规则会覆盖其 `position`；背景层必须用更高特异性显式压回 `absolute`
+- #tag: 视觉验证 — headless 截图对 canvas 动画页面不可靠（rAF 时序不定），先探针验几何尺寸、后截图看质感；探针需写入 DOM 再 `--dump-dom` 读取
+- #tag: mp4 — 无 ffmpeg/ffprobe 环境下可用 python 读 mp4 `tkhd` box 解析宽高（ver0: off=box+4+4+20+52，ver1: +32，宽高为 16.16 定点数）
+
+### 🚀 下会话指令
+
+> 承接 G1-D 工业项目区：P2 可自主项已清空，剩余全部依赖用户输入或确认
+
+1. 实习经历内容待用户补充（职责 / 起止时间 / 产出）→ 填充 `#internship` → TODO.md P1
+2. 分支 `feature/g1d-industry-and-resume` 现含工业项目区 + 本次 P2 清理两批改动，待用户确认后 `--no-ff` 合入 v2 并 push（push 后线上自动更新）
+3. 工业卡片素材（实拍图/演示视频）与全向轮视频待用户提供 → TODO.md P2
+4. 已否决项 — 竖版视频不采用 `object-fit: contain`（会留黑边），选了容器自适应方案；char-matrix 未做显式初始化调用（防双实例）
 
 ## 🏷️ 2026-09-11 · G1-D 工业项目区 + 实习模块落地（方向偏移为嵌软 + ROS 全栈）
 

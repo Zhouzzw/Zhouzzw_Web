@@ -2,6 +2,9 @@
  * main.js — 导航栏、视频弹窗、技术栈筛选
  */
 
+/* 字符矩阵背景（char-matrix.js 导入即自动初始化 #charMatrix，勿重复调用） */
+import './char-matrix.js';
+
 /* ===== 导航栏滚动状态 =====
    悬浮胶囊导航：滚动后微缩放 + 轻微透明
 */
@@ -106,6 +109,10 @@ function initVideoModal() {
       const inlineVideo = cover.querySelector('video');
       const src = inlineVideo?.getAttribute('src') || cover.dataset.videoSrc;
       const type = cover.dataset.videoType || 'youtube';
+
+      // 竖版封面弹窗换 9:16 容器，避免 16/9 容器上下裁切
+      const inner = modal.querySelector('.video-modal__inner');
+      inner.classList.toggle('video-modal__inner--portrait', cover.classList.contains('video-cover--portrait'));
 
       if (type === 'youtube') {
         content.innerHTML = `

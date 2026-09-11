@@ -104,4 +104,4 @@ npm run preview  # 本地预览构建产物 → http://localhost:4173/Zhouzzw_We
 
 - 设计稿和配色方案在记忆文件中维护。
 - 组件变体和设计评审记录在记忆文件中。
-- 所有记忆文件位于 `D:\.claude\projects\d--DSEKTOP-----\memory\`。
+- 所有记忆文件位于 `/home/qskj-2/.zcode/cli/memories/projects/personal_web-4ea9280a70183293/memory/`。
