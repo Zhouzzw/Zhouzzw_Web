@@ -1246,11 +1246,11 @@
   padding-top: 0.75em;
 }
 
-/* 荣誉等级是本行最该被一眼扫到的信息：统一用正文色、字号上一档并加粗，
-   靠字号与字重而非颜色制造视觉权重 */
+/* 荣誉等级是本行最该被一眼扫到的信息：统一用正文色、字号上一档，
+   字重与竞赛名一致（--weight-medium） */
 #honors .timeline-list__award {
   font-size: var(--text-h3);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-medium);
   color: var(--color-text);
   padding-top: 0.05em;
 }
