@@ -1246,6 +1246,20 @@
   padding-top: 0.75em;
 }
 
+/* 荣誉等级是本行最该被一眼扫到的信息：放大到接近正文大字并加重。
+   颜色承载等级而非全部用橙 —— 国家级用点缀橙，省级/技能类用正文色
+   （点缀橙在令牌注释里要求「极克制使用」）。 */
+#honors .timeline-list__award {
+  font-size: var(--text-body-large);
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+  padding-top: 0.1em;
+}
+
+#honors .timeline-list__award--top {
+  color: var(--color-accent);
+}
+
 .timeline-list__title {
   font-size: clamp(1.25rem, 2.1vw, 1.625rem);
   font-weight: var(--weight-medium);
