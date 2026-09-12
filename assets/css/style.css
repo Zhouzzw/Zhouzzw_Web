@@ -407,12 +407,17 @@ section[id] {
   height: 100%;
 }
 
-/* --- 终端提示符分隔（暗带 → 浅色区块过渡） --- */
+/* --- 终端提示符分隔（模块间过渡） --- */
 .term-divider {
   font-family: var(--font-mono);
   font-size: var(--text-mono-large);
   color: var(--color-dark-grey);
   margin-bottom: var(--space-10);
+}
+
+/* 深色模块内使用时（暗→暗模块间），文字换浅灰 */
+.section--dark .term-divider {
+  color: var(--color-ghost-grey);
 }
 
 .term-divider__prompt {
