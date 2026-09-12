@@ -346,9 +346,10 @@
   color: var(--color-white);
 }
 
-/* 项目经历头部：标题块下移（顶部留白 200px，超出默认 space-40 的 160px） */
+/* 项目经历头部：上一区块（技术栈分类）底部留白 space-40 = 160px，
+   本处再补 space-10 = 40px，合成 200px 的模块间距 */
 #projects {
-  padding-top: 6.0rem;
+  padding-top: var(--space-10);
 }
 
 @media (max-width: 767px) {
@@ -357,10 +358,10 @@
   }
 }
 
-/* 技术栈头部：终端分隔符上方留白收紧
-   （项目列表 section 底部 space-40 与本 section 顶部 space-40 叠加 = 320px，分隔符浮在空白底端） */
+/* 技术栈头部：终端分隔符是其视觉起点，需在本 section 内部留出暗色空间。
+   技术栈位于浅色简介之后（明→暗交界），故不可为 0 —— 0 会让分隔条贴在交界线上。 */
 #techstack {
-  padding-top: 0;
+  padding-top: var(--space-16);
 }
 
 @media (max-width: 767px) {

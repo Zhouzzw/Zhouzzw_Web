@@ -66,8 +66,8 @@
       <ul class="nav__links">
         <span class="nav__links-indicator" aria-hidden="true"></span>
         <li><a href="#hero">首页</a></li>
-        <li><a href="#projects">项目</a></li>
         <li><a href="#techstack">技术栈</a></li>
+        <li><a href="#projects">项目</a></li>
         <li><a href="#internship">实习竞赛</a></li>
         <li><a href="#life">关于</a></li>
       </ul>
@@ -284,6 +284,224 @@
           </p>
         </div>
         <img src="/assets/images/比赛人物照.jpg" alt="比赛现场" style="width: 100%; border-radius: var(--radius-8); aspect-ratio: 4 / 3; object-fit: cover; object-position: 20% 35%;" />
+      </div>
+    </section>
+
+    <!-- ========== 技术栈 ========== -->
+    <section class="section section--dark text-watermark" id="techstack" style="padding-bottom: var(--space-8); background: #242423;">
+      <p class="term-divider" aria-hidden="true">
+        <span class="term-divider__dots"><span></span><span></span><span></span></span>
+        <span class="term-divider__cmd"><span class="term-divider__prompt">$</span>cd <span class="term-divider__path">~/usr/src/Zhouzzw_Web/</span>techstack<span class="term-divider__cursor"></span></span>
+      </p>
+      <div class="section__header animate-on-scroll">
+        <p class="section__kicker">Tech Stack</p>
+        <h2 class="section__title">从底层到顶层的完整栈</h2>
+      </div>
+      <div class="section__body animate-on-scroll stagger-2">
+        <p style="font-size: var(--text-body-large); max-width: 60ch;">
+          八个技术领域，覆盖从芯片驱动、ROS2 运动规划到具身智能的完整链路。
+          每一项都是实战中打磨过的硬技能。
+        </p>
+      </div>
+    </section>
+
+    <!-- 技术分类 -->
+    <section class="section section--dark text-watermark" style="padding-top: var(--space-12); background: #242423;">
+      <div class="section__body">
+        <!-- 筛选器 -->
+        <div class="tech-filter animate-on-scroll">
+          <button class="tech-filter__btn is-active" data-filter="all">全部</button>
+          <button class="tech-filter__btn" data-filter="mcu">单片机</button>
+          <button class="tech-filter__btn" data-filter="control">控制算法</button>
+          <button class="tech-filter__btn" data-filter="ros">ROS 开发</button>
+          <button class="tech-filter__btn" data-filter="sim">仿真建模</button>
+          <button class="tech-filter__btn" data-filter="ai">具身智能</button>
+          <button class="tech-filter__btn" data-filter="lang">编程语言</button>
+        </div>
+
+        <!-- 技术分类列表：芯片框图 -->
+        <div class="chip-board">
+          <div class="chip-board__header">
+            <span class="chip-board__title">TECH STACK</span>
+            <span class="chip-board__sub">ROS2 · DDS · OMPL · Isaac Lab · LQR</span>
+              </div>
+              <div class="chip-board__grid">
+
+                <div class="tech-cat" data-category="mcu">
+                  <div class="tech-cat__head">
+                    <span class="tech-cat__label">MCU CORE</span>
+                    <span class="mono-label mono-label--dark">001</span>
+                  </div>
+                  <h3 class="tech-cat__title">单片机开发</h3>
+                  <ul class="tech-cat__list">
+                    <li>STM32 系列 (F4 / G4)</li>
+                    <li>ESP32</li>
+                    <li>MSP-M0</li>
+                    <li>FreeRTOS 实时操作系统</li>
+                    <li>多任务调度架构设计</li>
+                  </ul>
+                </div>
+
+                <div class="tech-cat" data-category="mcu">
+                  <div class="tech-cat__head">
+                    <span class="tech-cat__label">PERIPHERAL BUS</span>
+                    <span class="mono-label mono-label--dark">002</span>
+                  </div>
+                  <h3 class="tech-cat__title">外设与通信</h3>
+                  <ul class="tech-cat__list">
+                    <li>UART</li>
+                    <li>IIC</li>
+                    <li>SPI</li>
+                    <li>CAN 总线</li>
+                    <li>整车通信网络设计</li>
+                  </ul>
+                </div>
+
+                <div class="tech-cat" data-category="control">
+                  <div class="tech-cat__head">
+                    <span class="tech-cat__label">CONTROL ENGINE</span>
+                    <span class="mono-label mono-label--dark">003</span>
+                  </div>
+                  <h3 class="tech-cat__title">控制算法</h3>
+                  <ul class="tech-cat__list">
+                    <li>双环 PID</li>
+                    <li>前馈 PID</li>
+                    <li>LQR 最优控制</li>
+                    <li>VMC 虚拟模型控制</li>
+                    <li>MPC 模型预测控制</li>
+                    <li>卡尔曼滤波</li>
+                  </ul>
+                </div>
+
+                <div class="tech-cat" data-category="ros">
+                  <div class="tech-cat__head">
+                    <span class="tech-cat__label">ROS DEVELOPMENT</span>
+                    <span class="mono-label mono-label--dark">004</span>
+                  </div>
+                  <h3 class="tech-cat__title">ROS 机器人开发</h3>
+                  <ul class="tech-cat__list">
+                    <li>ROS2 (Humble / Foxy)</li>
+                    <li>rclcpp / rclpy</li>
+                    <li>colcon / CMake 工作空间</li>
+                    <li>URDF / SRDF · TF2</li>
+                    <li>Tesseract / OMPL 运动规划</li>
+                    <li>DDS (CycloneDDS) · Gazebo</li>
+                  </ul>
+                </div>
+
+                <div class="tech-cat" data-category="sim">
+                  <div class="tech-cat__head">
+                    <span class="tech-cat__label">SIMULATION</span>
+                    <span class="mono-label mono-label--dark">005</span>
+                  </div>
+                  <h3 class="tech-cat__title">仿真与建模</h3>
+                  <ul class="tech-cat__list">
+                    <li>MATLAB / Simulink</li>
+                    <li>机器人运动建模</li>
+                    <li>动力学建模</li>
+                    <li>算法仿真验证</li>
+                    <li>数据拟合与分析</li>
+                  </ul>
+                </div>
+
+                <div class="tech-cat" data-category="ai">
+                  <div class="tech-cat__head">
+                    <span class="tech-cat__label">EMBODIED AI</span>
+                    <span class="mono-label mono-label--dark">006</span>
+                  </div>
+                  <h3 class="tech-cat__title">具身智能 / 强化学习</h3>
+                  <ul class="tech-cat__list">
+                    <li>Isaac Lab / Isaac Sim</li>
+                    <li>rsl_rl PPO 策略训练</li>
+                    <li>GPU 并行环境采样</li>
+                    <li>sim2real 域随机化</li>
+                    <li>ONNX Runtime 部署</li>
+                    <li>MuJoCo</li>
+                  </ul>
+                </div>
+
+                <div class="tech-cat" data-category="lang">
+                  <div class="tech-cat__head">
+                    <span class="tech-cat__label">LANGUAGES</span>
+                    <span class="mono-label mono-label--dark">007</span>
+                  </div>
+                  <h3 class="tech-cat__title">编程语言</h3>
+                  <ul class="tech-cat__list">
+                    <li>C</li>
+                    <li>C++</li>
+                    <li>Python</li>
+                  </ul>
+                </div>
+
+                <div class="tech-cat" data-category="mcu">
+                  <div class="tech-cat__head">
+                    <span class="tech-cat__label">TOOLS &amp; DEBUG</span>
+                    <span class="mono-label mono-label--dark">008</span>
+                  </div>
+                  <h3 class="tech-cat__title">工具链与调试</h3>
+                  <ul class="tech-cat__list">
+                    <li>Keil / STM32CubeIDE</li>
+                    <li>JLink / ST-Link</li>
+                    <li>逻辑分析仪 / 示波器</li>
+                    <li>CAN 分析仪</li>
+                  </ul>
+                </div>
+
+              </div>
+              <div class="chip-board__pins" aria-hidden="true">
+                <span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+
+            <!-- 开发工具箱 -->
+            <div class="tools-shelf animate-on-scroll">
+              <div class="tools-shelf__header">
+                <span class="tools-shelf__label">DEV TOOLS · 开发工具箱</span>
+                <span class="mono-label mono-label--dark">常用 IDE & 软件</span>
+              </div>
+              <div class="tools-shelf__grid">
+
+                <div class="tool-icon" title="MATLAB">
+                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matlab/matlab-original.svg" alt="MATLAB" loading="lazy" />
+                </div>
+
+                <div class="tool-icon" title="Python">
+                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" loading="lazy" />
+                </div>
+
+                <div class="tool-icon" title="Visual Studio Code">
+                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt="VS Code" loading="lazy" />
+                </div>
+
+                <div class="tool-icon" title="Visual Studio">
+                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/visualstudio/visualstudio-plain.svg" alt="Visual Studio" loading="lazy" />
+                </div>
+
+                <div class="tool-icon" title="Git">
+                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" loading="lazy" />
+                </div>
+
+                <div class="tool-icon tool-icon--light" title="GitHub">
+                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" loading="lazy" />
+                </div>
+
+                <div class="tool-icon" title="Linux">
+                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" alt="Linux" loading="lazy" />
+                </div>
+
+                <div class="tool-icon" title="Raspberry Pi 树莓派">
+                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/raspberrypi/raspberrypi-original.svg" alt="Raspberry Pi" loading="lazy" />
+                </div>
+
+                <div class="tool-icon tool-icon--light" title="ROS2">
+                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ros/ros-original.svg" alt="ROS2" loading="lazy" />
+                </div>
+
+              </div>
+            </div>
+
+        </div>
       </div>
     </section>
 
@@ -521,224 +739,6 @@
       </div>
     </section>
 
-    <!-- ========== 技术栈 ========== -->
-    <section class="section section--dark text-watermark" id="techstack" style="padding-bottom: var(--space-8); background: #242423;">
-      <p class="term-divider" aria-hidden="true">
-        <span class="term-divider__dots"><span></span><span></span><span></span></span>
-        <span class="term-divider__cmd"><span class="term-divider__prompt">$</span>cd <span class="term-divider__path">~/usr/src/Zhouzzw_Web/</span>techstack<span class="term-divider__cursor"></span></span>
-      </p>
-      <div class="section__header animate-on-scroll">
-        <p class="section__kicker">Tech Stack</p>
-        <h2 class="section__title">从底层到顶层的完整栈</h2>
-      </div>
-      <div class="section__body animate-on-scroll stagger-2">
-        <p style="font-size: var(--text-body-large); max-width: 60ch;">
-          八个技术领域，覆盖从芯片驱动、ROS2 运动规划到具身智能的完整链路。
-          每一项都是实战中打磨过的硬技能。
-        </p>
-      </div>
-    </section>
-
-    <!-- 技术分类 -->
-    <section class="section section--dark text-watermark" style="padding-top: var(--space-12); background: #242423;">
-      <div class="section__body">
-        <!-- 筛选器 -->
-        <div class="tech-filter animate-on-scroll">
-          <button class="tech-filter__btn is-active" data-filter="all">全部</button>
-          <button class="tech-filter__btn" data-filter="mcu">单片机</button>
-          <button class="tech-filter__btn" data-filter="control">控制算法</button>
-          <button class="tech-filter__btn" data-filter="ros">ROS 开发</button>
-          <button class="tech-filter__btn" data-filter="sim">仿真建模</button>
-          <button class="tech-filter__btn" data-filter="ai">具身智能</button>
-          <button class="tech-filter__btn" data-filter="lang">编程语言</button>
-        </div>
-
-        <!-- 技术分类列表：芯片框图 -->
-        <div class="chip-board">
-          <div class="chip-board__header">
-            <span class="chip-board__title">TECH STACK</span>
-            <span class="chip-board__sub">ROS2 · DDS · OMPL · Isaac Lab · LQR</span>
-              </div>
-              <div class="chip-board__grid">
-
-                <div class="tech-cat" data-category="mcu">
-                  <div class="tech-cat__head">
-                    <span class="tech-cat__label">MCU CORE</span>
-                    <span class="mono-label mono-label--dark">001</span>
-                  </div>
-                  <h3 class="tech-cat__title">单片机开发</h3>
-                  <ul class="tech-cat__list">
-                    <li>STM32 系列 (F4 / G4)</li>
-                    <li>ESP32</li>
-                    <li>MSP-M0</li>
-                    <li>FreeRTOS 实时操作系统</li>
-                    <li>多任务调度架构设计</li>
-                  </ul>
-                </div>
-
-                <div class="tech-cat" data-category="mcu">
-                  <div class="tech-cat__head">
-                    <span class="tech-cat__label">PERIPHERAL BUS</span>
-                    <span class="mono-label mono-label--dark">002</span>
-                  </div>
-                  <h3 class="tech-cat__title">外设与通信</h3>
-                  <ul class="tech-cat__list">
-                    <li>UART</li>
-                    <li>IIC</li>
-                    <li>SPI</li>
-                    <li>CAN 总线</li>
-                    <li>整车通信网络设计</li>
-                  </ul>
-                </div>
-
-                <div class="tech-cat" data-category="control">
-                  <div class="tech-cat__head">
-                    <span class="tech-cat__label">CONTROL ENGINE</span>
-                    <span class="mono-label mono-label--dark">003</span>
-                  </div>
-                  <h3 class="tech-cat__title">控制算法</h3>
-                  <ul class="tech-cat__list">
-                    <li>双环 PID</li>
-                    <li>前馈 PID</li>
-                    <li>LQR 最优控制</li>
-                    <li>VMC 虚拟模型控制</li>
-                    <li>MPC 模型预测控制</li>
-                    <li>卡尔曼滤波</li>
-                  </ul>
-                </div>
-
-                <div class="tech-cat" data-category="ros">
-                  <div class="tech-cat__head">
-                    <span class="tech-cat__label">ROS DEVELOPMENT</span>
-                    <span class="mono-label mono-label--dark">004</span>
-                  </div>
-                  <h3 class="tech-cat__title">ROS 机器人开发</h3>
-                  <ul class="tech-cat__list">
-                    <li>ROS2 (Humble / Foxy)</li>
-                    <li>rclcpp / rclpy</li>
-                    <li>colcon / CMake 工作空间</li>
-                    <li>URDF / SRDF · TF2</li>
-                    <li>Tesseract / OMPL 运动规划</li>
-                    <li>DDS (CycloneDDS) · Gazebo</li>
-                  </ul>
-                </div>
-
-                <div class="tech-cat" data-category="sim">
-                  <div class="tech-cat__head">
-                    <span class="tech-cat__label">SIMULATION</span>
-                    <span class="mono-label mono-label--dark">005</span>
-                  </div>
-                  <h3 class="tech-cat__title">仿真与建模</h3>
-                  <ul class="tech-cat__list">
-                    <li>MATLAB / Simulink</li>
-                    <li>机器人运动建模</li>
-                    <li>动力学建模</li>
-                    <li>算法仿真验证</li>
-                    <li>数据拟合与分析</li>
-                  </ul>
-                </div>
-
-                <div class="tech-cat" data-category="ai">
-                  <div class="tech-cat__head">
-                    <span class="tech-cat__label">EMBODIED AI</span>
-                    <span class="mono-label mono-label--dark">006</span>
-                  </div>
-                  <h3 class="tech-cat__title">具身智能 / 强化学习</h3>
-                  <ul class="tech-cat__list">
-                    <li>Isaac Lab / Isaac Sim</li>
-                    <li>rsl_rl PPO 策略训练</li>
-                    <li>GPU 并行环境采样</li>
-                    <li>sim2real 域随机化</li>
-                    <li>ONNX Runtime 部署</li>
-                    <li>MuJoCo</li>
-                  </ul>
-                </div>
-
-                <div class="tech-cat" data-category="lang">
-                  <div class="tech-cat__head">
-                    <span class="tech-cat__label">LANGUAGES</span>
-                    <span class="mono-label mono-label--dark">007</span>
-                  </div>
-                  <h3 class="tech-cat__title">编程语言</h3>
-                  <ul class="tech-cat__list">
-                    <li>C</li>
-                    <li>C++</li>
-                    <li>Python</li>
-                  </ul>
-                </div>
-
-                <div class="tech-cat" data-category="mcu">
-                  <div class="tech-cat__head">
-                    <span class="tech-cat__label">TOOLS &amp; DEBUG</span>
-                    <span class="mono-label mono-label--dark">008</span>
-                  </div>
-                  <h3 class="tech-cat__title">工具链与调试</h3>
-                  <ul class="tech-cat__list">
-                    <li>Keil / STM32CubeIDE</li>
-                    <li>JLink / ST-Link</li>
-                    <li>逻辑分析仪 / 示波器</li>
-                    <li>CAN 分析仪</li>
-                  </ul>
-                </div>
-
-              </div>
-              <div class="chip-board__pins" aria-hidden="true">
-                <span></span><span></span><span></span><span></span>
-                <span></span><span></span><span></span><span></span>
-              </div>
-            </div>
-
-            <!-- 开发工具箱 -->
-            <div class="tools-shelf animate-on-scroll">
-              <div class="tools-shelf__header">
-                <span class="tools-shelf__label">DEV TOOLS · 开发工具箱</span>
-                <span class="mono-label mono-label--dark">常用 IDE & 软件</span>
-              </div>
-              <div class="tools-shelf__grid">
-
-                <div class="tool-icon" title="MATLAB">
-                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matlab/matlab-original.svg" alt="MATLAB" loading="lazy" />
-                </div>
-
-                <div class="tool-icon" title="Python">
-                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" loading="lazy" />
-                </div>
-
-                <div class="tool-icon" title="Visual Studio Code">
-                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt="VS Code" loading="lazy" />
-                </div>
-
-                <div class="tool-icon" title="Visual Studio">
-                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/visualstudio/visualstudio-plain.svg" alt="Visual Studio" loading="lazy" />
-                </div>
-
-                <div class="tool-icon" title="Git">
-                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" loading="lazy" />
-                </div>
-
-                <div class="tool-icon tool-icon--light" title="GitHub">
-                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" loading="lazy" />
-                </div>
-
-                <div class="tool-icon" title="Linux">
-                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" alt="Linux" loading="lazy" />
-                </div>
-
-                <div class="tool-icon" title="Raspberry Pi 树莓派">
-                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/raspberrypi/raspberrypi-original.svg" alt="Raspberry Pi" loading="lazy" />
-                </div>
-
-                <div class="tool-icon tool-icon--light" title="ROS2">
-                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ros/ros-original.svg" alt="ROS2" loading="lazy" />
-                </div>
-
-              </div>
-            </div>
-
-        </div>
-      </div>
-    </section>
-
     <!-- ========== 实习经历 ========== -->
     <section class="section" id="internship">
       <div class="section__header animate-on-scroll">
@@ -946,8 +946,8 @@
       <nav class="footer__nav">
         <ul class="footer__col">
           <li><a href="#hero">首页</a></li>
-          <li><a href="#projects">项目</a></li>
           <li><a href="#techstack">技术栈</a></li>
+          <li><a href="#projects">项目</a></li>
           <li><a href="#internship">实习竞赛</a></li>
           <li><a href="#life">关于</a></li>
         </ul>
