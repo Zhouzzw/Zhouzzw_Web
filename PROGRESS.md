@@ -9,7 +9,7 @@
 
 | 日期 | 主题 | 摘要 | 状态 |
 |------|------|------|------|
-| 09-12 | v3-full 独立化：v2/v3 并列 | `v3-rig-style` 改名 `v3-full` 并覆盖为当前全部成果，删除 `feature/g1d-industry-and-resume`，v2（基础版）与 v3-full（完整版）并列 | ✅ 完成 |
+| 09-12 | v3-full 独立化：v2/v3 并列 | `v3-rig-style` 改名 `v3-full` 并覆盖为当前全部成果，删除 `feature/g1d-industry-and-resume`，v2（基础版）与 v3-full（完整版）并列；远程已同步（推送 v3-full、删旧分支、切 SSH） | ✅ 完成 |
 | 09-12 | 项目卡片分隔线 + 标题下移 | #projects 标题下移（pt 200px），补齐 002→003 跨区分隔线 | ✅ 完成 |
 | 09-12 | 暗带→实习终端提示符分隔落地 | 三方案对比页供选，用户选定终端提示符；初放技术栈→实习间，用户指正后移至**项目模块→技术栈模块**间（`$ cd techstack`） | ✅ 完成 |
 | 09-12 | 页面明暗节奏调整（用户预览反馈） | 工业区删标题/导语对齐卡片直起；projects/techstack 头部转黑并入暗带；分隔策略=明暗切换本身 | ✅ 完成 |
@@ -21,13 +21,13 @@
 
 ## 🏷️ 2026-09-12 · v3-full 独立化：v2/v3 并列
 
-**结论**：用户决定重组分支结构——`v3-rig-style` 改名 `v3-full` 并整体覆盖为当前开发成果（`reset --hard` feature 内容），随后删除 `feature/g1d-industry-and-resume`，全部改动独立到 `v3-full`。仓库从此是 **v2（基础版）与 v3-full（完整版）并列** 结构。
+**结论**：用户决定重组分支结构——`v3-rig-style` 改名 `v3-full` 并整体覆盖为当前开发成果（`reset --hard` feature 内容），随后删除 `feature/g1d-industry-and-resume`，全部改动独立到 `v3-full`。仓库从此是 **v2（基础版）与 v3-full（完整版）并列** 结构，两分支并行开发、不合并。远程已同步：`v3-full` 推送上线，`v3-rig-style` 删除，git 远程切至 SSH。
 
 | 维度 | 状态 |
 |------|------|
-| 分支 | `v3-full`（本地）指向 72254f6 = 原 feature 最新内容；`v2` 仍为 b00dae8 基础版 |
-| 远程 | `origin/v3-rig-style` 仍是旧红黑实验版，**未同步**（待用户确认） |
-| 遗留 | 🟡 v3-full 远程同步待确认 · v2 线上更新待决策 |
+| 分支 | `v3-full`（本地=远程）7faeb7c，承载全部改动；`v2` 仍为 b00dae8 基础版，不接受 v3 内容 |
+| 远程 | ✅ `origin/v3-full` 已推送；`origin/v3-rig-style` 已删除；remote URL 已切 SSH（HTTPS 有 TLS 故障） |
+| 遗留 | 🟡 v2 线上更新待用户决策（默认 v2 保持基础版不更新） |
 
 ### ✅ 完成
 
@@ -36,20 +36,21 @@
 | 分支改名 | `v3-rig-style` → `v3-full` |
 | 内容覆盖 | `reset --hard feature/g1d-industry-and-resume`，原 v3 红黑风格内容全部舍弃 |
 | 删除 feature | `feature/g1d-industry-and-resume` 删除，改动归 v3-full 独有 |
+| 远程同步 | `git push -u origin v3-full` + `git push origin --delete v3-rig-style`；认证方式 HTTPS → SSH（`git@github.com:Zhouzzw/Zhouzzw_Web.git`，SSH 已验证通过） |
 | 文档同步 | CLAUDE.md / TODO.md 定位改为「v2/v3 并列」；PROGRESS 快照更新 |
 
 ### 🧭 决策
 
 | 决策 | 结论 |
 |------|------|
-| 分支结构 | v2（基础）与 v3-full（完整版）并列，后续改动在 v3-full；原 feature 删除 |
-| 旧 v3 内容 | 用户明确舍弃（红黑 brutalist 实验），远程副本仍在 origin/v3-rig-style 可恢复 |
+| 分支结构 | v2（基础）与 v3-full（完整版）并列，后续改动在 v3-full；原 feature 删除；**两分支不合并** |
+| 旧 v3 内容 | 用户明确舍弃（红黑 brutalist 实验），本地对象库留有副本可恢复 |
+| 远程认证 | HTTPS（TLS 握手失败）→ SSH，稳定性更好 |
 
 ### 🚀 下会话指令
 
-1. v3-full 推送到远程（新分支）+ 删除/保留 origin/v3-rig-style — 待用户确认
-2. v2 是否要接收 v3-full 内容上线 — 待用户决策
-3. 素材类待办（工业卡片图/视频、全向轮视频）仍在 TODO.md P2
+1. v2 线上更新 — 已定 v2 保持基础版、不接收 v3；如需线上展示完整版，改走 v3-full 单独部署（另议）
+2. 素材类待办（工业卡片图/视频、全向轮视频）仍在 TODO.md P2
 
 ## 🏷️ 2026-09-12 · 暗带→实习终端提示符分隔落地
 

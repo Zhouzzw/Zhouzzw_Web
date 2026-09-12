@@ -93,7 +93,9 @@ npm run preview  # 本地预览构建产物 → http://localhost:4173/Zhouzzw_We
 
 **线上地址**：https://zhouzzw.github.io/Zhouzzw_Web/
 
-部署是自动的：push 到 `v2` 会触发 `.github/workflows/deploy.yml`（`npm ci` → `npm run build` → `actions/deploy-pages`）。不需要手动跑部署命令，`dist/` 也不提交进仓库。
+部署是自动的：push 到 `v2` 会触发 `.github/workflows/deploy.yml`（`npm ci` → `npm run build` → `actions/deploy-pages`）。不需要手动跑部署命令，`dist/` 也不提交进仓库。`v3-full` 为并行完整版分支，**不**触发部署（workflow 只监听 v2）。
+
+- ⚠️ **git 远程为 SSH**（`git@github.com:Zhouzzw/Zhouzzw_Web.git`）：HTTPS 在此环境有 TLS 握手故障，勿改回 https URL；SSH 密钥已配置且验证通过。
 
 - ⚠️ **`vite.config.js` 的 `base: '/Zhouzzw_Web/'` 不能删**。仓库名是 `Zhouzzw_Web`，项目站点带子路径；少了这个 base，所有 `/assets/...` 都会 404。
 - ⚠️ **大文件进不了 git**：GitHub 单文件 100MB 硬限制。新增视频请先压到 10MB 以内再入库（现有 3 个是 4K60 HEVC 转出来的 1080p H.264 CRF 26，共 16MB）。原始素材备份在仓库外 `d:/DSEKTOP/原始素材备份/`。
