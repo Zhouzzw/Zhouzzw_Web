@@ -1189,6 +1189,63 @@
   color: var(--color-ghost-grey);
 }
 
+/* --- 实习经历：timeline 条目扩展（内容容器 + 项目 meta + 要点列表 + 状态行） --- */
+#internship .timeline-list__date {
+  min-width: 190px; /* 日期跨年（2026.07 - 2026.10），比默认 160px 宽一档防换行 */
+}
+
+.timeline-list__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+  flex: 1;
+}
+
+.timeline-list__meta {
+  font-family: var(--font-mono);
+  font-size: var(--text-mono-small);
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  padding-top: 0.2em;
+}
+
+.internship__list {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-2) 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.internship__list li {
+  font-size: var(--text-body);
+  line-height: 1.75;
+  color: var(--color-dark-grey);
+  padding-left: var(--space-6);
+  position: relative;
+  max-width: 68ch;
+}
+
+.internship__list li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+  font-family: var(--font-mono);
+}
+
+.internship__note {
+  font-family: var(--font-mono);
+  font-size: var(--text-mono-small);
+  color: var(--color-dark-grey);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin: var(--space-2) 0 0;
+}
+
 /* --- 视频弹窗 --- */
 .video-modal {
   display: none;
