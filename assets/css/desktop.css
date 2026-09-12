@@ -224,6 +224,30 @@
   display: inline-flex;
 }
 
+/* Hero 联系方式 — 首屏次级入口，主 CTA 仍是「查看项目」 */
+.hero__contact {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-mono);
+  color: var(--color-dark-grey);
+  margin-top: var(--space-6);
+  opacity: 0;
+  animation: fadeUp 0.7s var(--ease-out) 0.6s forwards;
+}
+
+.hero__contact a {
+  border-bottom: 1px solid var(--color-mid-grey);
+  transition: color var(--duration-fast) var(--ease-standard),
+              border-color var(--duration-fast) var(--ease-standard);
+}
+
+.hero__contact a:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
 /* --- Hero 视觉区 — 螺旋文字 SVG（≥1024px 可见，填满四周自然截断） --- */
 @media (min-width: 1024px) {
   .hero__visual {

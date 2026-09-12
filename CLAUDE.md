@@ -25,8 +25,9 @@
 ```
 /
 ├── index.html              # 单页站点 — 5 个 section 长滚动
-│                           #   #hero(螺旋) → #intro(简介) → #projects(项目)
-│                           #   → #techstack(技术栈) → #about(关于)
+│                           #   #hero(螺旋) → #intro(关于) → #projects(项目)
+│                           #   → #techstack(技术栈) → #internship(实习)
+│                           #   → #honors(荣誉) → 生活(无 id) → #contact(联系) → footer
 ├── vite.config.js          # 单入口构建配置（base: '/Zhouzzw_Web/'，勿删）
 ├── package.json
 ├── .github/
