@@ -3,21 +3,74 @@
 > 本文件为 progress 会话快照（Δ 增量）。静态基线见 CLAUDE.md；跨会话未决事项见 TODO.md。
 > 恢复上下文：读下方索引 + 最近 1-2 快照即可（~3KB）。历史归档可 grep `docs/archive/`。
 
-**当前**：v2 主线 · v2.4 已上线（https://zhouzzw.github.io/Zhouzzw_Web/）
+**当前**：v3-full 主线（v2 基础版已冻结；线上仍为 v2.4 https://zhouzzw.github.io/Zhouzzw_Web/）
 
 ## 📋 快照索引
 
 | 日期 | 主题 | 摘要 | 状态 |
 |------|------|------|------|
-| 09-12 | v3-full 独立化：v2/v3 并列 | `v3-rig-style` 改名 `v3-full` 并覆盖为当前全部成果，删除 `feature/g1d-industry-and-resume`，v2（基础版）与 v3-full（完整版）并列；远程已同步（推送 v3-full、删旧分支、切 SSH） | ✅ 完成 |
-| 09-12 | 项目卡片分隔线 + 标题下移 | #projects 标题下移（pt 200px），补齐 002→003 跨区分隔线 | ✅ 完成 |
-| 09-12 | 暗带→实习终端提示符分隔落地 | 三方案对比页供选，用户选定终端提示符；初放技术栈→实习间，用户指正后移至**项目模块→技术栈模块**间（`$ cd techstack`） | ✅ 完成 |
-| 09-12 | 页面明暗节奏调整（用户预览反馈） | 工业区删标题/导语对齐卡片直起；projects/techstack 头部转黑并入暗带；分隔策略=明暗切换本身 | ✅ 完成 |
-| 09-12 | 实习区文案润色 + 字号放大 | 简历式动词开头要点（主导/协同/集成/成果），技术细节让位项目区，#internship 字号上浮一档 | ✅ 完成 |
-| 09-12 | 实习经历内容落地 + 区块重排 | 区块移至荣誉前、标题改「实习经历」、补日期/职责/产出、全站职位表述统一 | ✅ 完成 |
-| 09-11 | P2 清一轮：SEO + 路径修正（竖版视频、字符矩阵均被否决退回） | SEO meta/OG/JSON-LD、CLAUDE 路径修正落地；竖版视频适配与 char-matrix 接入经预览后退回原样 | ✅ 完成 |
-| 09-11 | G1-D 工业项目区 + 实习模块落地 | 工业项目区 003/004、实习骨架、技术栈 6→8 分类、全站方向偏移为嵌软+ROS 全栈 | ✅ 完成 |
-| 09-11 | 文档体系 v2 主线化 + TODO 建立 | 建 TODO.md、v3 降为风格实验分支、PROGRESS 快照化、设计令牌迁 CLAUDE | ✅ 完成 |
+| 09-12 | 终端分隔条延长 + 导航锚点顺序修正 | 终端条改两端对等外延（距视口 32px、比正文外扩 48px）；修 nav/footer「实习↔技术栈」顺序与页面相反 | ✅ 完成 |
+| 09-12 | v3-full 独立化：v2/v3 并列 | `v3-rig-style` 改名 `v3-full` 并覆盖为当前全部成果，删除 `feature/g1d-industry-and-resume`；远程已同步 | ✅ 完成 |
+| 09-12 | 暗带→实习终端提示符分隔落地 | 三方案对比页供选，用户选定终端提示符；位置移至**项目模块→技术栈模块**间 | ✅ 完成 |
+
+> 更早快照已归档 → `docs/archive/INDEX.md`，检索 `grep -n "#tag: <关键词>" docs/archive/*.md`。
+> 09-12「项目卡片分隔线 + 标题下移」当年只提交未写快照，见 git `72254f6`。
+
+## 🏷️ 2026-09-12 · 终端分隔条延长 + 导航锚点顺序修正
+
+**结论**：终端分隔符由「内容宽度圆角浮窗」改为「两端对等外延的圆角条」——桌面两侧各距视口 32px、比正文列外扩 48px，不再与段首平齐，读作分隔物而非一行正文；顺带修掉导航栏/页脚「实习↔技术栈」顺序与页面相反的 bug。
+
+| 维度 | 状态 |
+|------|------|
+| 主线 | `v3-full` |
+| commit | 与本次快照同批提交 |
+| 遗留 | 🟡 分隔条延伸量可再微调 · 素材类待办见 TODO.md P2 |
+
+### ✅ 完成（Δ 自 v3-full 独立化）
+
+| 项 | 位置 | 说明 |
+|----|------|------|
+| 形态三轮迭代 | `assets/css/style.css` | ①通栏黑带（**用户称违和，否决**）→ ②圆角 + 仅右端外延 → ③两端对等外延，定稿 |
+| 两端对等外延 | `assets/css/style.css` | ≥1024px：`margin-left/right: calc(var(--space-8) - var(--gutter-desktop))`，左侧 80→32px、右侧外扩 48px；移动端 `calc(var(--space-2) - var(--gutter-mobile))`（8px） |
+| `max-width` 覆盖 | `assets/css/style.css` | `.term-divider { max-width: none }` —— 全局 `p{max-width:65ch}` 会把宽度压在 ~665px |
+| 命令拆包 + 窄屏降级 | `index.html` `mobile.css` | 路径段独立为 `.term-divider__path`，<768px `display:none` 回退 `$ cd techstack`；`.term-divider__cmd` 加 `white-space: nowrap` |
+| 导航/页脚顺序修正 | `index.html` | 实习↔技术栈 两个 `<li>` 互换（nav 69-71 / footer 944-946），与 section DOM 顺序对齐 |
+
+### 🧭 决策
+
+| 决策 | 结论 | 是否沉淀 CLAUDE.md |
+|------|------|-------------------|
+| 分隔条是否通栏 | **否决**通栏黑带（用户称违和）；定稿 = 圆角面板 + 两端对等外延 + 比正文列更宽 | 否 |
+| 分隔物与正文的关系 | 不能与段首平齐，须比正文列外扩，否则被读成一行正文 | 否 |
+| 长命令窄屏处理 | 路径打包成独立 span，窄屏隐藏回退短命令；不做字号硬压 | 否 |
+| 通栏组件须 `max-width:none` | 拟写入 CLAUDE.md「开发规范」，**待用户确认** | ⏳ 待确认 |
+
+### 🔴 坑（勿重踩）
+
+| 现象 | 根因 | 解决 | tag |
+|------|------|------|-----|
+| 分隔条左侧通栏生效、右侧不延伸，宽度卡死 665px | 全局 `p { max-width: 65ch }`（17px mono 下 ≈665px）压住了宽度 | `.term-divider { max-width: none }` | #tag: css |
+| 无头 Chrome 截图停在首屏，hash 锚点不生效 | `--virtual-time-budget` 跳过平滑滚动，页面没滚到目标区块 | iframe 探针：同源 `contentWindow.scrollTo({behavior:'instant'})` 后再读数/截图 | #tag: 视觉验证 |
+| 390px 下长路径命令换行，三圆点被挤到第二行且右侧被裁 | 37 字符命令 + 圆点超出面板内容宽 | 路径 span 窄屏 `display:none`，回退短命令 | #tag: design |
+| 导航栏「实习」排在「技术栈」前，与页面顺序相反 | 09-12 实习区块重排时只改 body，nav/footer 锚点未同步 | 两处 `<li>` 互换；`main.js` scrollspy 取 section DOM 顺序，不受影响 | #tag: docs |
+
+### 💡 关键发现
+
+- #tag: css — 给 `<p>` 做的通栏组件必须显式 `max-width: none`，项目全局 `p{max-width:65ch}` 会静默截断宽度
+- #tag: css — `margin: 0 X var(--space-10)` 三值写法 = top / 左右同值 / bottom，适合两端对称外扩
+- #tag: 视觉验证 — 验证首屏以外元素：临时 iframe 探针页（同源可读 `getComputedStyle`/`getBoundingClientRect` + `scrollTo`），比 hash 导航与超大 `--window-size` 都可靠（后者会被 hero `min-height:100svh` 撑坏）
+- #tag: design — 分隔物要读成「分隔」，必须比正文列宽；与段首平齐会被读成一行正文
+- #tag: docs — 区块重排后必须同步 nav/footer 锚点顺序；scrollspy 按 section DOM 顺序工作，所以 bug 只错在 HTML 排列
+
+### 🚀 下会话指令
+
+> 承接 v3-full 独立化：本次的未提交改动已与快照同批提交
+
+1. 分隔条延伸量可再调 —— 现「距视口 32px / 外扩 48px」；更夸张改 `var(--space-6)`（24px）或 `-var(--gutter-desktop)`（贴边）
+2. 素材类待办（工业卡片图/视频、全向轮视频）→ TODO.md P2，等用户提供
+3. v3-full 上线方案（workflow 只监听 v2）→ TODO.md P4，等用户决策
+4. 已否决项 — 通栏黑带形态（用户称违和）；勿再做成与正文等宽、或左侧与段首平齐
+5. 归档 — 本次把 7 个旧快照移入 `docs/archive/`，检索 `grep -n "#tag: <关键词>" docs/archive/*.md`
 
 ## 🏷️ 2026-09-12 · v3-full 独立化：v2/v3 并列
 
@@ -75,221 +128,3 @@
 
 - #tag: 视觉验证 — 无头 Chrome 截图页面高度超出视口会截断；用「找最后非白内容行」的像素检测不可靠（背景是米白 #F1EEE7 并非纯白），应直接用超大 `--window-size` 高度 + 视觉确认，或用 JS 输出 `scrollHeight`
 
-## 🏷️ 2026-09-12 · 页面明暗节奏调整（用户预览反馈）
-
-**结论**：三轮预览反馈集中调整明暗节奏。页面形成 ABA 结构：浅色 hero/简介 → **连续暗带**（项目经历头部 → RoboMaster 卡片 → 工业卡片 → 技术栈头部 → 技术分类/工具箱）→ 浅色岛（实习 + 荣誉）→ 暗色收尾（生活 + 页脚）。
-
-### ✅ 完成（Δ 自 实习区文案润色）
-
-| 项 | 位置 | 说明 |
-|----|------|------|
-| 工业区标题/导语删除 | `index.html` | 「同一个抓卡任务，两条技术路线」header + 导语段删除，与 RoboMaster 区结构对齐（卡片直起），保持卡片风格一致 |
-| projects 头部转黑 + 文案 | `index.html` `#projects` | 浅色→`section--dark text-watermark`（#242423）；标题「两款机器人，一套电控体系」→「项目经历」；导语改概括全部 4 个项目 |
-| techstack 头部转黑 + 收紧 | `index.html` `#techstack` | 同上转黑；与技术分类区间距收紧（头部 pb space-8 + 分类 pt space-12，总距 ~80px），两组读作一个单元 |
-| 分隔策略 | — | 暗带与实习模块间**不加任何装饰**，用明暗背景切换 + 既有 section 间距（320px）自然分隔——与页面顶部 hero→简介切换同一语言；此前违和感来自暗区之间夹一条白带，白带并入暗带后消失 |
-
-### 🧭 决策
-
-| 决策 | 结论 | 沉淀 |
-|------|------|------|
-| 板块分隔方法 | 拒绝插入装饰性分隔物（白字条/分割线）；背景明暗切换即分隔，全站已确立该语言 | 本次生效 |
-| 暗带连续性 | 同色 #242423 相邻 section 无缝衔接成带；仅 techstack↔分类区刻意收紧表达从属关系 | 本次生效 |
-
-## 🏷️ 2026-09-12 · 实习区文案润色 + 字号放大
-
-**结论**：按用户要求参考优秀简历写法（ Columbia/MIT/Indeed 指南：动词开头 + 范围 + 影响）重写实习要点，突出 ownership、跨端协同与系统集成能力；技术细节（七自由度、Dex1-1、插值、速控）不再挤实习区——项目区 003 卡片本就有更完整的版本。`#internship` 字号整体上浮一档。
-
-### ✅ 完成（Δ 自 实习经历内容落地）
-
-| 项 | 位置 | 说明 |
-|----|------|------|
-| 导语段 | `index.html` `#internship` | 新增大字导语：三个月实习 + 机械臂运控负责人 + 从 0 到 1 主导交付 |
-| 要点重写 | `index.html` | 4 条动词开头要点：**全权主导**（全流程闭环交付）/ **跨端协同**（与视觉端定义流式接口与协议）/ **系统集成**（协调机械电控视觉三方联调）/ **成果**（待商业落地 + 沉淀两条技术路线指向 003/004）；每条加粗动词短语引导 |
-| 字号放大 | `desktop.css` | `#internship` 作用域：标题 clamp 1.4375→1.875rem、meta 升 mono-large、要点升 body-large + 行高 1.8、加粗引导词用 text 色；STATUS 行升 body-small |
-
-### 🧭 决策
-
-| 决策 | 结论 | 沉淀 |
-|------|------|------|
-| 实习 vs 项目分工 | 实习区只讲职责范围、协同与影响（简历式）；七自由度/Dex1-1/轨迹插值等技术细节全部留在项目区 003/004（卡片 desc + 成果已覆盖） | 本次生效 |
-| 字号放大方式 | `#internship` 作用域覆盖，不动共享组件默认值——荣誉区同款 `timeline-list` 不受影响 | 本次生效 |
-
-## 🏷️ 2026-09-12 · 实习经历内容落地 + 区块重排
-
-**结论**：P1 实习内容按用户提供的信息填充完成；区块从「工业项目与科技栈之间」移到「技术分类区之后、荣誉奖项之前」，标题定为「实习经历」（否决原标语「从电控底层，走向 ROS 上位机」）；全站 7 处职位表述统一为「机器人系统集成实习工程师」。至此 TODO 无 P1 项，分支合并是唯一待用户决策事项。
-
-| 维度 | 状态 |
-|------|------|
-| 主线 | ✅ 完成 代码改动 — 仍在分支 `feature/g1d-industry-and-resume`，未合并、未推送 |
-| commit | 本快照对应最后一个 feat 提交（见 git log） |
-| 遗留 | 🟡 工业卡片素材待补 · 分支待合并（需用户确认） |
-
-### ✅ 完成（Δ 自 P2 清一轮）
-
-| 项 | 位置 | 说明 |
-|----|------|------|
-| 区块重排 | `index.html` | `#internship` 从工业项目区后移至技术分类深色区之后、`#about` 荣誉之前；导航/页脚锚点无需改（id 未变） |
-| 标题与文案 | `index.html` | 大标题「从电控底层，走向 ROS 上位机」→「实习经历」；删除自拟简介段 |
-| 实习条目填充 | `index.html` `#internship` | 日期 2026.07-2026.10；职位机器人系统集成实习工程师；meta 行「高速路口闸机机器人收递卡项目 · 宇树 G1-D 机械臂运控负责人」；3 条 `→` 要点（机械臂运控职责 / 静态抓取 / 动态追踪）；STATUS 行「项目完程度较高 · 待商业落地」 |
-| 职位表述统一 | `index.html` 7 处 | meta description / OG / Twitter / JSON-LD / hero 副标题 / 简介段 / 工业卡片角色标签（→「机械臂运控负责人」）全部对齐新职位；简介段「双臂运动规划与强化学习控制」→「机械臂运控（七自由度机械臂 + 末端夹爪）」 |
-| 新样式 | `desktop.css` | `.timeline-list__content` / `.timeline-list__meta`（橙色 mono）/ `.internship__list`（`→` 橙色箭头，复用项目成果列表语言）/ `.internship__note`；`#internship` 日期栏 160→190px 防跨年日期换行 |
-
-### 🧭 决策
-
-| 决策 | 结论 | 沉淀 |
-|------|------|------|
-| 实习区位置 | 用户指定：技术栈后、荣誉奖项前；标题用直白的「实习经历」，不用标语式大标题 | 本次生效 |
-| 职位口径 | 以用户提供的「机器人系统集成实习工程师」为准，全站统一；工业卡片角色标签用「机械臂运控负责人」呼应实际职责 | 本次生效 |
-| 条目结构 | 复用 `timeline-list`（日期左栏 + 内容右栏），要点列表沿用项目区 `→` mono 箭头语言，保持排版一致性 | 本次生效 |
-
-### 🚀 下会话指令
-
-> 承接实习经历落地：P1 已清空，剩余全部为素材补充 + 合并决策
-
-1. **分支合并待确认** — `feature/g1d-industry-and-resume` 含工业项目区 + 实习经历 + SEO 等全部改动，用户预览确认后 `--no-ff` 合入 v2 并 push（push 后线上自动更新）
-2. 工业卡片素材（003/004 实拍图 / 演示视频，现为 Mujoco 渲染图兜底）与全向轮步兵演示视频待用户提供 → TODO.md P2
-3. 观察项 — 实习日期 2026.07-2026.10 为用户口述；若与实际不符用户会再纠正
-4. 已否决项 — 竖版视频适配、char-matrix 接入（均经用户预览后退回，TODO 记 [-]）；实习区标语式大标题
-
-## 🏷️ 2026-09-11 · P2 清一轮：SEO meta + 路径修正（竖版视频、char-matrix 均被否决退回）
-
-**结论**：TODO 中 SEO meta 与 CLAUDE 记忆路径两项落地；竖版视频修复与 char-matrix 接入均经用户预览后被否决退回。实习内容与分支合并仍待用户。
-
-| 维度 | 状态 |
-|------|------|
-| 主线 | ✅ 完成 代码改动 — 仍在分支 `feature/g1d-industry-and-resume`，未合并、未推送 |
-| commit | 本快照对应最后一个 feat 提交（见 git log） |
-| 遗留 | 🟡 实习内容待补 · 工业卡片素材待补 · 分支待合并（需用户确认） |
-
-### ✅ 完成（Δ 自 G1-D 工业项目区落地）
-
-| 项 | 位置 | 说明 |
-|----|------|------|
-| ~~竖版视频裁切修复~~ → 已退回 | `index.html` + CSS + JS | 用户预览后决定保留原 16:9 三列并列展示，竖版适配代码全部移除（见「决策」与 TODO [-] 条目） |
-| ~~char-matrix 接入~~ → 已退回 | `index.html` + `style.css` + `main.js` | 用户预览后决定保留静态 text-watermark，canvas 与导入已移除；char-matrix.js 与 `.char-matrix-bg` 样式保留备用（见「决策」与 TODO [-] 条目） |
-| SEO meta | `index.html` `<head>` | description/keywords/author/canonical + Open Graph 7 项 + Twitter Card + Person JSON-LD；OG 图用比赛人物照 |
-| CLAUDE 路径修正 | `CLAUDE.md` | 记忆路径 `D:\...`（Windows 残留）→ `/home/qskj-2/.zcode/cli/memories/projects/personal_web-4ea9280a70183293/memory/` |
-| TODO 对账 | `TODO.md` | 已完成四条移除；剩余 P1 实习内容、P2 素材两类 |
-
-### 🧭 决策
-
-| 决策 | 结论 | 沉淀 |
-|------|------|------|
-| 竖版封面布局 | ~~不让竖版挤 3 列等宽网格~~ → **用户预览后退回**：三视频恢复 16:9 三列并列原样（含弹窗 16:9），接受竖版裁切 | ✅ 用户拍板，TODO 记 [-] |
-| 弹窗适配方式 | JS 读封面类切换弹窗容器类（已随退回移除）；若未来再做，此思路仍可用 | 留档 |
-| char-matrix 接入方式 | ~~导入即用~~ → **用户预览后退回**：技术栈区恢复静态 text-watermark，Canvas 背景否决；char-matrix.js 与 `.char-matrix-bg` 样式保留备用 | ✅ 用户拍板，TODO 记 [-] |
-
-### 🔴 坑（勿重踩）
-
-| 现象 | 根因 | 解决 | tag |
-|------|------|------|-----|
-| 字符矩阵 canvas 只画满 section 顶部 ~640px，下方全空 | `.char-matrix-section > *`（`position: relative`）与 `.char-matrix-bg`（`position: absolute`）同为 (0,1,0) 特异性，声明在后把背景层打回文档流，`inset: 0` 失效 | 加 `.char-matrix-section .char-matrix-bg { position: absolute; z-index: 0; }`（0,2,0）压回 | #tag: css |
-| 无头 Chrome `--virtual-time-budget` 下截图时序不确定：同页面 8s/15s/30s 三次截图 canvas 覆盖范围不一致 | 虚拟时间会加速/跳过 rAF 与 ResizeObserver 回调，不适合验证「多帧后才稳定」的 canvas | 用探针法验尺寸：`setTimeout` 5s 后把 `canvas.width/parent.clientHeight` 写进 DOM，`--virtual-time-budget` + `--dump-dom` 读数值（尺寸确定）；视觉效果再配合截图 | #tag: 视觉验证 |
-
-### 💡 关键发现
-
-- #tag: css — 给 section 直接子元素统一提 z-index 时，若其中混有绝对定位背景层，`> *` 通配规则会覆盖其 `position`；背景层必须用更高特异性显式压回 `absolute`
-- #tag: 视觉验证 — headless 截图对 canvas 动画页面不可靠（rAF 时序不定），先探针验几何尺寸、后截图看质感；探针需写入 DOM 再 `--dump-dom` 读取
-- #tag: mp4 — 无 ffmpeg/ffprobe 环境下可用 python 读 mp4 `tkhd` box 解析宽高（ver0: off=box+4+4+20+52，ver1: +32，宽高为 16.16 定点数）
-
-### 🚀 下会话指令
-
-> 承接 G1-D 工业项目区：P2 可自主项已清空，剩余全部依赖用户输入或确认
-
-1. 实习经历内容待用户补充（职责 / 起止时间 / 产出）→ 填充 `#internship` → TODO.md P1
-2. 分支 `feature/g1d-industry-and-resume` 现含工业项目区 + 本次 P2 清理两批改动，待用户确认后 `--no-ff` 合入 v2 并 push（push 后线上自动更新）
-3. 工业卡片素材（实拍图/演示视频）与全向轮视频待用户提供 → TODO.md P2
-4. 已否决项 — 竖版视频不采用 `object-fit: contain`（会留黑边），选了容器自适应方案；char-matrix 未做显式初始化调用（防双实例）
-
-## 🏷️ 2026-09-11 · G1-D 工业项目区 + 实习模块落地（方向偏移为嵌软 + ROS 全栈）
-
-**结论**：P1 三件落地两件 —— 新增工业项目区块（003 Tesseract / 004 Isaac RL）与实习经历骨架；全站文案从纯嵌软偏移为「嵌软 + ROS 上下位机全栈」。实习条目内容仍待用户补充，分支待合并。
-
-| 维度 | 状态 |
-|------|------|
-| 主线 | ✅ 完成 代码改动 — 分支 `feature/g1d-industry-and-resume`，**未合并 v2、未推送** |
-| commit | ff9fa39（分支内，v2 主线未动） |
-| 遗留 | 🟡 实习内容待补 · 工业卡片缺演示视频 · 分支待 `--no-ff` 合入 |
-
-### ✅ 完成（Δ 自 文档体系 v2 主线化）
-
-| 项 | 位置 | 说明 |
-|----|------|------|
-| 工业项目区块 | `index.html` | 新增独立深色区块「同一个抓卡任务，两条技术路线」：003 G1-D Tesseract 双臂运动控制、004 G1-D Isaac RL 端到端到位控制（内容取自两份工程 README） |
-| 实习经历 section | `index.html` `#internship` | 骨架：武汉晴山科技 · ROS 开发工程师 + 时间线条目；导航栏与页脚同步加「实习」锚点 |
-| 技术栈扩容 | `index.html` | 6 → 8 分类：新增 004 ROS 机器人开发、006 具身智能 / 强化学习；筛选钮加「ROS 开发」「具身智能」；工具箱加 ROS2 图标（8→9 个，网格 8 列改 9 列） |
-| 全站方向偏移 | `index.html` `style.css` | hero 标题改「上下位机全栈工程师」、kicker `Embedded · ROS2 · Embodied AI`、简介加入晴山科技经历、title/meta、螺旋关键词 MATLAB→ROS2（20 处）、深色水印、页脚标语 |
-| 图片素材 | `assets/images/` | 2 张 G1-D 图入库（1920×1080，各 173 KB） |
-
-### 🧭 决策
-
-| 决策 | 结论 | 沉淀 |
-|------|------|------|
-| 工业项目呈现方式 | 新建独立区块（非追加进 RoboMaster 区），与军备项目形成两个簇 | 本次生效 |
-| 缺失展示图处理 | 用现有 Mujoco G1 渲染图兜底入库，待实拍/演示素材到位后替换 | 本次生效 |
-| 实习模块节奏 | 先落 section 骨架占位，内容待用户补充后填充（不编造） | 本次生效 |
-
-### 🔴 坑（勿重踩）
-
-| 现象 | 根因 | 解决 | tag |
-|------|------|------|-----|
-| 工具箱 ROS 图标"消失"——URL 返回 200 且浏览器已缓存，画面却无图标 | devicon `ros-original.svg` 填充色 `#22314e` 深蓝（亮度 48），与深色底 `#242423`（亮度 37）对比度极低，肉眼不可辨 | 套用项目现成的 `.tool-icon--light` 白底衬类（GitHub 图标同款） | #tag: design |
-| 无头 Chrome 整页截图在折叠线以下全空白，误判为"区块未渲染" | hero `min-height: 100svh` 撑满视口高度，`--window-size` 的大高度未生效 | 临时 CSS `main > section:nth-of-type(N){display:block}` 隔离单区块逐段截图 | #tag: 视觉验证 |
-
-### 💡 关键发现
-
-- #tag: 视觉验证 — 网页渲染核验可行路径：`google-chrome --headless=new --virtual-time-budget=8000 --window-size=W,H` + 临时 CSS 隔离目标 section；**验证后必须重新 `npm run build`** —— `dist/` 未被 git 跟踪，`git checkout` 无法还原被改写的构建产物
-- #tag: design — 深色图标在深色背景上的可见性要靠底衬解决，项目内已有 `.tool-icon--light` 现成方案，新增图标先查该类的适用性
-- #tag: docs — 原 `index.html` 技术栈区存在多余 `</div>`（HEAD 既有问题，非本次引入）；两个新增区块的 div 收支已实测平衡
-
-### 🚀 下会话指令
-
-> 承接文档体系 v2 主线化：P1 三件中 ✅ 两项已落地、🟡 实习内容仍在等素材
-
-1. 实习经历内容待用户补充（岗位职责 / 起止时间 / 产出）→ 填充 `#internship` section → TODO.md P1
-2. 分支 `feature/g1d-industry-and-resume` 待 `--no-ff` 合入 v2 + push（**合入与推送需用户确认**）
-3. 工业项目两张卡片缺演示视频、展示图为第三方渲染图兜底 → 素材到位后补齐 → TODO.md P2
-4. 观察项 — 线上 v2.4 仍为偏移前版本；本次改动合并推送后线上才会更新
-5. 已否决项 — 未把工业项目追加进 RoboMaster 区块（保持「军备 + 工业」两个项目簇的信息层次）
-
-## 🏷️ 2026-09-11 · 文档体系 v2 主线化 + TODO 清单建立
-
-**结论**：确立 v2 为唯一开发主线，建立项目级 TODO.md（去重合并 + P0-P4 分组），并将 PROGRESS.md 从旧式长文档迁移到快照格式。本次为纯文档治理，无代码改动。
-
-| 维度 | 状态 |
-|------|------|
-| 主线 | ✅ 完成 文档治理（TODO 建立 + v2 主线化 + PROGRESS 快照化） |
-| commit | 16eaabe / 4106a4c / f39268f / af99f52 |
-| 遗留 | 🔴 P1 网页新增三件仍待素材（实习经历 + G1-D Tesseract / Isaac RL 两项目卡片） |
-
-### ✅ 完成（Δ 自 v2.4 上线）
-
-| 项 | 位置 | 说明 |
-|----|------|------|
-| 新增 TODO.md | `TODO.md` | 项目级待办唯一住所：P0-P4 分组 + 风险清单（filter-repo SHA 失效警示） |
-| v2 主线化 | `CLAUDE.md` | `v3-rig-style` 标注为风格实验分支、不排期（见 CLAUDE.md「项目概述」） |
-| 待办归口 | `PROGRESS.md` | 移除旧「待完成」长清单，改指向 TODO.md，防双份维护 |
-| PROGRESS 快照化 | `PROGRESS.md` | 旧式长文档→快照格式；旧全文归档 docs/archive/ |
-| 设计令牌迁移 | `CLAUDE.md` | 静态令牌表从 PROGRESS 迁入 CLAUDE「设计令牌」节 |
-
-### 🧭 决策
-
-| 决策 | 结论 | 沉淀 |
-|------|------|------|
-| v2 / v3 双线取舍 | v2 为唯一主线；v3 定位风格实验、仅供查看效果、不排期 | ✅ CLAUDE.md |
-| 待办归口 | 未决事项统一收进 TODO.md，PROGRESS/CLAUDE 不再各自维护清单 | ✅ 本次生效 |
-
-### 💡 关键发现
-
-- #tag: docs — 三层文档分工（CLAUDE 静态 / PROGRESS 快照 / TODO 未决）确立后，恢复成本降至 ~3KB：读索引 + 最近 1 快照
-- #tag: git — `v2`（单人模式）即全局 Git 规则主分支；文档类小改动直接 commit 主分支，push / 合主需确认（全局 CLAUDE.md 第 7/9 条）
-
-### 🚀 下会话指令
-
-> 承接 v2.4 上线：遗留项 = P1 网页新增三件稍后开工（素材到位即做）
-
-1. P1 网页新增（实习经历模块 + G1-D Tesseract / Isaac RL 两项目卡片）等素材 — 素材齐后按既有 section 风格实现 → TODO.md P1
-2. 素材到位前可推进 P2 — 旋转跳跃视频竖版裁切（[!]）、char-matrix 接入技术栈区、全向轮视频、SEO → TODO.md P2
-3. 观察项 — 设计令牌已迁 CLAUDE.md；若发现 CSS 令牌与 CLAUDE 表不一致，以实际 CSS 为准并回填
-4. 已否决项 — v3-rig-style 不当主线，勿为其排期（定位固定于 CLAUDE.md「项目概述」）
-5. 恢复步骤 — 开发机 `npm run dev`（http://localhost:5173）；构建调优 `npm run build`。`index.html` 不能双击直开（file:// 拦模块脚本）
