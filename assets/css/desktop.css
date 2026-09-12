@@ -312,6 +312,17 @@
   color: var(--color-white);
 }
 
+/* 项目经历头部：标题块下移（顶部留白 200px，超出默认 space-40 的 160px） */
+#projects {
+  padding-top: 12.5rem;
+}
+
+@media (max-width: 767px) {
+  #projects {
+    padding-top: 6.25rem;
+  }
+}
+
 .section--dark .section__title,
 .section--dark h1,
 .section--dark h2,
@@ -481,8 +492,15 @@
   padding-top: var(--space-20);
 }
 
+/* 跨 section 的项目列表（002 全向轮 → 003 Tesseract 分属两个 section，用此补回分隔线） */
+.project-list--bordered {
+  border-top: 1px solid var(--color-border-dark);
+  padding-top: var(--space-20);
+}
+
 @media (min-width: 1024px) {
-  .project-list > .project-item + .project-item {
+  .project-list > .project-item + .project-item,
+  .project-list--bordered {
     padding-top: var(--space-32);
   }
 }
