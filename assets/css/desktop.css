@@ -196,6 +196,16 @@
   animation: fadeUp 0.7s var(--ease-out) 0.2s forwards;
 }
 
+/* Hero 标题字号跟随左列宽而非视口：左列宽 = 50vw − gutter（12 栅格 gap 为 0，
+   6 列恰为内容宽的一半）。标题最长行「上下位机全栈工程师」为 9 个全角字
+   （中文 1 字 = 1em），字号须 ≤ 列宽 / 9，否则末字「师」孤行到第三行。
+   视口 ≤1616px 时该值小于 --text-headline-2 的 80px 上限，故取 min()。 */
+@media (min-width: 1024px) {
+  .hero__title {
+    font-size: min(var(--text-headline-2), calc((50vw - var(--gutter-desktop)) / 9));
+  }
+}
+
 .hero__subtitle {
   font-size: var(--text-body-large);
   color: var(--color-dark-grey);
