@@ -407,17 +407,49 @@ section[id] {
   height: 100%;
 }
 
-/* --- 终端提示符分隔（模块间过渡） --- */
+/* --- 终端提示符分隔（模块间过渡）— 圆角终端条，两端对等外延 --- */
 .term-divider {
+  display: flex;
+  align-items: center;
+  gap: 1em;
   font-family: var(--font-mono);
-  font-size: var(--text-mono-large);
-  color: var(--color-dark-grey);
-  margin-bottom: var(--space-10);
+  font-size: 1.0625rem;
+  color: var(--color-ghost-grey);
+  background: #0A0A0A;
+  max-width: none;  /* 覆盖全局 p{max-width:65ch}，否则被截断在 ~665px */
+  border: 1px solid var(--color-border-dark);
+  border-radius: var(--radius-8);
+  padding: 14px 20px;
+  box-shadow: var(--shadow-dark);
+  /* 两端对称内缩：比正文列更宽、不与段首平齐 —— 才能读作分隔物而非一行正文 */
+  margin: 0 calc(var(--space-2) - var(--gutter-mobile)) var(--space-10);
 }
 
-/* 深色模块内使用时（暗→暗模块间），文字换浅灰 */
-.section--dark .term-divider {
-  color: var(--color-ghost-grey);
+@media (min-width: 1024px) {
+  .term-divider {
+    margin-left: calc(var(--space-8) - var(--gutter-desktop));   /* 两侧各外延 48px，距视口 32px */
+    margin-right: calc(var(--space-8) - var(--gutter-desktop));
+  }
+}
+
+/* 命令行：单行不折行，避免长路径在窄屏换行把圆点挤下去 */
+.term-divider__cmd {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* 标题栏左侧三圆点 */
+.term-divider__dots {
+  display: flex;
+  gap: 7px;
+  flex-shrink: 0;
+}
+
+.term-divider__dots span {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
 }
 
 .term-divider__prompt {

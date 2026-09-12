@@ -213,6 +213,21 @@
   .video-grid {
     grid-template-columns: 1fr;
   }
+
+  /* --- 终端分隔符：窄屏收起长路径，回退为短命令 $ cd techstack --- */
+  .term-divider {
+    font-size: 0.875rem;
+    padding: 11px var(--gutter-mobile);
+  }
+
+  .term-divider__dots span {
+    width: 9px;
+    height: 9px;
+  }
+
+  .term-divider__path {
+    display: none;
+  }
 }
 
 /* 更小屏幕优化 (<480px) */

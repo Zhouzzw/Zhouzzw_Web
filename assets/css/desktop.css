@@ -314,12 +314,24 @@
 
 /* 项目经历头部：标题块下移（顶部留白 200px，超出默认 space-40 的 160px） */
 #projects {
-  padding-top: 12.5rem;
+  padding-top: 6.0rem;
 }
 
 @media (max-width: 767px) {
   #projects {
     padding-top: 6.25rem;
+  }
+}
+
+/* 技术栈头部：终端分隔符上方留白收紧
+   （项目列表 section 底部 space-40 与本 section 顶部 space-40 叠加 = 320px，分隔符浮在空白底端） */
+#techstack {
+  padding-top: 0;
+}
+
+@media (max-width: 767px) {
+  #techstack {
+    padding-top: var(--space-12);
   }
 }
 
@@ -496,12 +508,17 @@
 .project-list--bordered {
   border-top: 1px solid var(--color-border-dark);
   padding-top: var(--space-20);
+  margin-top: var(--space-20);
 }
 
 @media (min-width: 1024px) {
   .project-list > .project-item + .project-item,
   .project-list--bordered {
     padding-top: var(--space-32);
+  }
+
+  .project-list--bordered {
+    margin-top: var(--space-32);
   }
 }
 
