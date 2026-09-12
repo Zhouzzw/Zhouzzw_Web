@@ -1194,6 +1194,30 @@
   min-width: 190px; /* 日期跨年（2026.07 - 2026.10），比默认 160px 宽一档防换行 */
 }
 
+/* 实习区整体字号上浮一档（用户指定），仅作用于 #internship */
+#internship .timeline-list__title {
+  font-size: clamp(1.4375rem, 2.4vw, 1.875rem);
+}
+
+#internship .timeline-list__meta {
+  font-size: var(--text-mono-large);
+}
+
+#internship .internship__list li {
+  font-size: var(--text-body-large);
+  line-height: 1.8;
+  max-width: 66ch;
+}
+
+#internship .internship__list li strong {
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+}
+
+#internship .internship__note {
+  font-size: var(--text-body-small);
+}
+
 .timeline-list__content {
   display: flex;
   flex-direction: column;
