@@ -9,11 +9,59 @@
 
 | 日期 | 主题 | 摘要 | 状态 |
 |------|------|------|------|
+| 09-14 | D 节第 0 档五项修复落地 | 1024px 空黑块、360px 导航溢出、3 个未声明变量、焦点样式、浅色区对比度全修 | ✅ 完成 |
 | 09-12 | P2 视觉与 P3 内容优化收尾 | 分隔条去底色、螺旋外圈衰减、卡片块顺序统一、行右侧死区清零、kicker 加序号 | ✅ 完成 |
 | 09-12 | 信息架构重组 + 终端分隔条定稿与迁移 | 页序重组、分隔条定稿迁移、修 Hero 孤字与两处锚点错位 | ✅ 完成 |
-| 09-12 | 终端分隔条延长 + 导航锚点顺序修正 | 终端条两端对等外延；修 nav/footer 锚点顺序与页面相反 | ✅ 完成 |
 
 > 检索归档：`grep -n "#tag: <关键词>" docs/archive/*.md`。09-12「项目卡片分隔线」只提交未写快照，见 git `72254f6`。
+
+## 🏷️ 2026-09-14 · D 节第 0 档五项修复落地
+
+**结论**：`review-v3` D 节「第 0 档」5 项（A10 / A14 / A16 / I5 / I7）全部落地并实测通过：1024px 空黑块消失、360px 导航不再溢出、3 个未声明 CSS 变量补齐、全站首次有自定义焦点环、浅色区橙色正文 1.95:1 → 4.90:1；整页高度与改动前一致（1440 = 15769px / 390 = 14227px）。
+
+| 维度 | 状态 |
+|------|------|
+| 主线 | `v3-full` |
+| commit | `feef54b`（修复 4 文件 +28 −9）、`18b67d5`（review-v3 入库） |
+| 遗留 | 🟡 I7 / I5 处置可再议（改判路径见指令 3）· D 节第 1 档未开工 · 跨浏览器与生产构建复测未做 |
+
+### ✅ 完成（Δ 自 P2 视觉与 P3 内容优化收尾）
+
+| 项 | 位置 | 说明 |
+|----|------|------|
+| A10 断点 off-by-one | `desktop.css` | 两处 `max-width:1024px` → `1023px`（含 review 未列出的 footer 内边距那处）；实测 1024px 螺旋 1044×1044、页脚内边距 80px（原 `none` + 20px） |
+| A14 死选择器（连带 A13） | `mobile.css` `index.html` | `li:nth-child(1)` → `li:first-of-type`（indicator span 占首子位，规则从未生效），360px 导航 overflow 334/326 → 0；顺带把 indicator `<span>` 移出 `<ul>` 修非法 HTML（`.nav > *` 已给 nav `position:relative`，零 CSS 改动，与高亮项逐像素重合） |
+| A16 未声明变量 | `style.css` `desktop.css` | `--color-muted`→新建 `#8A8A8A`（关闭按钮 1.06:1 → 5.64:1）、`--radius-md`→`--radius-8`（圆角 0 → 8px）、`--space-5`→`--space-6`；连带修 `.video-modal__close:hover` 误用浅色底专用的 `--color-text` → `--color-white`。审计：引用 62 / 声明 80 / **缺失 0** |
+| I5 焦点样式 ⏳ | `style.css` | 新增全局 `:focus-visible`（橙 2px / offset 2px）；品牌橙在米白上仅 1.95:1，故对 `#hero/#intro/#internship/#honors` 单独改深橙；真实 Tab 遍历 12 项全部命中 |
+| I7 对比度 ⏳ | `style.css` `desktop.css` | 保留橙色语义而非降级为非正文 —— 新增 `--color-accent-deep: #A05200` 作浅色底橙；`.timeline-list__meta` 1.95:1 → 4.90:1 |
+
+### 🔴 坑（勿重踩）
+
+| 现象 | 根因 | 解决 | tag |
+|------|------|------|-----|
+| 规则写了却从不生效，无任何提示 | `.nav__links` 首子元素是 indicator `<span>`，`li:nth-child(1)` 永不匹配 | 改 `li:first-of-type`；判断元素序优先用 `-of-type` | #tag: css |
+| 属性设了但不生效、控制台无报错 | `var(--color-muted/-radius-md/-space-5)` 三个变量从未声明，整条属性静默失效（`--space-5` 那条规则本身是死代码，无可见影响） | 补声明；用「引用集合 vs 声明集合」比对做 lint | #tag: css |
+
+### 💡 关键发现
+
+- #tag: css — `max-width: N` 与 `min-width: N` **不是补集**，会在 N 同时命中；断点对必须写 `N` / `N-1`，否则「正好那个宽度」是唯一坏档（真机 1024 = iPad Pro 竖屏）
+- #tag: css — 未声明的 CSS 变量不报错、不告警，整条属性失效；`grep -oh 'var(--x' | sort -u` 对 `grep -oh '--x:'` 取差集即可秒级查出
+- #tag: css — 品牌橙 `#FF9100` 在米白上仅 1.95:1，浅色区正文与焦点环都不可用；深一档 `#A05200` = 4.90:1 达 AA
+- #tag: 视觉验证 — 断言前先确认选择器命中哪一层、属性真实落点（本次两处误读：`.chip-board` 更高特异性覆盖、gutter 实际在 `.section` 而非 `main`）；`:focus-visible` 须用真实 Tab 键验证
+- #tag: docs — review 里的「一行级修复」常含未列出的同模式第二处（A10 的 footer），动手前先按同一模式全量 grep
+
+### 🚀 下会话指令
+
+> 承接 P2 视觉与 P3 内容优化收尾：第 0 档已清空，第 1 档未开工
+
+1. `feef54b`、`18b67d5` 已推送 `origin/v3-full`（该分支不触发部署，线上仍为 v2.4）
+2. 第 1 档存量缺陷 A1 / A2 / A3 / A8 / A9 → A8 / A9 需你先定形态
+3. 取舍可改判：I7 改「降级为非正文」一行可换；I5 焦点环可回到全站同色（代价：浅色岛 1.95:1）
+4. 观察项（本会话新发现）—— `≤480px` 隐藏「首页」后，回页顶时 scrollspy 高亮的是被隐藏项，滑动指示器 0×0（滚到下一区块即恢复）→ TODO.md P3
+5. 断点族 A11 / A12 / A15 同族，建议一次改完（涉及 768–1023 是否新增第三档）→ review-v3 D 节第 5 档
+6. 未做 —— 跨浏览器（Safari / Firefox）验证 · 生产构建复测（本轮数据全来自 dev server）；素材类与 review 余项见 TODO.md
+
+> 拟沉淀 CLAUDE.md（待确认）：① 断点对必须互为补集；② 用 `var()` 前确认声明存在并跑「引用 vs 声明」比对。已否决：通栏黑带分隔条 · 全站统一暗色 · 竖版视频适配 · char-matrix 接入。归档：写入本快照时把「终端分隔条延长 + 导航锚点顺序修正」移入 `docs/archive/`；探针留在仓库外 `/tmp/probe/run.mjs`。
 
 ## 🏷️ 2026-09-12 · P2 视觉与 P3 内容优化收尾
 
@@ -29,13 +77,10 @@
 
 | 项 | 位置 | 说明 |
 |----|------|------|
-| 分隔条去底色 | `style.css` | 去掉填黑与阴影，只留上下细线 —— 与导航药丸（同为深色圆角横条，锚点落点仅隔 12px）在材质上分开 |
-| 螺旋外圈衰减 | `style.css` | r1–r4 透明度 0.18/0.38/0.62/0.84，消除硬裁切边；环数与旋转动画不变 |
-| 技术栈卡片标签 | `index.html` | `TECH STACK` → `OVERVIEW`，消除同屏重复 |
+| 分隔条去底色 + 螺旋外圈衰减 | `style.css` | 分隔条去掉填黑与阴影、只留上下细线（与导航药丸同为深色圆角横条，材质上分开）；螺旋 r1–r4 透明度 0.18/0.38/0.62/0.84，消除硬裁切边，环数与旋转不变 |
+| 技术栈标签 + kicker 序号 + 荣誉等级排版 | `index.html` `desktop.css` | `TECH STACK` → `OVERVIEW` 消同屏重复；kicker 加序号 `01 / ABOUT` … `07 / CONTACT`（沿用零补位编号语言）；荣誉等级定稿 22px / `--weight-medium` / 正文色 |
 | 荣誉 / 实习行结果列 | `index.html` `desktop.css` | 新增 `.timeline-list__award`：荣誉放奖项等级或成绩、实习放角色；实测死区 45% → 0px |
 | 项目卡片块顺序 | `index.html` | 4 卡原本三种不一致顺序，统一为 `title → desc → 成果 → tags → 图片 →（演示视频）`，量化结果前置 |
-| 区块 kicker 序号 | `index.html` | `01 / ABOUT` … `07 / CONTACT`，沿用页面既有零补位编号语言（项目 001–004、技术分类 001–008） |
-| 荣誉等级排版 | `desktop.css` | 定稿 22px / `--weight-medium` / 正文色，与竞赛名同字重 |
 
 ### 🧭 决策
 
@@ -60,7 +105,6 @@
 - #tag: 视觉验证 — 用 `Range.getBoundingClientRect()` 量「文字实际最右端 vs 行右边界」，可把「右侧空不空」这类主观判断变成可验证数字（本次据此证明死区为 0）
 - #tag: design — 同一视觉槽位出现在相邻两区块时不该给不同处理；先统一语义，再决定是否需要分层
 - #tag: css — 中文字重受实际加载字重集限制，写 600 不等于渲染 600
-- #tag: docs — 完成项从 TODO 移除而非标 `[x]`，历史留在 git
 
 ### 🚀 下会话指令
 
@@ -89,15 +133,11 @@
 
 | 项 | 位置 | 说明 |
 |----|------|------|
-| 终端分隔条定稿 | `style.css` | 三轮：通栏黑带（**用户否决**）→ 仅右端外延 → **两端对等外延**（距视口 32px、比正文列外扩 48px、圆角保留） |
-| 窄屏降级 | `index.html` `mobile.css` | 命令路径独立为 `.term-divider__path`，<768px 隐藏回退 `$ cd techstack` |
-| 分隔条迁移 | `index.html` | 由 `#techstack` 顶部移到 `#projects` 顶部，命令改 `projects` |
+| 终端分隔条定稿 + 迁移 | `style.css` `index.html` | 三轮收敛为**两端对等外延**（距视口 32px、比正文列外扩 48px、圆角保留）；<768px 路径段 `.term-divider__path` 隐藏、回退 `$ cd techstack`；由 `#techstack` 顶部迁到 `#projects` 顶部 |
 | Hero 标题孤字 | `desktop.css` | 字号改由**列宽**决定，1024/1280/1440px 由 3 行恢复 2 行 |
-| 页脚 ASCII 错字 | `index.html` | 前两列错位（`ZHOU` 成 `HZOU`、次行误作 `WIFF`）→ 修正为 `ZHOU / ZIWEI` |
 | 导航模型重组 | `index.html` | 简介归首页；荣誉并入「实习竞赛」；「关于」指向生活（工作之外的我） |
-| 锚点缺陷 | `index.html` | 页脚「联系我」原指荣誉 → 改指 `#contact`（该区块原本无 id，已补） |
-| Hero 首屏联系入口 | `index.html` `desktop.css` | 主 CTA 下加一格 mono 次级入口（GitHub / Email） |
-| 页序调换 | `index.html` | 技术栈（header ＋ 分类区）整体前移到项目经历之前 |
+| 页脚两处缺陷 | `index.html` | ASCII 前两列错位（`ZHOU` 成 `HZOU`、次行误作 `WIFF`）已修正；「联系我」原指荣誉 → 改指 `#contact`（该区块原本无 id，已补） |
+| Hero 首屏联系入口 + 页序调换 | `index.html` `desktop.css` | 主 CTA 下加一格 mono 次级入口（GitHub / Email）；技术栈（header ＋ 分类区）整体前移到项目经历之前 |
 | 间距适配 | `desktop.css` | 带分隔条的区块 `padding-top: 0`；浅色之后的暗色区块自身留暗色托底。两处交界已截图确认 |
 
 ### 🧭 决策
@@ -136,58 +176,5 @@
 4. 已否决项 —— 通栏黑带分隔条 · 全站统一暗色 · 竖版视频适配 · char-matrix 接入
 5. 归档 —— 本次已将「暗带→实习终端提示符分隔落地」移入 `docs/archive/`
 
-## 🏷️ 2026-09-12 · 终端分隔条延长 + 导航锚点顺序修正
 
-**结论**：终端分隔符由「内容宽度圆角浮窗」改为「两端对等外延的圆角条」——桌面两侧各距视口 32px、比正文列外扩 48px，不再与段首平齐，读作分隔物而非一行正文；顺带修掉导航栏/页脚「实习↔技术栈」顺序与页面相反的 bug。
-
-| 维度 | 状态 |
-|------|------|
-| 主线 | `v3-full` |
-| commit | 与本次快照同批提交 |
-| 遗留 | 🟡 分隔条延伸量可再微调 · 素材类待办见 TODO.md P2 |
-
-### ✅ 完成（Δ 自 v3-full 独立化）
-
-| 项 | 位置 | 说明 |
-|----|------|------|
-| 形态三轮迭代 | `assets/css/style.css` | ①通栏黑带（**用户称违和，否决**）→ ②圆角 + 仅右端外延 → ③两端对等外延，定稿 |
-| 两端对等外延 | `assets/css/style.css` | ≥1024px：`margin-left/right: calc(var(--space-8) - var(--gutter-desktop))`，左侧 80→32px、右侧外扩 48px；移动端 `calc(var(--space-2) - var(--gutter-mobile))`（8px） |
-| 命令拆包 + 窄屏降级 | `index.html` `mobile.css` | 路径段独立为 `.term-divider__path`，<768px `display:none` 回退 `$ cd techstack`；`.term-divider__cmd` 加 `white-space: nowrap` |
-| 导航/页脚顺序修正 | `index.html` | 实习↔技术栈 两个 `<li>` 互换（nav 69-71 / footer 944-946），与 section DOM 顺序对齐 |
-
-### 🧭 决策
-
-| 决策 | 结论 | 是否沉淀 CLAUDE.md |
-|------|------|-------------------|
-| 分隔条是否通栏 | **否决**通栏黑带（用户称违和）；定稿 = 圆角面板 + 两端对等外延 + 比正文列更宽 | 否 |
-| 分隔物与正文的关系 | 不能与段首平齐，须比正文列外扩，否则被读成一行正文 | 否 |
-| 长命令窄屏处理 | 路径打包成独立 span，窄屏隐藏回退短命令；不做字号硬压 | 否 |
-| 通栏组件须 `max-width:none` | 拟写入 CLAUDE.md「开发规范」，**待用户确认** | ⏳ 待确认 |
-
-### 🔴 坑（勿重踩）
-
-| 现象 | 根因 | 解决 | tag |
-|------|------|------|-----|
-| 分隔条左侧通栏生效、右侧不延伸，宽度卡死 665px | 全局 `p { max-width: 65ch }`（17px mono 下 ≈665px）压住了宽度 | `.term-divider { max-width: none }` | #tag: css |
-| 无头 Chrome 截图停在首屏，hash 锚点不生效 | `--virtual-time-budget` 跳过平滑滚动，页面没滚到目标区块 | iframe 探针：同源 `contentWindow.scrollTo({behavior:'instant'})` 后再读数/截图 | #tag: 视觉验证 |
-| 390px 下长路径命令换行，三圆点被挤到第二行且右侧被裁 | 37 字符命令 + 圆点超出面板内容宽 | 路径 span 窄屏 `display:none`，回退短命令 | #tag: design |
-| 导航栏「实习」排在「技术栈」前，与页面顺序相反 | 09-12 实习区块重排时只改 body，nav/footer 锚点未同步 | 两处 `<li>` 互换；`main.js` scrollspy 取 section DOM 顺序，不受影响 | #tag: docs |
-
-### 💡 关键发现
-
-- #tag: css — 给 `<p>` 做的通栏组件必须显式 `max-width: none`，项目全局 `p{max-width:65ch}` 会静默截断宽度
-- #tag: css — `margin: 0 X var(--space-10)` 三值写法 = top / 左右同值 / bottom，适合两端对称外扩
-- #tag: 视觉验证 — 验证首屏以外元素：临时 iframe 探针页（同源可读 `getComputedStyle`/`getBoundingClientRect` + `scrollTo`），比 hash 导航与超大 `--window-size` 都可靠（后者会被 hero `min-height:100svh` 撑坏）
-- #tag: design — 分隔物要读成「分隔」，必须比正文列宽；与段首平齐会被读成一行正文
-- #tag: docs — 区块重排后必须同步 nav/footer 锚点顺序；scrollspy 按 section DOM 顺序工作，所以 bug 只错在 HTML 排列
-
-### 🚀 下会话指令
-
-> 承接 v3-full 独立化：本次的未提交改动已与快照同批提交
-
-1. 分隔条延伸量可再调 —— 现「距视口 32px / 外扩 48px」；更夸张改 `var(--space-6)`（24px）或 `-var(--gutter-desktop)`（贴边）
-2. 素材类待办（工业卡片图/视频、全向轮视频）→ TODO.md P2，等用户提供
-3. v3-full 上线方案（workflow 只监听 v2）→ TODO.md P4，等用户决策
-4. 已否决项 — 通栏黑带形态（用户称违和）；勿再做成与正文等宽、或左侧与段首平齐
-5. 归档 — 本次把 7 个旧快照移入 `docs/archive/`，检索 `grep -n "#tag: <关键词>" docs/archive/*.md`
 
