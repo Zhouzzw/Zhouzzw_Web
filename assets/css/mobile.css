@@ -232,7 +232,8 @@
 
 /* 更小屏幕优化 (<480px) */
 @media (max-width: 480px) {
-  .nav__links li:nth-child(1) {
+  /* indicator 是 .nav__links 的首个子元素，nth-child(1) 永远匹配不到 li —— 必须用 first-of-type */
+  .nav__links li:first-of-type {
     display: none;
   }
 

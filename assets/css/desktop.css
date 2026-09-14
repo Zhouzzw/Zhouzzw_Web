@@ -818,7 +818,7 @@
 .tech-cat__list li {
   font-size: var(--text-body);
   color: var(--color-ghost-grey);
-  padding-left: var(--space-5);
+  padding-left: var(--space-6);
   position: relative;
   line-height: 1.5;
 }
@@ -1329,7 +1329,7 @@
 .timeline-list__meta {
   font-family: var(--font-mono);
   font-size: var(--text-mono-small);
-  color: var(--color-accent);
+  color: var(--color-accent-deep);   /* 浅色底上 --color-accent 仅 1.95:1，改用深一档（4.90:1） */
   text-transform: uppercase;
   letter-spacing: 0.02em;
   padding-top: 0.2em;
@@ -1399,7 +1399,7 @@
   width: 100%;
   height: 100%;
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-8);
 }
 
 .video-modal__close {
@@ -1415,14 +1415,14 @@
 }
 
 .video-modal__close:hover {
-  color: var(--color-text);
+  color: var(--color-white);
 }
 
 /* --- 视频封面 --- */
 .video-cover {
   position: relative;
   cursor: pointer;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-8);
   overflow: hidden;
 }
 
@@ -1486,7 +1486,7 @@
   margin-top: auto;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
   .footer {
     padding: 64px 20px 32px;
   }
@@ -1554,7 +1554,8 @@
 }
 
 /* --- 响应式断点触达 (移动端样式在 mobile.css) --- */
-@media (max-width: 1024px) {
+/* 1024px 是桌面布局的第一档（min-width:1024px），此处必须写 1023px 才互为补集 */
+@media (max-width: 1023px) {
   .hero__visual {
     display: none;
   }
