@@ -2,6 +2,10 @@
  * animations.js — IntersectionObserver 滚动入场动画
  */
 
+/* 就绪标记：index.html 的渐进增强兜底据此判断是否保留 .anim
+   （本脚本若加载失败或报错，标记不会出现，兜底会移除 .anim 保证正文可见） */
+document.documentElement.setAttribute('data-anim-ready', '1');
+
 /* ===== CSS 动画关键帧 (注入) ===== */
 const style = document.createElement('style');
 style.textContent = `

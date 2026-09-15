@@ -3,6 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- 渐进增强标记：仅在支持 IntersectionObserver 时才隐藏待入场元素。
+       无 JS / 老浏览器 / 爬虫下不加此标记，正文始终可见（不依赖 JS 才能读到内容）。
+       兜底：若 animations.js 未就绪（加载失败/报错），load 后自动移除标记，避免内容永久不可见。 -->
+  <script>
+    if ('IntersectionObserver' in window) {
+      document.documentElement.classList.add('anim');
+      window.addEventListener('load', function () {
+        setTimeout(function () {
+          if (!document.documentElement.hasAttribute('data-anim-ready')) {
+            document.documentElement.classList.remove('anim');
+          }
+        }, 800);
+      });
+    }
+  </script>
   <meta name="description" content="周子惟 | 嵌入式 & ROS 机器人开发工程师 - 武汉科技大学电子信息工程在读，RoboMaster 战队电控组负责人，武汉晴山科技机器人系统集成实习工程师。RoboMaster 项目、G1-D 工业项目与技术栈全览。" />
   <meta name="keywords" content="周子惟, 嵌入式, ROS, ROS2, 具身智能, 强化学习, RoboMaster, STM32, 机器人开发" />
   <meta name="author" content="周子惟" />
@@ -254,13 +270,6 @@
 </svg>
       </div>
 
-      <!-- 滚动刻度指示器 -->
-      <div class="hero__scroll-indicator" aria-hidden="true">
-        <span>Scroll</span>
-        <div class="hero__scroll-track">
-          <div class="hero__scroll-cue"></div>
-        </div>
-      </div>
     </section>
 
     <!-- ========== 个人简介 ========== -->
@@ -924,6 +933,24 @@
             </div>
           </a>
 
+          <!-- 微信：微信号需常显（可复制/可读屏/无 JS 也能拿到），二维码作为补充
+               放在二级弹层（待素材）。非链接项，故用 div + 独立复制按钮。 -->
+          <div class="contact-item-big">
+            <!-- 微信经典双气泡标：单路径几何取自 simple-icons v13（CC0），
+                 两个气泡间的间隙与四个眼睛孔都由路径自身的子路径构成，无需 mask -->
+            <svg class="contact-item-big__icon" viewBox="0 0 24 24" fill="currentColor" style="color: var(--color-white);" aria-hidden="true">
+              <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.406-.032zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/>
+            </svg>
+            <div>
+              <p class="contact-item-big__label">WeChat</p>
+              <p class="contact-item-big__value">zzw13726855179</p>
+            </div>
+            <div class="contact-item-big__actions">
+              <button type="button" class="contact-chip" data-qr="wechat">二维码</button>
+              <button type="button" class="contact-chip" data-copy="zzw13726855179">复制</button>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -974,6 +1001,23 @@
       <span>BUILT WITH VITE · EMBEDDED · ROS2 · EMBODIED AI</span>
     </div>
   </footer>
+
+  <!-- ========== 微信二维码弹层 ==========
+       标记写在 HTML 而非 JS 注入：Vite 需要重写 img 的 src（含 base 前缀），
+       JS 字符串里的路径不会被处理；对话语义放标记里对读屏也更友好。
+       关闭时 display:none，不进无障碍树；开关与焦点管理见 main.js 的 openDialog/closeDialog。 -->
+  <div class="video-modal qr-modal" id="qr-modal" role="dialog" aria-modal="true" aria-labelledby="qr-modal-title">
+    <div class="qr-modal__inner">
+      <button type="button" class="video-modal__close qr-modal__close" data-dialog-close aria-label="关闭二维码">&times;</button>
+      <p class="qr-modal__title" id="qr-modal-title">WeChat · 扫码添加</p>
+      <img class="qr-modal__img" src="/assets/images/微信二维码.png"
+           alt="周子惟的微信二维码，使用微信扫一扫即可添加好友"
+           width="509" height="506" loading="lazy" decoding="async" />
+      <p class="qr-modal__id">微信号 <strong>zzw13726855179</strong></p>
+      <p class="qr-modal__hint">桌面端用微信「扫一扫」；手机端长按上方二维码识别，或直接复制微信号</p>
+      <button type="button" class="contact-chip qr-modal__copy" data-copy="zzw13726855179">复制</button>
+    </div>
+  </div>
 
   <script type="module" src="/assets/js/main.js"></script>
   <script type="module" src="/assets/js/animations.js"></script>

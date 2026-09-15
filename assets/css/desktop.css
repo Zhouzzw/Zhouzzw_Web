@@ -284,50 +284,6 @@
   }
 }
 
-/* Hero 滚动刻度指示器 — 参考站风格 */
-.hero__scroll-indicator {
-  display: none;
-}
-
-@media (min-width: 1024px) {
-  .hero__scroll-indicator {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-4);
-    position: absolute;
-    right: calc(var(--gutter-desktop) + 2rem);
-    bottom: 4rem;
-    font-family: var(--font-mono);
-    font-size: var(--text-mono);
-    color: rgba(255, 255, 255, 0.5);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .hero__scroll-track {
-    position: relative;
-    width: 2px;
-    height: 80px;
-    background-image: repeating-linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0.15) 0 1px,
-      transparent 1px 8px
-    );
-    overflow: hidden;
-  }
-
-  .hero__scroll-cue {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 16px;
-    background: rgba(255, 255, 255, 0.7);
-    animation: heroScrollCue 1.4s steps(7, end) infinite;
-  }
-}
-
 /* --- Section 通用 — 参考站大留白 + 12 列栅格 --- */
 .section {
   padding: var(--space-20) var(--gutter-mobile);
@@ -509,11 +465,7 @@
   max-width: 60ch;
 }
 
-/* 滚动入场：内容直接显示，无过渡动画（简单滚动） */
-.animate-on-scroll {
-  opacity: 1;
-  transform: none;
-}
+/* 滚动入场样式已移至 style.css：全局生效 + 无 JS 兜底 + .stagger-* 错峰 */
 
 /* --- 项目列表 — 参考站纵向编号条目风格 --- */
 .project-list {
@@ -1432,6 +1384,73 @@
   object-fit: cover;
 }
 
+/* --- 微信二维码弹层（复用 .video-modal 的遮罩与开关，内容自成一卡） --- */
+.qr-modal__inner {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  padding: var(--space-8);
+  border-radius: var(--radius-8);
+  background: var(--color-off-white);
+  text-align: center;
+}
+
+.qr-modal__title {
+  font-family: var(--font-mono);
+  font-size: var(--text-mono);
+  color: var(--color-dark-grey);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: var(--space-6);
+}
+
+.qr-modal__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 300px;
+  margin: 0 auto;
+  border-radius: var(--radius-4);
+}
+
+.qr-modal__id {
+  margin-top: var(--space-6);
+  font-size: var(--text-body);
+  color: var(--color-text);
+}
+
+.qr-modal__id strong {
+  font-family: var(--font-mono);
+  font-weight: var(--weight-medium);
+}
+
+.qr-modal__hint {
+  margin-top: var(--space-2);
+  font-size: var(--text-body-small);
+  color: var(--color-dark-grey);
+  line-height: 1.6;
+}
+
+/* 浅色卡上的 chip：.contact-chip 的配色是为暗区调的，这里必须换深色档
+   （ghost-grey #DEDEDE 与 accent #FF9100 在米白上分别不可读 / 仅 1.95:1）。
+   用 .qr-modal 提升特异性而不是靠源码顺序 —— 本块定义在 .contact-chip 之前，
+   同特异性下会被后者覆盖（实测踩过）。 */
+.qr-modal .contact-chip {
+  margin-top: var(--space-4);
+  color: var(--color-dark-grey);
+  border-color: var(--color-mid-grey);
+}
+
+.qr-modal .contact-chip:hover {
+  color: var(--color-text);
+  border-color: var(--color-dark-grey);
+}
+
+.qr-modal .contact-chip.is-copied {
+  color: var(--color-accent-deep);
+  border-color: var(--color-accent-deep);
+}
+
 .video-cover__play {
   position: absolute;
   inset: 0;
@@ -1551,6 +1570,47 @@
   color: var(--color-white);
   letter-spacing: -0.01em;
   transition: color var(--duration-fast) var(--ease-standard);
+}
+
+/* 行内操作按钮：复制微信号 / 查看二维码（非链接项专用）
+   min-width 固定 + 文案切换，避免点击后按钮宽度跳动 */
+.contact-item-big__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.contact-chip {
+  min-width: 5.5em;
+  padding: 5px 10px;
+  border: 1px solid var(--color-border-dark);
+  border-radius: var(--radius-4);
+  background: none;
+  color: var(--color-ghost-grey);
+  font-family: var(--font-mono);
+  font-size: var(--text-mono-small);
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-standard),
+              border-color var(--duration-fast) var(--ease-standard);
+}
+
+.contact-chip:hover {
+  color: var(--color-white);
+  border-color: var(--color-mid-grey);
+}
+
+.contact-chip.is-copied {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+@media (max-width: 768px) {
+  .contact-chip {
+    min-width: 4.5em;
+    padding: 5px 8px;
+  }
 }
 
 /* --- 响应式断点触达 (移动端样式在 mobile.css) --- */

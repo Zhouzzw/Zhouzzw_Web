@@ -69,11 +69,15 @@
 
 - 导航栏 scrollspy 滚动高亮当前模块（只观察有导航链接的 section）
 - 导航滑动指示器平滑过渡（`translateX` + `width` 跟随当前链接）
-- 点击导航锚点平滑跳转，`scroll-margin-top: 96px` 防标题被导航遮挡
+- 点击导航锚点平滑跳转：区块顶边与视口顶边**严格对齐**（`scroll-margin-top: 0`），避免上一区块颜色残留在视口顶部；**仅 `#projects` 保留 `96px`** —— 它的 `padding-top` 为 0、顶边就是终端分隔条，需让出浮动药丸导航的高度。导航是居中浮动药丸，区块 `padding-top` ≥64px 且标题靠左，故不会被遮挡
+- 滚动入场：`.animate-on-scroll` → `html.anim` 下隐藏、`.is-visible` 时 `fadeUp` 入场（`animations.js` 的 IntersectionObserver 驱动）；`html.anim` 由 `<head>` 内联脚本同步添加，无 JS 时正文照常可见
+- 顶部滚动进度条（`.scroll-progress`，JS 注入，`scaleX` 驱动）
 - 导航滚动微缩（`.nav--scrolled`）
 - 项目卡片 hover 微动效
 - 技术栈分类标签筛选 (纯 JS)
 - 视频点击弹窗播放（封面首帧截取）
+- 联系方式：微信行提供「二维码」弹层与「复制微信号」两枚 chip；微信号必须明文常显（可读屏/可复制/无 JS 也能拿到），二维码只是补充
+- 弹层统一走 `main.js` 的 `openDialog` / `closeDialog`：`role="dialog"` + `aria-modal`、打开前记住触发元素关闭后还原焦点、ESC 与点遮罩关闭、Tab 焦点陷阱；关闭收尾动作（如清空 `<video>`）通过 `openDialog` 的第三个参数注册，避免某条关闭路径漏执行
 - 移动端导航内联横排（无汉堡折叠，`<480px` 隐藏"首页"项）
 
 ## 开发规范
