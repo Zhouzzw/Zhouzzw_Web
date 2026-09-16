@@ -277,8 +277,11 @@
 }
 
 @media (min-width: 1024px) {
+  /* 顶部留白比底部收一档：浮动药丸导航（底边 84px）正压在这段留白里，
+     等值（--space-40=160px）时导航底边到 kicker 的视觉间距达 76px，明显偏大；
+     收到 --space-32（128px）后为 44px，与 #techstack 的既有观感一致 */
   .section {
-    padding: var(--space-40) var(--gutter-desktop);
+    padding: var(--space-32) var(--gutter-desktop) var(--space-40);
   }
 }
 
