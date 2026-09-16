@@ -315,14 +315,16 @@
     <section class="section section--dark text-watermark" style="padding-top: var(--space-12);">
       <div class="section__body">
         <!-- 筛选器 -->
+        <!-- 筛选器：单选的切换按钮组，用 aria-pressed 暴露选中态（纯 class 读屏读不出）；
+             初始态写在 HTML 里，无 JS 时也是正确的 -->
         <div class="tech-filter animate-on-scroll">
-          <button class="tech-filter__btn is-active" data-filter="all">全部</button>
-          <button class="tech-filter__btn" data-filter="mcu">单片机</button>
-          <button class="tech-filter__btn" data-filter="control">控制算法</button>
-          <button class="tech-filter__btn" data-filter="ros">ROS 开发</button>
-          <button class="tech-filter__btn" data-filter="sim">仿真建模</button>
-          <button class="tech-filter__btn" data-filter="ai">具身智能</button>
-          <button class="tech-filter__btn" data-filter="lang">编程语言</button>
+          <button type="button" class="tech-filter__btn is-active" data-filter="all" aria-pressed="true">全部</button>
+          <button type="button" class="tech-filter__btn" data-filter="mcu" aria-pressed="false">单片机</button>
+          <button type="button" class="tech-filter__btn" data-filter="control" aria-pressed="false">控制算法</button>
+          <button type="button" class="tech-filter__btn" data-filter="ros" aria-pressed="false">ROS 开发</button>
+          <button type="button" class="tech-filter__btn" data-filter="sim" aria-pressed="false">仿真建模</button>
+          <button type="button" class="tech-filter__btn" data-filter="ai" aria-pressed="false">具身智能</button>
+          <button type="button" class="tech-filter__btn" data-filter="lang" aria-pressed="false">编程语言</button>
         </div>
 
         <!-- 技术分类列表：芯片框图 -->
@@ -488,7 +490,7 @@
                   <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" loading="lazy" />
                 </div>
 
-                <div class="tool-icon tool-icon--light" title="GitHub">
+                <div class="tool-icon" title="GitHub">
                   <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" loading="lazy" />
                 </div>
 
@@ -500,7 +502,7 @@
                   <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/raspberrypi/raspberrypi-original.svg" alt="Raspberry Pi" loading="lazy" />
                 </div>
 
-                <div class="tool-icon tool-icon--light" title="ROS2">
+                <div class="tool-icon" title="ROS2">
                   <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ros/ros-original.svg" alt="ROS2" loading="lazy" />
                 </div>
 
@@ -579,27 +581,29 @@
               <div class="project-item__section">
                 <p class="mono-label mono-label--dark">演示视频</p>
                 <div class="video-grid">
-                  <div class="video-cover" data-video-type="local">
+                  <!-- I1：封面是弹层的唯一入口，用真 <button> 才能键盘打开（Enter / Space 原生触发 click）。
+                       按钮内容只能是 phrasing content，故内部 div / p 一律降级为 span（样式在 CSS 里 block 化）。 -->
+                  <button type="button" class="video-cover" data-video-type="local" aria-label="播放演示视频：跳跃上台阶">
                     <video src="/assets/videos/串联腿小跳上台阶演示视频.mp4" preload="metadata" muted></video>
-                    <div class="video-cover__play">
-                      <div class="video-cover__play-icon"></div>
-                    </div>
-                    <p class="video-cover__label">跳跃上台阶</p>
-                  </div>
-                  <div class="video-cover" data-video-type="local">
+                    <span class="video-cover__play">
+                      <span class="video-cover__play-icon"></span>
+                    </span>
+                    <span class="video-cover__label">跳跃上台阶</span>
+                  </button>
+                  <button type="button" class="video-cover" data-video-type="local" aria-label="播放演示视频：旋转跳跃">
                     <video src="/assets/videos/串联腿跳跃演示视频.mp4" preload="metadata" muted></video>
-                    <div class="video-cover__play">
-                      <div class="video-cover__play-icon"></div>
-                    </div>
-                    <p class="video-cover__label">旋转跳跃演示</p>
-                  </div>
-                  <div class="video-cover" data-video-type="local">
+                    <span class="video-cover__play">
+                      <span class="video-cover__play-icon"></span>
+                    </span>
+                    <span class="video-cover__label">旋转跳跃演示</span>
+                  </button>
+                  <button type="button" class="video-cover" data-video-type="local" aria-label="播放演示视频：飞坡">
                     <video src="/assets/videos/串联腿飞坡演示视频.mp4" preload="metadata" muted></video>
-                    <div class="video-cover__play">
-                      <div class="video-cover__play-icon"></div>
-                    </div>
-                    <p class="video-cover__label">飞坡演示</p>
-                  </div>
+                    <span class="video-cover__play">
+                      <span class="video-cover__play-icon"></span>
+                    </span>
+                    <span class="video-cover__label">飞坡演示</span>
+                  </button>
                 </div>
               </div>
 

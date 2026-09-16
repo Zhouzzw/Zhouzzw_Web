@@ -288,13 +288,20 @@ function initTechFilter() {
     btn.addEventListener('click', () => {
       const filter = btn.dataset.filter;
 
-      btns.forEach(b => b.classList.remove('is-active'));
-      btn.classList.add('is-active');
+      btns.forEach(b => {
+        const on = b === btn;
+        b.classList.toggle('is-active', on);
+        // I6：选中态要暴露给读屏 —— 只切 class 的话 aria-pressed 永远不更新
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
 
       const categories = document.querySelectorAll('.tech-cat');
       categories.forEach(cat => {
         const match = filter === 'all' || cat.dataset.category === filter;
         cat.classList.toggle('is-dimmed', !match);
+        // I6：被筛掉的分类只改了 opacity，仍在无障碍树里被逐条念出 —— 用 aria-hidden 与视觉状态对齐
+        if (match) cat.removeAttribute('aria-hidden');
+        else cat.setAttribute('aria-hidden', 'true');
       });
     });
   });

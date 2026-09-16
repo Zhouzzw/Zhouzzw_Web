@@ -627,7 +627,7 @@ section[id] {
 .footer__bottom span {
   font-family: var(--font-mono);
   font-size: 10px;
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.55);   /* I8：0.35 实测 3.01:1 不达标；0.55 实测 6.27:1 达 AA */
   text-transform: uppercase;
   letter-spacing: 0.02em;
 }

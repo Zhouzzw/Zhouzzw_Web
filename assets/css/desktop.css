@@ -441,7 +441,8 @@
 @media (min-width: 1024px) {
   .project-item {
     display: grid;
-    grid-template-columns: 100px 1fr;
+    /* A1：100px 装不下「机械臂运控负责人」（8 个全角字 ≈ 104px）会折成两行 → 132px + 不折行 */
+    grid-template-columns: 132px 1fr;
     gap: var(--space-8);
     align-items: start;
   }
@@ -464,6 +465,7 @@
   color: var(--color-ghost-grey);
   text-transform: uppercase;
   letter-spacing: 0.02em;
+  white-space: nowrap;      /* A1：角色名不折行 */
 }
 
 .project-item__title {
@@ -578,6 +580,7 @@
 }
 
 .video-cover__label {
+  display: block;            /* 按钮内容只能是 phrasing content，<p> 降级为 <span> 后需 block 化才能吃 margin-top */
   font-family: var(--font-mono);
   font-size: var(--text-mono-small);
   color: var(--color-ghost-grey);
@@ -600,7 +603,7 @@
 .tech-filter__btn {
   font-family: var(--font-mono);
   font-size: var(--text-mono);
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.5);   /* I9：0.45 实测 4.30:1 临界不达标；0.5 实测 4.96:1 达 AA */
   background: transparent;
   border: none;
   padding: var(--space-2) 0;
@@ -860,11 +863,16 @@
   }
 }
 
+/* A3：9 个图标统一为同尺寸白底圆角衬 —— 原先只有 GitHub / ROS2 有白底块，其余 7 个是裸 logo。
+   底衬挂在 .tool-icon 上（64px 衬 + 48px logo），logo 自身尺寸保持不变。 */
 .tool-icon {
+  width: 64px;
+  height: 64px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  background: #FFFFFF;
+  border-radius: 14px;
   transition: transform var(--duration-base) var(--ease-out);
   cursor: default;
 }
@@ -873,36 +881,23 @@
   transform: translateY(-3px);
 }
 
+/* 有了白底衬，原 drop-shadow 只会描在 logo 轮廓上（等于看不见），故一并去掉 */
 .tool-icon__img {
   width: 48px;
   height: 48px;
   object-fit: contain;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
 }
 
 @media (min-width: 1280px) {
+  .tool-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 16px;
+  }
+
   .tool-icon__img {
     width: 56px;
     height: 56px;
-  }
-}
-
-/* 深色图标加白底衬 */
-.tool-icon--light {
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #FFFFFF;
-  border-radius: 12px;
-}
-
-@media (min-width: 1280px) {
-  .tool-icon--light {
-    width: 56px;
-    height: 56px;
-    border-radius: 14px;
   }
 }
 
@@ -1246,9 +1241,20 @@
   color: var(--color-white);
 }
 
-/* --- 视频封面 --- */
+/* --- 视频封面 ---
+   I1：封面是视频弹层的唯一入口，必须是可键盘操作的控件 —— 故用真 <button>。
+   Enter / Space 原生触发 click，无需额外按键处理；UA 默认样式在此全部清零。 */
 .video-cover {
   position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  appearance: none;
   cursor: pointer;
   border-radius: var(--radius-8);
   overflow: hidden;
