@@ -62,6 +62,7 @@
 | **配色** | 米白 `#F1EEE7` / 深灰黑 `#232323` / 纯黑 `#000000` / 橙色 `#FF9100` · **全部暗区统一走 `--color-black`（`#242423` 已废弃，勿再引入）** · 浅色底上的橙色正文与焦点环改用深一档 `--color-accent-deep: #A05200` |
 | **字体** | Geist + Geist Mono + Noto Sans SC |
 | **间距** | 4px 基数：`--space-2..40` |
+| **水平边距** | 统一走 `--gutter`（三档，元素不再各自写断点）：<768 移动 16px ｜ 769–1023 平板**流式** `clamp(1rem, 25vw - 176px, 5rem)`（768px→16px、1024px→80px）｜ ≥1024 桌面 80px。档位切换只在 `style.css` 顶部两个媒体查询（`min-width: 769px` / `1024px`）里发生 |
 | **圆角** | 4px / 8px / 9999px |
 | **过渡** | `cubic-bezier(0.23,1,0.32,1)` / `cubic-bezier(0.4,0,0.2,1)` |
 | **设计参考** | contentarchitecture.dev + 终端极客美学 |
@@ -77,6 +78,8 @@
 - 项目卡片 hover 微动效
 - 技术栈分类标签筛选 (纯 JS)
 - 区块留白节奏：桌面端 `.section` **顶部 128px / 底部 160px**（顶部刻意收一档）—— 浮动药丸导航底边在 84px 处压着这段留白，等值 160px 时「导航底边 → kicker」净空达 76px，收到 128px 后为 44px，与 `#techstack` 观感齐平
+- 平板档留白（769–1023px）：`.section` 与 `#techstack` 顶部走 `clamp(6rem, 12.5vw, 8rem)`（96px@768 → 128px@1024 流式）—— 基线 80px / #techstack 64px 都会被导航（底边 84px）压住；此档同时把断点边界写为 `1023.98px`（与 `min-width:1024px` 互补，堵分数宽度缺口）
+- Hero 标题字号两档**严格连续**：双列档（≥1024）`min(--text-headline-2, (50vw − gutter)/9)`；单列档（<1024）`min(--text-headline-2, (100vw − 2·gutter − 16px)/9, 3rem)` —— `3rem(48px)` 恰为桌面档在 1024px 的取值，1023px 与 1024px 同为 48px（消除原 −33% 反向跳变）；列宽约束保证「上下位机全栈工程师」9 个全角字永不孤行（扣 16px 为滚动条余量）
 - 视频弹窗播放：封面是 **`<button>`**（键盘可达，Enter / Space 由平台原生触发）+ `aria-label`，内部 `<video preload="metadata">` 由 `main.js` 截 0.5s 首帧作静帧；封面只负责打开弹层
 - 联系方式：微信行提供「二维码」弹层与「复制微信号」两枚 chip；微信号必须明文常显（可读屏/可复制/无 JS 也能拿到），二维码只是补充
 - 弹层统一走 `main.js` 的 `openDialog` / `closeDialog`：`role="dialog"` + `aria-modal`、打开前记住触发元素关闭后还原焦点、ESC 与点遮罩关闭、Tab 焦点陷阱；关闭收尾动作（如清空 `<video>`）通过 `openDialog` 的第三个参数注册，避免某条关闭路径漏执行
@@ -93,14 +96,14 @@
 
 ## 工程红线（历次踩坑沉淀 · 改动前必读）
 
-1. **断点对必须互为补集** —— `min-width: N` 与 `max-width: N` 会在宽度**正好为 N 时同时命中**，必须写 `N` / `N-1`。历史上 `max-width: 1024px` 与 `min-width: 1024px` 撞车，让 1024px（iPad Pro 竖屏正好命中）成为唯一坏档。
+1. **断点对必须互为补集，且两侧的连续量必须平滑衔接** —— `min-width: N` 与 `max-width: N` 会在宽度**正好为 N 时同时命中**，必须写 `N` / `N-1`（本项目用 `1023.98px` / `769px` 此类值，同时堵住 N±0.98 的分数宽度缺口）。历史上 `max-width: 1024px` 与 `min-width: 1024px` 撞车，让 1024px（iPad Pro 竖屏正好命中）成为唯一坏档。**同族问题：断点两侧的「连续量」（水平边距、流体字号）也必须平滑** —— 曾出现 768–1023px「无人接管」致正文贴边 16px（A12）、1023→1024px hero 标题 71.6→48px 反向跳变（A11）。处置：此类量统一走 `clamp()` 流式（如 `--gutter` 三档），并核对断点两侧取值相等（现 1023px 与 1024px 的 hero 标题同为 48px）。
 2. **用 `var()` 前确认该变量已声明** —— 未声明的 CSS 自定义属性**不报错、不告警**，整条属性静默失效。改动后跑一次双向差集（**结果必须为空**）：
    ```bash
    grep -oh '\-\-[a-zA-Z0-9-]*[[:space:]]*:' assets/css/*.css | sed 's/[[:space:]]*:$//' | sort -u > /tmp/d.txt
    grep -oh 'var(--[a-zA-Z0-9-]*' assets/css/*.css index.html assets/js/*.js | sed 's/var(//' | sort -u > /tmp/r.txt
    comm -3 /tmp/d.txt /tmp/r.txt          # 空 = 通过
    ```
-   当前基线：**声明 62 / 引用 62**（2026-09-16 B5 新增 `--spot-x` / `--spot-y`）。
+   当前基线：**声明 64 / 引用 64**（2026-09-16 B5 新增 `--spot-x` / `--spot-y`；断点族修复新增 `--gutter` / `--gutter-tablet`）。
 3. **改样式前先清内联** —— 内联 `style` 优先级高于 class，会**静默压制**样式表里的规则（`.section--dark { background }` 就因此整轮没生效）。**布局重排必须排在清内联之后**；新代码不要写内联，重复的提成工具类（现有 `.text-lead` / `.text-lead--spaced` / `.object-bottom`）。
 4. **页面高度依赖视口高度，跨 `--h` 不比较** —— `.hero` 用 `100svh`（桌面）/ `90svh`（移动），视口高 900 与 844 会让整页差 56px。回归比对必须**锁定同一 `--h`**，且只信「同一轮 run 内 base↔cur」的差值，跨版本 / 跨参数的绝对值一律不可比。
    当前高度基准（CDP 实测）：**1440×900＝15640px · 390×844＝14332px · 360×844＝14555px**。

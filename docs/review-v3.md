@@ -6,47 +6,36 @@
 
 ## 一、待处理（按建议执行顺序）
 
-### 1. 断点族 A11 / A12 / A15 + K5 遗留（同源，建议一次改完；**需先定档位决策**）
-
-| # | 现象 | 根因 |
-|---|------|------|
-| A11 | 1023px 标题 71.6px → 1024px 48px（−33% 反向跳变） | <1024 走 `--text-headline-2` 的 7vw 段；≥1024 被 `min(--text-headline-2, calc((50vw − 80px)/9))` 覆盖 → 两套算法在断点处不连续 |
-| A12 | 768–1023px 左右留白骤降到 16px（1023 正文列 991px 近乎贴边） | `.section` 基线 `--gutter-mobile`(16px)，只 ≥1024 才切 `--gutter-desktop`(80px)，中间 255px 无人接管 |
-| A15 | 360–375px Hero 标题孤字（「师」独占第三行） | clamp 下限 40px 在 <571px 恒定 ＞ 列宽/9 |
-| ⚠️ | 768–1023px 区块标题被浮动导航压住（kicker 比导航底边高 4px） | 该区间 `.section` 顶部留白 80px < 导航底边 84px，与 A12 同源（原 K5 遗留发现） |
-
-**处置选项**：给 768–1023 加中间档（`--gutter-tablet` + 第二段字号公式），或一次性改全程流式。**需拍板**。
-
-### 2. 布局重排 A4 / A6（**需先定视觉方向**；J1/J2 令牌前置约束已解除）
+### 1. 布局重排 A4 / A6（**需先定视觉方向**；J1/J2 令牌前置约束已解除）
 
 - A4 简介区头重脚轻（正文 65ch 靠左 + 下接满宽 4:3 大图）→ 候选：12 栅格「文字 6 列 + 照片 5 列右偏」
 - A6 项目描述右侧约 40% 空（desc max-width 70ch，成果列表另起一段）→ 候选：描述与成果改并列双列
 
-### 3. A8 / A9（**需先定形态**）
+### 2. A8 / A9（**需先定形态**）
 
 - A8 移动端筛选器无滚动提示（<768px `overflow-x:auto` + nowrap）→ 右侧渐隐遮罩，露出下一项一角（强度待定）
 - A9 页脚 ASCII 品牌字不可读（桌面 6px / <480px `display:none`）→ 提到 8–9px + 0.18 不透明度，或换可读徽标
 
-### 4. A3 工具箱图标底衬（**需重新定方向**）
+### 3. A3 工具箱图标底衬（**需重新定方向**）
 
 现状：仅 GitHub / ROS2 有白底块，其余 7 个裸 logo。**🚫「9 个统一白底衬」已实现后被用户看效果否决并退回（2026-09-16）**。可选新方向：只调那 2 枚白底块的尺寸/圆角；或给裸 logo 加**暗色**衬。
 
-### 5. A7 / C2（与 TODO P3/P4「摘要 + 详情弹窗」同向，可合并推进）
+### 4. A7 / C2（与 TODO P3/P4「摘要 + 详情弹窗」同向，可合并推进）
 
 - A7 项目区占全站 42.9%（约 6790px），纵向铺开滚动成本高 → 摘要栅格 + 点击展开详情
 - C2 G1-D 项目时间轴（2026.03→2026.10），把 003/004 两条路线串成「实习 → 落地」主线（E 节实证：里程碑在宇树/智元/云深处均为独立模块）
 
-### 6. C1 能力数字面板 metrics strip
+### 5. C1 能力数字面板 metrics strip
 
 4 项（2 款竞赛机器人 / 8 大技术域 / 90.9% 到位率 / 3 项国奖），置于简介之后、技术栈之前。**E 节实证：智元、云深处官网均无数字看板 → 无行业先例，属差异化尝试**。
 
-### 7. C3 / C4 / C5（需确认信息架构）
+### 6. C3 / C4 / C5（需确认信息架构）
 
 - C3 技能掌握度条（熟练/熟悉/了解三档，**档位需你定，不自拟**）
 - C4 经历/荣誉合并为纵向时间线（导航 5 项降为 4 项，改 IA）
 - C5 博客/笔记页（与 TODO P4 同项）
 
-### 8. I 节遗留（交互 / 无障碍 / 性能）
+### 7. I 节遗留（交互 / 无障碍 / 性能）
 
 | # | 事项 | 现状 / 处置 |
 |---|------|------|
@@ -60,9 +49,9 @@
 **I12 生产复测数据（2026-09-16）**：3 条封面视频在用户交互前已缓冲 3.2–4.0s，按时长折算 ≈ **4.2MB**；生产首屏可测总字节 **2320.8KB**（jpeg 1118 / woff2 1082 / css 98.6 / js 2.9）· CLS 0。
 **视频字节测量口径（勿踩）**：Resource Timing 对 mp4 记 `transferSize=300 / decodedBodySize=0`；CDP `encodedDataLength` 对被 abort 的 206 range 记 0 → **只能读 `video.duration` + `video.buffered` 时间区间按比例折算**。
 
-### 9. 跨浏览器（唯一未完成的验证维度）
+### 8. 跨浏览器（唯一未完成的验证维度）
 
-本环境 Firefox 为 snap 包（受沙箱限制、无法用自定义 profile），未强行启动 → **需在你自己机器上补 Safari / Firefox 两档**。重点看：等宽字体渲染（I14）· A11 断点字号 · `svh` 单位降级（hero `min-height: 100svh / 90svh` 在旧 Safari 上不支持需确认降级）。
+本环境 Firefox 为 snap 包（受沙箱限制、无法用自定义 profile），未强行启动 → **需在你自己机器上补 Safari / Firefox 两档**。重点看：等宽字体渲染（I14）· 断点档字号与留白连续性（A11/A12 已修，复核 clamp 流式与 `3rem` 收敛）· `svh` 单位降级（hero `min-height: 100svh / 90svh` 在旧 Safari 上不支持需确认降级）。
 
 ## 二、已否决（勿再提）
 
@@ -70,24 +59,25 @@
 
 ## 三、已确认结论（勿重做 / 勿误判）
 
-**已完成清单（细节见 PROGRESS 快照与 git 历史）**：A1 · A2 · A5（复核不成立）· A10 · A13 · A14 · A16 · **B1–B5 全部** · I1–I3 · I5–I10 · J1–J8 · K1 / K4 / K5 全部落地。
+**已完成清单（细节见 PROGRESS 快照与 git 历史）**：A1 · A2 · A5（复核不成立）· A10 · A13 · A14 · A16 · **A11 / A12 / A15**（2026-09-16 断点族）· **B1–B5 全部** · I1–I3 · I5–I10 · J1–J8 · K1 / K4 / K5 全部落地。
 
 - **全站文本达 AA**：217 条逐条扫描后仅 10 条不达标，集中在 3 个 token 复用点（I7 / I8 / I9），已全部修复（I7 方案：新增 `--color-accent-deep: #A05200`，4.90:1）
 - **复核通过项（勿误修）**：锚点跳转落点 · DOM 语义基础（`lang` / 单一 h1 / alt 全齐 / 无失效锚点）· CLS 0 · 视频弹层开关与焦点管理 · 技术栈筛选逻辑 · 360px 微信行零溢出 · `prefers-reduced-motion` 全局覆盖 · **JS 不引用任何设计令牌**
+- **断点三档（2026-09-16 落地，勿回退）**：`--gutter` 统一入口 —— <768 16px ｜ 769–1023 流式 `clamp(1rem, 25vw - 176px, 5rem)`（实测 16.25→49→79.75px）｜ ≥1024 80px；平板档 `.section`/`#techstack` 顶部 `clamp(6rem, 12.5vw, 8rem)`；hero 标题在 1023px 与 1024px 同为 48px（`<1024` 公式第三项 `3rem` 即此值）。断点边界统一 `1023.98px` / `769px`
 - **J7 刻意保留的可复用原语**（0 命中但勿删）：`.sr-only` · `.container` · `.text-balance` · `.char-matrix*` · `.mono-label--accent` · `.stagger-1/3/4` · `.tok-*` 色板 · 关键帧 `cursorBlink`（已被 B3 消费）
-- **令牌基线**：声明 / 引用 **62 / 62**，双向差集为空（B5 新增 `--spot-x` / `--spot-y`）
-- **页高基线（CDP 实测）**：1440×900＝**15640** · 390×844＝**14332** · 360×844＝**14555**。⚠️ hero 用 `svh`，**跨 `--h` 比较无意义**；只信同 run 内 base↔cur 差值
+- **令牌基线**：声明 / 引用 **64 / 64**，双向差集为空（B5 新增 `--spot-x` / `--spot-y`；断点族新增 `--gutter` / `--gutter-tablet`）
+- **页高基线（CDP 实测）**：1440×900＝**15640** · 390×844＝**14332** · 360×844＝**14555**（断点族落地后复测未变，hero 字号收敛不影响页高）。⚠️ hero 用 `svh`，**跨 `--h` 比较无意义**；只信同 run 内 base↔cur 差值
 - **E 节参考站结论**：宇树/智元/云深处均以「Hero 强主张 + 里程碑独立模块」为惯例（支持 C2）；**数字看板无行业先例**（C1 属差异化）；纯双色大字排版牺牲可用性（Awwwards SOTD 可用性 6.99）→ 本项目保留橙色点缀与骨架导航更稳
 
 ## 四、复现环境（探针在 `/tmp/probe/`，会被系统清理，丢失按本节重建）
 
 - **node 不在默认 PATH**：先 `export PATH="$HOME/.nvm/versions/node/v22.23.1/bin:$PATH"`（node v22.23.1 / npm 10.9.8）
 - 起服务：`npm run dev`（5173 常被占用，会自动跳 5174，读日志里的实际端口）；**动手前先 `curl` 一次确认端口** —— 端口猜错时所有探针会静默测到别的服务
-- 探针清单：`cdp.mjs`（截屏 / 定点 / eval / 键鼠 / 媒体仿真）· `breakpoint.js`（断点指标）· `roles.js` · `interact.mjs`（交互 + Tab + 无障碍）· `contrast.js`（逐条对比度）· `perf.js` / `perf2.mjs`（体积 / LCP / CLS）· `b5-diff.py`（像素差分）
-- 用法：`node cdp.mjs --url http://localhost:<port>/Zhouzzw_Web/ --w 1440 --h 900 --wait 2600 [--eval x.js] [--shot out.png] [--scroll N] [--mouse x,y]`；**端口必须每档唯一**
+- 探针清单：`cdp.mjs`（截屏 / 定点 / eval / 键鼠 / 媒体仿真）· `bp2.js`（断点巡检：gutter / hero 字号行分布 / kicker 遮挡判定 / 即时锚点落点）· `interact.mjs`（交互 + Tab + 无障碍）· `contrast.js`（逐条对比度）· `perf.js` / `perf2.mjs`（体积 / LCP / CLS）· `b5-diff.py`（像素差分）
+- 用法：`node cdp.mjs --url http://localhost:<port>/Zhouzzw_Web/ --w 1440 --h 900 --wait 2600 [--eval x.js] [--shot out.png] [--scroll N] [--mouse x,y]`；**端口必须每档唯一**；`--viewport 1` 只截当前视口（fixed 元素才会出现）
 - **cdp.mjs 开关（2026-09-16）**：`--mouse x,y`（真实鼠标事件 —— CSS `:hover` 只认真实输入，合成 PointerEvent 不触发）· `--scrollInstant 1`（smooth 滚动落定耗时不定，跨 run 截图比对会被残余位移污染出假 diff）· `--rm 1`（仿真 prefers-reduced-motion，页面内 stub matchMedia 做不到）· `--touch 1`（仿真触屏 hover:none）· `--inject f.js`（页面脚本前注入）· `--keys Tab,Enter`
 - ⚠️ **headless 默认 `(hover:none)(pointer:none)`**：`@media (hover:hover) and (pointer:fine)` 类规则全部静默不生效（B5 首测假阴性）。已在启动参数强制 `--blink-settings` 声明桌面鼠标；`--touch 1` 则反向仿真触屏
-- ⚠️ **几何量 / 截图时序坑**：① `fadeUp` 含 `translateY(20px)`，IO 刚触发时读 `getBoundingClientRect()` 量到的是动画中间态（曾把 76px 读成 92px）→ 读几何量前等入场动画结束（≥2.5s，对比度探针同理）；② `Page.captureScreenshot` 走 `captureBeyondViewport + clip` 时**只重绘指定区域、不合成 fixed 图层**（导航药丸 / 进度条不出现在图里）；要拍含导航的对照图，需把 `.nav` 临时改 `position:absolute` 再按页面坐标 clip；③ 纯视口截图（不带 clip）在 `setDeviceMetricsOverride` 下会被当成整面捕获（实测 1440×8000），**别指望它给视口尺寸**
+- ⚠️ **几何量 / 截图时序坑**：① `fadeUp` 含 `translateY(20px)`，IO 刚触发时读 `getBoundingClientRect()` 量到的是动画中间态（曾把 76px 读成 92px）→ 读几何量前等入场动画结束（≥2.5s，对比度探针同理）；② `Page.captureScreenshot` 走 `captureBeyondViewport + clip` 时**只重绘指定区域、不合成 fixed 图层**（导航药丸 / 进度条不出现在图里）；要拍含导航的对照图，需把 `.nav` 临时改 `position:absolute` 再按页面坐标 clip；③ 纯视口截图（不带 clip）在 `setDeviceMetricsOverride` 下会被当成整面捕获（实测 1440×8000），**别指望它给视口尺寸**；④ 锚点跳转读落点：hash + smooth 在长距离（如 #contact）下 1.8s 读不全、读数失真，改用 `scrollIntoView({behavior:'instant'})`；⑤ 截图前若图片仍在加载，无 `width/height` 的图会让上方内容位移（I13），reading 有 ~28px 漂移
 - ⚠️ **页高依赖视口高**：`.hero` 桌面 `100svh` / 移动 `90svh` → `--h 900` 与 `--h 844` 差 56px，跨 `--h` 比绝对值无意义
 - ⚠️ 探针旧坑：`--virtual-time-budget` 会跳过平滑滚动与 rAF；hero 的 `100svh` 会被超大 `--window-size` 撑坏 → 用 `captureBeyondViewport` 分段截（每段 ≤8000px）；锚点跳转用 `Runtime.evaluate` 触发后再读 `scrollY`
 - 参考站**无需重抓**；复抓方式：`web_fetch` + 指定 `fetchInfo`（比 anysearch extract 省 token）
