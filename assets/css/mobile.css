@@ -48,24 +48,6 @@
     display: none;
   }
 
-  /* Hero 状态栏移动端纵向堆叠 */
-  .hero__status-bar {
-    flex-wrap: wrap;
-    padding: 12px 16px;
-    border-radius: 12px;
-    gap: 8px;
-  }
-
-  .hero__status-bar .status-bar__item {
-    padding: 6px 0;
-    width: 100%;
-  }
-
-  .hero__status-bar .status-bar__item + .status-bar__item {
-    border-left: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
-  }
-
   /* --- CTA 双药丸移动端保持 --- */
   .cta-split {
     height: 44px;
@@ -101,39 +83,6 @@
 
   .project-item__title {
     font-size: var(--text-h1);
-  }
-
-  /* --- 芯片卡片移动端 --- */
-  .chip-card {
-    padding: 32px 20px;
-    margin-bottom: 48px;
-    border-radius: var(--radius-8);
-  }
-
-  .chip-card::before,
-  .chip-card::after {
-    display: none;
-  }
-
-  /* --- IDE 窗口移动端 --- */
-  .ide-window__sidebar {
-    display: none;
-  }
-
-  .ide-window__tabs {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .ide-window__code {
-    font-size: 10px;
-    padding: 12px 14px;
-  }
-
-  .ide-window__footer {
-    gap: 12px;
-    font-size: 9px;
-    padding: 0 12px;
   }
 
   /* --- 技术栈 --- */

@@ -111,12 +111,7 @@
   color: var(--color-white);
 }
 
-/* 移动端汉堡 (桌面隐藏) */
-.nav__toggle {
-  display: none;
-}
-
-/* --- Hero 首页 — v2.1 双栏布局 + 环形文字 + 状态栏 --- */
+/* --- Hero 首页 — v2.1 双栏布局 + 螺旋文字 --- */
 .hero {
   min-height: 100svh;
   display: grid;
@@ -140,8 +135,8 @@
       to right,
       var(--color-off-white) 0%,
       var(--color-off-white) 50%,
-      #242423 50%,
-      #242423 100%
+      var(--color-black) 50%,
+      var(--color-black) 100%
     );
   }
 
@@ -275,15 +270,6 @@
   }
 }
 
-/* --- Hero 状态栏（≥1024px 在文字区底部） --- */
-@media (min-width: 1024px) {
-  .hero__status-bar {
-    grid-column: 1 / span 6;
-    align-self: end;
-    margin-bottom: 48px;
-  }
-}
-
 /* --- Section 通用 — 参考站大留白 + 12 列栅格 --- */
 .section {
   padding: var(--space-20) var(--gutter-mobile);
@@ -341,11 +327,6 @@
   color: var(--color-ghost-grey);
 }
 
-/* 纯黑 section */
-.section--black {
-  background: var(--color-black-deep);
-}
-
 .section__header {
   margin-bottom: var(--space-12);
 }
@@ -360,17 +341,6 @@
 
   .section__header > * {
     grid-column: 1 / span 8;
-  }
-
-  /* 标题占 5 列，右对齐的描述占 6 列（参考站 benefits） */
-  .section__header--split .section__kicker,
-  .section__header--split .section__title {
-    grid-column: 1 / span 5;
-  }
-
-  .section__header--split .section__desc {
-    grid-column: 7 / span 5;
-    align-self: end;
   }
 }
 
@@ -392,77 +362,34 @@
   max-width: 18ch;
 }
 
-.section__desc {
-  font-size: var(--text-body-large);
-  color: var(--color-dark-grey);
-  line-height: 1.6;
-}
-
 .section__body {
   max-width: 100%;
 }
 
-/* --- 首页核心能力列表 — 参考站 benefits 001/002 错落布局 --- */
-.skills-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-10);
+/* --- 简介区（A4 布局重排前的过渡形态；原为逐层内联 grid 与图片样式） --- */
+#intro .section__body {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+  align-items: start;
 }
 
-@media (min-width: 1024px) {
-  .skills-list {
-    gap: var(--space-16);
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-  }
+#intro .section__body > div:first-child {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
 }
 
-.skills-list__item {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
+#intro .section__body > div:first-child > p:first-of-type {
+  font-size: var(--text-body-large);
 }
 
-@media (min-width: 1024px) {
-  .skills-list__item {
-    display: grid;
-    grid-template-columns: 80px 1fr;
-    gap: var(--space-6);
-    grid-column: span 12;
-  }
-
-  /* 错落布局：奇数靠左，偶数右偏 */
-  .skills-list__item:nth-child(odd) {
-    grid-column: 1 / span 8;
-  }
-
-  .skills-list__item:nth-child(even) {
-    grid-column: 4 / span 8;
-  }
-
-  .skills-list__item:nth-child(3n) {
-    grid-column: 2 / span 9;
-  }
-}
-
-.skills-list__num {
-  flex-shrink: 0;
-}
-
-.skills-list__title {
-  font-size: var(--text-h3);
-  font-weight: var(--weight-medium);
-  color: var(--color-white);
-  margin-bottom: var(--space-2);
-  letter-spacing: -0.01em;
-}
-
-.skills-list__desc {
-  font-size: var(--text-body);
-  color: var(--color-ghost-grey);
-  line-height: 1.6;
-  max-width: 60ch;
+#intro .section__body > img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: 20% 35%;
+  border-radius: var(--radius-8);
 }
 
 /* 滚动入场样式已移至 style.css：全局生效 + 无 JS 兜底 + .stagger-* 错峰 */
@@ -480,12 +407,7 @@
   }
 }
 
-/* 当 chip-card 包裹项目时，关闭 project-list 自身的 gap */
-.project-list:has(.chip-card) {
-  gap: 0;
-}
-
-/* 项目分隔线（未被 chip-card 包裹时使用） */
+/* 项目分隔线 */
 .project-list > .project-item + .project-item {
   border-top: 1px solid var(--color-border-dark);
   padding-top: var(--space-20);
@@ -592,6 +514,11 @@
 .project-item__section {
   margin-bottom: var(--space-8);
   grid-column: 2 / -1;
+}
+
+/* 分段内小标题（原为逐处内联 margin-bottom） */
+.project-item__section > .mono-label {
+  margin-bottom: var(--space-4);
 }
 
 /* 成果列表 */
@@ -710,12 +637,6 @@
 }
 
 /* --- 技术栈分类列表 — 编号 + 标题 + 条目 --- */
-.tech-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
 .tech-cat {
   display: flex;
   flex-direction: column;
@@ -731,18 +652,6 @@
     gap: var(--space-8);
     padding: var(--space-10) 0;
   }
-}
-
-.tech-cat__num {
-  flex-shrink: 0;
-  min-width: 60px;
-}
-
-.tech-cat__body {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
 }
 
 .tech-cat__title {
@@ -978,19 +887,6 @@
   }
 }
 
-.tool-icon__name {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.05em;
-  color: var(--color-ghost-grey);
-  text-align: center;
-  white-space: nowrap;
-}
-
-.tool-icon:hover .tool-icon__name {
-  color: var(--color-white);
-}
-
 /* 深色图标加白底衬 */
 .tool-icon--light {
   width: 48px;
@@ -1221,26 +1117,6 @@
   color: var(--color-white);
 }
 
-.timeline-list__desc {
-  font-size: var(--text-body);
-  color: var(--color-dark-grey);
-  line-height: 1.6;
-  max-width: 60ch;
-  flex: 1;
-}
-
-@media (min-width: 1024px) {
-  .timeline-list__desc {
-    grid-column: 2 / -1;
-    padding-left: 0;
-    margin-left: 170px;
-  }
-}
-
-.section--dark .timeline-list__desc {
-  color: var(--color-ghost-grey);
-}
-
 /* --- 实习经历：timeline 条目扩展（内容容器 + 项目 meta + 要点列表 + 状态行） --- */
 #internship .timeline-list__date {
   min-width: 190px; /* 日期跨年（2026.07 - 2026.10），比默认 160px 宽一档防换行 */
@@ -1332,7 +1208,7 @@
   backdrop-filter: blur(8px);
   align-items: center;
   justify-content: center;
-  padding: var(--space-xl);
+  padding: var(--space-8);
 }
 
 .video-modal.is-open {
@@ -1378,10 +1254,17 @@
   overflow: hidden;
 }
 
-.video-cover img {
+.video-cover img,
+.video-cover video {
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
+  display: block;
+}
+
+/* 封面内嵌 <video> 只作首帧静帧用，交互由外层 .video-cover 承担（原为内联样式） */
+.video-cover video {
+  pointer-events: none;
 }
 
 /* --- 微信二维码弹层（复用 .video-modal 的遮罩与开关，内容自成一卡） --- */

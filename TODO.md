@@ -1,7 +1,7 @@
 # 个人网页项目 TODO
 
 文档维护人：agent
-最后更新时间：2026-09-16（新增 **P1 分组**与 review-v3 **J 节**（代码卫生 / SEO / 令牌债 J1–J8）条目；已完成项已移除；B6 / B7 已否决。**细则与证据见 docs/review-v3.md**）
+最后更新时间：2026-09-16（第二批：**review-v3 J1–J8 + I10 已落地并从清单移除**；第一批新增 **P1 分组**与 J 节条目。B6 / B7 已否决。**细则与证据见 docs/review-v3.md**）
 范围：项目级 TODO，汇总 **v3-full（完整版）**未决事项与已知风险；会话过程记录见 PROGRESS.md。
 > 分支定位：`v2` = 基础版（v2.4 线上状态，已冻结）；`v3-full` = 完整版（2026-09-12 由 `v3-rig-style` 改名），**后续改动均在 v3-full**。
 
@@ -32,12 +32,6 @@
 - [ ] review-v3 I 节无障碍余项（I1 / I4 · 自动播放 / I6 / I8 / I9）
   影响：视频封面不可键盘打开（弹层已可用）· 视频不自动播 · 筛选无 `aria-pressed`、被 dim 的分类仍在无障碍树 · 页脚版权 3.01:1 与筛选按钮 4.30:1 临界不达标
   处理：I1 把 `.video-cover` 改为可聚焦按钮（弹层语义 / 焦点管理 2026-09-15 已就绪）；I4 在 `muted` 自动播与「接受二次点击」间二选一。**I2 / I3 / I5 与 I4 的 `playsinline` 已完成**。见「D 节」第 7 档
-- [ ] review-v3 J4 · favicon 完全缺失
-  影响：`index.html` 无 `rel="icon"`、无 `public/` → 标签页空白 + 控制台 404
-  处理：复用页头内联品牌 SVG 生成 favicon；一行级
-- [ ] review-v3 J6 · 导航高亮无 `aria-current`
-  影响：当前区块只靠 `.nav--active`，读屏读不出「你在哪」（实测命中 0）
-  处理：`main.js` 的 scrollspy 补 `aria-current="location"`；与 I6 同族，建议同批
 
 ### P2 功能完善 / 正确性增强
 
@@ -54,13 +48,6 @@
 - [ ] review-v3 第 1 档存量缺陷（A1 / A3 / A8 / A9）
   说明：A1 运控负责人折行 · A3 图标底衬不统一 · A8 筛选器无滚动提示 · A9 页脚 ASCII 不可读（**A2 已于 2026-09-15 完成**）
   处理：A8 遮罩形态、A9「提升可读 vs 换徽标」需用户先定。见「D 节」第 1 档 / 「A 节」
-- [ ] review-v3 J 节色彩债（J1 / J2 / J8）
-  影响：暗区背景被内联 `#242423` 硬编码 5 处，`.section--dark` 的 `background` 从未生效；全站 4 个近似黑（`#000000` / `#232323`×7 / `#242423`×8 / `#0A0A0A`×3）；29 处内联样式含 3 处冗余 `text-decoration:none`
-  处理：删内联 background + 定一档暗色令牌（`--color-cement` 或统一 `--color-black`，**需用户拍板**）；**必须先于 A4/A6 布局重排**。见「J 节」/「D 节」第 0.5 档
-- [ ] 联系方式行 360px 疑横向溢出（待实测）
-  影响：`.contact-item-big` 无 `flex-wrap`，值字号 `--text-h3` + 两枚 `.contact-chip`（各 `min-width: 5.5em`）+ 40px 图标；360px 内容宽约 320px
-  处理：起 dev server 实测后再定级；溢出则加 `flex-wrap` 或压 chip 内边距（09-15 新增微信行引入，本轮未实测）
-
 ### P3 技术债 / 工程化
 
 - [ ] 项目区浏览成本偏高
@@ -78,10 +65,7 @@
   处理：三者同源，建议一次改完；需先定「768–1023 是否引入第三档 `--gutter-tablet` 与第二段字号公式」。见「D 节」第 5 档
 - [ ] review-v3 布局重排 A4 / A6
   影响：简介区头重脚轻（65ch 靠左 + 满宽大图）；项目描述右侧约 40% 空
-  处理：需先确认视觉方向；**建议排在 J1/J2 令牌化之后**。见「D 节」第 4 档
-- [ ] review-v3 J 节工程债（J3 / J5 / J7 + I10）
-  影响：18 个令牌声明后从未被 `var()` 引用（含 `--nav-height: 60px` 与 `.nav` 实测 52px / 44px **三方不一致**）· robots.txt 与 sitemap.xml 缺失 · 约 28 个死样式类（`ide-window*` / `skills-list*` / `radial-text__*` / `hero__status-bar` / `section__desc` / `link-dashed` / `chip-card` / `dotted-overlay` / `grid-12` / `section--black`）· `.nav__toggle` 死元素
-  处理：纯清理、零视觉风险，可一次提交；**`sr-only` 与 `char-matrix*` 保留**。见「J 节」
+  处理：需先确认视觉方向；**J1 / J2 令牌化已于 2026-09-16 完成，前置约束已解除，当前仅差视觉方向决策**。见「D 节」第 4 档
 - [ ] review-v3 性能项（I12 / I13 / I14 / I15）
   影响：首屏即下载 4.48MB 视频（冷加载 7337KB）· 20/20 图无 width/height · Geist 全族未加载（mono 落系统字体）· 字体 CSS 阻塞 1159ms
   处理：I12 先定「视口内截帧 vs 补 3 张静态封面」；I15 须在 `npm run build` 产物上复测。见「D 节」第 7 档

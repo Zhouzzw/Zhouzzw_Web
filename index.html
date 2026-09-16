@@ -41,6 +41,10 @@
 
   <title>周子惟 - 嵌入式 & ROS 机器人开发</title>
 
+  <!-- favicon：内联品牌芯片 SVG（无 rel=icon 时浏览器会额外请求 /favicon.ico → 404）。
+       用 data URI 而非 public/ 文件：不依赖构建期 base 前缀重写，零额外请求，也无二进制文件入库 -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23232323'/%3E%3Cg fill='none' stroke='%23FF9100' stroke-width='2'%3E%3Crect x='9' y='9' width='14' height='14' rx='2'/%3E%3Cpath d='M13 5v4M19 5v4M13 23v4M19 23v4M5 13h4M5 19h4M23 13h4M23 19h4'/%3E%3C/g%3E%3Crect x='13.5' y='13.5' width='5' height='5' fill='%23FF9100'/%3E%3C/svg%3E" />
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -88,9 +92,6 @@
         <li><a href="#life">关于</a></li>
       </ul>
     </nav>
-    <button class="nav__toggle" aria-label="菜单">
-      <span></span><span></span><span></span>
-    </button>
   </header>
 
   <main>
@@ -278,32 +279,32 @@
         <p class="section__kicker">01 / About</p>
         <h2 class="section__title">让硬件听从算法的指挥</h2>
       </div>
-      <div class="section__body animate-on-scroll stagger-2" style="display: grid; grid-template-columns: 1fr; gap: var(--space-8); align-items: start;">
-        <div style="display: grid; grid-template-columns: 1fr; gap: var(--space-6);">
-          <p style="font-size: var(--text-body-large);">
+      <div class="section__body animate-on-scroll stagger-2">
+        <div>
+          <p>
             我是周子惟，武汉科技大学电子信息工程专业大二在读（荆楚卓越人才计划）。
             RoboMaster 战队电控组负责人，主导串联腿平衡步兵和全向轮步兵两款机器人的
             电控系统开发；现任武汉晴山科技机器人系统集成实习工程师，全权负责宇树 G1-D 人形机器人的
             机械臂运控（七自由度机械臂 + 末端夹爪）。从 STM32 底层驱动、LQR 最优控制与 FreeRTOS 实时调度，
             到 ROS2 运动规划与具身智能策略部署，我享受让硬件听从算法的过程。
           </p>
-          <p style="font-family: var(--font-mono); font-size: var(--text-mono); text-transform: uppercase; color: var(--color-dark-grey);">
+          <p class="mono-label">
             Wuhan University of Science & Technology · Class of 2028<br />
             Embedded · ROS2 · Motion Planning · Embodied AI
           </p>
         </div>
-        <img src="/assets/images/比赛人物照.jpg" alt="比赛现场" style="width: 100%; border-radius: var(--radius-8); aspect-ratio: 4 / 3; object-fit: cover; object-position: 20% 35%;" />
+        <img src="/assets/images/比赛人物照.jpg" alt="比赛现场" />
       </div>
     </section>
 
     <!-- ========== 技术栈 ========== -->
-    <section class="section section--dark text-watermark" id="techstack" style="padding-bottom: var(--space-8); background: #242423;">
+    <section class="section section--dark text-watermark" id="techstack" style="padding-bottom: var(--space-8);">
       <div class="section__header animate-on-scroll">
         <p class="section__kicker">02 / Tech Stack</p>
         <h2 class="section__title">从底层到顶层的完整栈</h2>
       </div>
       <div class="section__body animate-on-scroll stagger-2">
-        <p style="font-size: var(--text-body-large); max-width: 60ch;">
+        <p class="text-lead">
           八个技术领域，覆盖从芯片驱动、ROS2 运动规划到具身智能的完整链路。
           每一项都是实战中打磨过的硬技能。
         </p>
@@ -311,7 +312,7 @@
     </section>
 
     <!-- 技术分类 -->
-    <section class="section section--dark text-watermark" style="padding-top: var(--space-12); background: #242423;">
+    <section class="section section--dark text-watermark" style="padding-top: var(--space-12);">
       <div class="section__body">
         <!-- 筛选器 -->
         <div class="tech-filter animate-on-scroll">
@@ -511,7 +512,7 @@
     </section>
 
     <!-- ========== 项目经历 ========== -->
-    <section class="section section--dark text-watermark" id="projects" style="padding-bottom: var(--space-16); background: #242423;">
+    <section class="section section--dark text-watermark" id="projects" style="padding-bottom: var(--space-16);">
       <p class="term-divider" aria-hidden="true">
         <span class="term-divider__dots"><span></span><span></span><span></span></span>
         <span class="term-divider__cmd"><span class="term-divider__prompt">$</span>cd <span class="term-divider__path">~/usr/src/Zhouzzw_Web/</span>projects<span class="term-divider__cursor"></span></span>
@@ -521,7 +522,7 @@
         <h2 class="section__title">项目经历</h2>
       </div>
       <div class="section__body animate-on-scroll stagger-2">
-        <p style="font-size: var(--text-body-large); max-width: 60ch;">
+        <p class="text-lead">
           从 RoboMaster 赛场到工业落地场景，四个项目贯穿同一条主线：从零搭建两款竞赛机器人的完整电控体系，
           主导人形机器人 G1-D 机械臂运控的两条技术路线。每一行代码都经过仿真验证，每一次调参都有数据支撑。
         </p>
@@ -529,7 +530,7 @@
     </section>
 
     <!-- 项目列表 -->
-    <section class="section section--dark text-watermark" style="padding-top: var(--space-20); padding-bottom: 0; background: #242423;">
+    <section class="section section--dark text-watermark" style="padding-top: var(--space-20); padding-bottom: 0;">
       <div class="section__body">
         <div class="project-list">
 
@@ -553,7 +554,7 @@
               </p>
 
               <div class="project-item__section">
-                <p class="mono-label mono-label--dark" style="margin-bottom: var(--space-4);">成果</p>
+                <p class="mono-label mono-label--dark">成果</p>
                 <ul class="project-item__results">
                   <li>控制精度及稳定性提升约 40%</li>
                   <li>仿真验证缩短实车调试周期约 30%</li>
@@ -571,29 +572,29 @@
 
               <!-- 项目照片 -->
               <div class="project-item__image">
-                <img src="/assets/images/平衡轮腿机器人项目照片1.jpg" alt="串联腿平衡步兵" style="object-position: center 90%;" />
+                <img src="/assets/images/平衡轮腿机器人项目照片1.jpg" alt="串联腿平衡步兵" class="object-bottom" />
               </div>
 
               <!-- 演示视频 -->
               <div class="project-item__section">
-                <p class="mono-label mono-label--dark" style="margin-bottom: var(--space-4);">演示视频</p>
+                <p class="mono-label mono-label--dark">演示视频</p>
                 <div class="video-grid">
                   <div class="video-cover" data-video-type="local">
-                    <video src="/assets/videos/串联腿小跳上台阶演示视频.mp4" preload="metadata" muted style="width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; pointer-events: none;"></video>
+                    <video src="/assets/videos/串联腿小跳上台阶演示视频.mp4" preload="metadata" muted></video>
                     <div class="video-cover__play">
                       <div class="video-cover__play-icon"></div>
                     </div>
                     <p class="video-cover__label">跳跃上台阶</p>
                   </div>
                   <div class="video-cover" data-video-type="local">
-                    <video src="/assets/videos/串联腿跳跃演示视频.mp4" preload="metadata" muted style="width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; pointer-events: none;"></video>
+                    <video src="/assets/videos/串联腿跳跃演示视频.mp4" preload="metadata" muted></video>
                     <div class="video-cover__play">
                       <div class="video-cover__play-icon"></div>
                     </div>
                     <p class="video-cover__label">旋转跳跃演示</p>
                   </div>
                   <div class="video-cover" data-video-type="local">
-                    <video src="/assets/videos/串联腿飞坡演示视频.mp4" preload="metadata" muted style="width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; pointer-events: none;"></video>
+                    <video src="/assets/videos/串联腿飞坡演示视频.mp4" preload="metadata" muted></video>
                     <div class="video-cover__play">
                       <div class="video-cover__play-icon"></div>
                     </div>
@@ -625,7 +626,7 @@
               </p>
 
               <div class="project-item__section">
-                <p class="mono-label mono-label--dark" style="margin-bottom: var(--space-4);">成果</p>
+                <p class="mono-label mono-label--dark">成果</p>
                 <ul class="project-item__results">
                   <li>底盘运动精度提升 30%，响应速度提升 25%</li>
                   <li>高校联盟赛 3v3 (安徽站) 国家一等奖</li>
@@ -653,7 +654,7 @@
     </section>
 
     <!-- ========== 工业机器人项目：双臂操控两条路线 ========== -->
-    <section class="section section--dark text-watermark" style="padding-top: 0; background: #242423;">
+    <section class="section section--dark text-watermark" style="padding-top: 0;">
       <div class="section__body">
         <div class="project-list project-list--bordered">
 
@@ -679,7 +680,7 @@
               </p>
 
               <div class="project-item__section">
-                <p class="mono-label mono-label--dark" style="margin-bottom: var(--space-4);">成果</p>
+                <p class="mono-label mono-label--dark">成果</p>
                 <ul class="project-item__results">
                   <li>双臂异步控制真机验证通过，左右臂规划执行互不阻塞</li>
                   <li>VHACD 凸分解将单点规划周期从 1.75s 降至 0.21~0.60s（约 5×）</li>
@@ -724,7 +725,7 @@
               </p>
 
               <div class="project-item__section">
-                <p class="mono-label mono-label--dark" style="margin-bottom: var(--space-4);">成果</p>
+                <p class="mono-label mono-label--dark">成果</p>
                 <ul class="project-item__results">
                   <li>云端 50k 全量训练完成，到位率 90.9% ≥ 90% 验收线</li>
                   <li>ONNX 策略 50Hz 直驱 NX 真机，无规划节点、链路短</li>
@@ -759,7 +760,7 @@
         <h2 class="section__title">实习经历</h2>
       </div>
       <div class="section__body animate-on-scroll stagger-2">
-        <p style="font-size: var(--text-body-large); max-width: 60ch; margin-bottom: var(--space-10);">
+        <p class="text-lead text-lead--spaced">
           三个月实习里，我作为宇树 G1-D 人形机器人机械臂运控负责人，参与高速路口闸机机器人收递卡项目，
           主导运控模块从 0 到 1 的方案设计、跨端联调与真机交付。
         </p>
@@ -903,8 +904,8 @@
       <div class="section__body">
         <div class="contact-list animate-on-scroll stagger-2">
 
-          <a href="https://github.com/Zhouzzw" target="_blank" rel="noopener" class="contact-item-big" style="text-decoration: none;">
-            <svg class="contact-item-big__icon" viewBox="0 0 24 24" fill="currentColor" style="color: var(--color-white);">
+          <a href="https://github.com/Zhouzzw" target="_blank" rel="noopener" class="contact-item-big">
+            <svg class="contact-item-big__icon" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
             </svg>
             <div>
@@ -913,8 +914,8 @@
             </div>
           </a>
 
-          <a href="mailto:2661762781@qq.com" class="contact-item-big" style="text-decoration: none;">
-            <svg class="contact-item-big__icon" viewBox="0 0 24 24" fill="currentColor" style="color: var(--color-white);">
+          <a href="mailto:2661762781@qq.com" class="contact-item-big">
+            <svg class="contact-item-big__icon" viewBox="0 0 24 24" fill="currentColor">
               <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
             </svg>
             <div>
@@ -923,8 +924,8 @@
             </div>
           </a>
 
-          <a href="tel:13035102279" class="contact-item-big" style="text-decoration: none;">
-            <svg class="contact-item-big__icon" viewBox="0 0 24 24" fill="currentColor" style="color: var(--color-white);">
+          <a href="tel:13035102279" class="contact-item-big">
+            <svg class="contact-item-big__icon" viewBox="0 0 24 24" fill="currentColor">
               <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.58.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z"/>
             </svg>
             <div>
@@ -938,7 +939,7 @@
           <div class="contact-item-big">
             <!-- 微信经典双气泡标：单路径几何取自 simple-icons v13（CC0），
                  两个气泡间的间隙与四个眼睛孔都由路径自身的子路径构成，无需 mask -->
-            <svg class="contact-item-big__icon" viewBox="0 0 24 24" fill="currentColor" style="color: var(--color-white);" aria-hidden="true">
+            <svg class="contact-item-big__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.406-.032zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/>
             </svg>
             <div>

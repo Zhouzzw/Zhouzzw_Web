@@ -18,7 +18,6 @@
   --color-accent:       #FF9100;   /* 橙色点缀（极克制使用） */
   --color-accent-deep:  #A05200;   /* 浅色底上的橙色文字/焦点环（--color-accent 在米白上仅 1.95:1，此档 4.90:1 达 AA） */
   --color-muted:        #8A8A8A;   /* 深色遮罩上的弱化图标/控件（如视频弹窗关闭按钮） */
-  --color-ok:           #3DBE4B;   /* 状态脉冲点绿色 */
   --color-border:       rgba(0, 0, 0, 0.08);
   --color-border-dark:  rgba(255, 255, 255, 0.12);
 
@@ -29,13 +28,10 @@
   --color-tok-function: #DCDCAA;
   --color-tok-number:   #B5CEA8;
   --color-tok-default:  #D4D4D4;
-  --color-glass:        rgba(241, 238, 231, 0.85);
-  --color-glass-dark:   rgba(13, 13, 15, 0.85);
 
   /* 排版 */
   --font-sans:          'Geist', 'Noto Sans SC', system-ui, sans-serif;
   --font-mono:          'Geist Mono', 'JetBrains Mono', 'Fira Code', monospace;
-  --font-cjk:           'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
 
   /* 流体排版 — 基于 clamp()，移动端 ~ 桌面端平滑过渡
      基准：375px → 1440px，字号随视口线性增长 */
@@ -54,10 +50,8 @@
   /* 字重 */
   --weight-regular:     400;
   --weight-medium:      500;
-  --weight-semibold:    600;
 
   /* 间距 — 4pt 网格，加大留白 */
-  --space-1:            0.25rem;   /* 4px */
   --space-2:            0.5rem;    /* 8px */
   --space-3:            0.75rem;   /* 12px */
   --space-4:            1rem;      /* 16px */
@@ -67,33 +61,16 @@
   --space-12:           3rem;      /* 48px */
   --space-16:           4rem;      /* 64px */
   --space-20:           5rem;      /* 80px */
-  --space-24:           6rem;      /* 96px */
   --space-32:           8rem;      /* 128px */
   --space-40:           10rem;     /* 160px */
 
-  /* 兼容旧变量名（平滑过渡） */
-  --space-xs:           0.25rem;
-  --space-sm:           0.5rem;
-  --space-md:           1rem;
-  --space-lg:           1.5rem;
-  --space-xl:           2rem;
-  --space-2xl:          3rem;
-  --space-3xl:          4rem;
-  --space-4xl:          6rem;
-  --space-5xl:          8rem;
-
-  /* 导航 */
-  --nav-height:         60px;
-
   /* 圆角 — 极小、克制 */
-  --radius-2:           2px;
   --radius-4:           4px;
   --radius-8:           8px;
   --radius-full:        9999px;
 
   /* 过渡曲线 — 参考站 cubic-bezier(0.23, 1, 0.32, 1) */
   --ease-out:           cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in-out:        cubic-bezier(0.65, 0, 0.35, 1);
   --ease-standard:      cubic-bezier(0.4, 0, 0.2, 1);
   --duration-fast:      150ms;
   --duration-base:      280ms;
@@ -106,7 +83,6 @@
 
   /* 点阵纹理 — CRT/终端质感 */
   --dotted-bg:          repeating-conic-gradient(rgba(255,255,255,0.22) 0% 25%, transparent 0% 50%);
-  --dotted-bg-dark:     repeating-conic-gradient(rgba(0,0,0,0.06) 0% 25%, transparent 0% 50%);
 
   /* 容器最大宽 */
   --container-max:      1440px;
@@ -172,14 +148,6 @@ a {
   transition: color var(--duration-fast) var(--ease-standard);
 }
 
-/* 参考站虚线下划线链接风格 */
-a.link-dashed {
-  text-decoration: underline;
-  text-decoration-style: dashed;
-  text-underline-offset: 3px;
-  text-decoration-thickness: from-font;
-}
-
 img {
   display: block;
   max-width: 100%;
@@ -187,7 +155,7 @@ img {
 }
 
 /* --- 键盘焦点 --- */
-/* UA 默认焦点环（outline auto 1px 近黑）落在 #242423 / #000 上几乎不可见 */
+/* UA 默认焦点环（outline auto 1px 近黑）落在 #232323 / #000 上几乎不可见 */
 :focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
@@ -233,19 +201,6 @@ img {
   }
 }
 
-/* 12 列栅格 */
-.grid-12 {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: var(--space-4);
-}
-
-@media (min-width: 1024px) {
-  .grid-12 {
-    gap: var(--space-4);
-  }
-}
-
 .sr-only {
   position: absolute;
   width: 1px;
@@ -256,29 +211,25 @@ img {
   border: 0;
 }
 
-/* 点阵纹理叠加 */
-.dotted-overlay {
-  position: relative;
-}
-
-.dotted-overlay::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: var(--dotted-bg);
-  background-size: 4px 4px;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.dotted-overlay > * {
-  position: relative;
-  z-index: 1;
-}
-
 /* 文本平衡（防止孤行） */
 .text-balance {
   text-wrap: balance;
+}
+
+/* 区块导语：正文上浮一档并限宽 60ch（原为逐段内联样式） */
+.text-lead {
+  font-size: var(--text-body-large);
+  max-width: 60ch;
+}
+
+/* 导语与下方内容的额外间距 */
+.text-lead--spaced {
+  margin-bottom: var(--space-10);
+}
+
+/* 图片裁切焦点下移（主体位于画面下方时用） */
+.object-bottom {
+  object-position: center 90%;
 }
 
 /* 锚点落点 — 区块顶边与视口顶边严格对齐，避免上一区块残留在视口顶部。
@@ -329,40 +280,12 @@ section[id] {
   background: rgba(0, 0, 0, 0.25);
 }
 
-/* 深色背景下的滚动条 */
-.bg-dark ::-webkit-scrollbar-track,
-.dark-bg ::-webkit-scrollbar-track {
-  background: var(--color-black);
-}
-
-.bg-dark ::-webkit-scrollbar-thumb,
-.dark-bg ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
-}
-
 /* --- 关键帧动画 --- */
 
-/* 光标闪烁（终端风格） */
+/* 光标闪烁（终端风格）— 当前无消费者，留作 review B3「Hero 打字机」备用 */
 @keyframes cursorBlink {
   0%, 49.9% { opacity: 1; }
   50%, 100% { opacity: 0; }
-}
-
-/* 状态脉冲点 */
-@keyframes statusPing {
-  0% {
-    opacity: 0.6;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(2.4);
-  }
-}
-
-/* 环形文字旋转 */
-@keyframes radialSpin {
-  to { transform: rotate(360deg); }
 }
 
 /* 渐入上移 */
@@ -375,12 +298,6 @@ section[id] {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-/* 渐入 */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
 }
 
 /* --- 滚动入场（渐进增强） ---
@@ -592,247 +509,18 @@ section[id] {
   background: rgba(255, 255, 255, 0.06);
 }
 
-/* --- 芯片引脚风格卡片 --- */
-.chip-card {
-  position: relative;
-  background: var(--color-black-deep);
-  border: 1px solid var(--color-border-dark);
-  border-radius: var(--radius-8);
-  padding: 40px 48px;
-  margin-bottom: 80px;
-}
-
-.chip-card::before,
-.chip-card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 22px;
-  background-color: transparent;
-}
-
-.chip-card::before { left: -1px; }
-.chip-card::after  { right: -1px; }
-
-.chip-card::before {
-  background-image:
-    radial-gradient(circle at -5px 15%, #232323 0 11px, transparent 11.5px),
-    radial-gradient(circle at -5px 50%, #232323 0 11px, transparent 11.5px),
-    radial-gradient(circle at -5px 85%, #232323 0 11px, transparent 11.5px);
-  background-repeat: no-repeat;
-}
-
-.chip-card::after {
-  background-image:
-    radial-gradient(circle at -5px 15%, #232323 0 11px, transparent 11.5px),
-    radial-gradient(circle at -5px 50%, #232323 0 11px, transparent 11.5px),
-    radial-gradient(circle at -5px 85%, #232323 0 11px, transparent 11.5px);
-  background-repeat: no-repeat;
-}
-
-/* --- IDE 代码编辑器窗口 --- */
-.ide-window {
-  position: relative;
-  border: 1px solid var(--color-border-dark);
-  border-radius: var(--radius-8);
-  overflow: hidden;
-  background: #0A0A0A;
-  box-shadow: var(--shadow-dark);
-  max-width: 720px;
-}
-
-.ide-window::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: var(--dotted-bg);
-  background-size: 4px 4px;
-  opacity: 0.5;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.ide-window > * {
-  position: relative;
-  z-index: 1;
-}
-
-.ide-window__tabs {
-  height: 40px;
-  display: flex;
-  align-items: flex-end;
-  gap: 0;
-  padding: 0 8px;
-  background: #0D0D0D;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.ide-window__tab {
-  padding: 10px 16px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.5);
-  border-top: 2px solid transparent;
-  cursor: default;
-  white-space: nowrap;
-}
-
-.ide-window__tab.is-active {
-  color: var(--color-white);
-  background: #0A0A0A;
-  border-top-color: var(--color-accent);
-}
-
-.ide-window__body {
-  display: flex;
-  min-height: 220px;
-}
-
-.ide-window__sidebar {
-  width: 160px;
-  padding: 12px 0;
-  background: #0D0D0D;
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-}
-
-.ide-window__dir {
-  padding: 4px 16px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.35);
-  text-transform: uppercase;
-}
-
-.ide-window__file {
-  padding: 4px 16px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.55);
-}
-
-.ide-window__file.is-current {
-  color: var(--color-white);
-  background: rgba(255, 255, 255, 0.08);
-  border-left: 2px solid var(--color-accent);
-}
-
-.ide-window__code {
-  flex: 1;
-  margin: 0;
-  padding: 16px 20px;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  line-height: 1.7;
-  color: var(--color-tok-default);
-  overflow: auto;
-  white-space: pre;
-}
-
-.ide-window__footer {
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 24px;
-  padding: 0 16px;
-  background: #0D0D0D;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.4);
-}
-
-/* IDE 语法高亮 token */
+/* 终端语法高亮 token（终端档案 life.txt 在用） */
 .tok-k { color: var(--color-tok-keyword); }   /* 关键字 */
 .tok-c { color: var(--color-tok-comment);  }   /* 注释 */
 .tok-s { color: var(--color-tok-string);   }   /* 字符串 */
 .tok-f { color: var(--color-tok-function); }   /* 函数 */
 .tok-n { color: var(--color-tok-number);   }   /* 数字 */
 
-/* --- Hero 状态栏 --- */
-.hero__status-bar {
-  display: inline-flex;
-  align-items: center;
-  gap: 0;
-  background: var(--color-black-deep);
-  background-image: var(--dotted-bg);
-  background-size: 4px 4px;
-  border: 1px solid var(--color-border-dark);
-  border-radius: var(--radius-full);
-  padding: 10px 24px;
-  box-shadow: var(--shadow-dark);
-}
-
-.status-bar__item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0 20px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-}
-
-.status-bar__item + .status-bar__item {
-  border-left: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-.status-bar__label {
-  color: rgba(255, 255, 255, 0.55);
-}
-
-.status-bar__value {
-  color: var(--color-ghost-grey);
-}
-
-.status-bar__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--color-ok);
-  position: relative;
-  flex-shrink: 0;
-}
-
-.status-bar__dot::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: var(--color-ok);
-  animation: statusPing 2s ease-out infinite;
-}
-
-/* --- 环形文字装饰 --- */
+/* --- Hero 视觉区（螺旋文字 SVG）---
+   全局默认隐藏；≥1024px 由 desktop.css 显示，<768px 由 mobile.css 再次隐藏。
+   该区标了 aria-hidden，属纯装饰。 */
 .hero__visual {
   display: none;
-}
-
-.radial-text__svg {
-  width: 100%;
-  height: 100%;
-}
-
-.radial-text__ring {
-  transform-origin: 50% 50%;
-  transform-box: fill-box;
-}
-
-.radial-text__ring--outer {
-  animation: radialSpin 40s linear infinite;
-}
-
-.radial-text__ring--mid {
-  animation: radialSpin 55s linear infinite reverse;
-}
-
-.radial-text__ring--inner {
-  animation: radialSpin 70s linear infinite;
 }
 
 /* --- Hero 螺旋文字 SVG（多圈同心环 + 同向差速旋转，模拟螺旋转动） --- */

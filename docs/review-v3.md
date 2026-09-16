@@ -5,8 +5,9 @@
 > 修订：2026-09-14 **D 节第 0 档落地** —— A10 · A14（连带 A13）· A16 · I5 · I7 五项修复并实测通过（commit `feef54b`）。
 > 修订：2026-09-15 **动效批 + 联系方式模块** —— B1 / B2 落地（连同 A2 一并清掉）· I2 弹层语义与焦点管理落地 · I4 补 `playsinline`（自动播放策略未决）；**B6 / B7 用户看后否决并已删除代码**。
 > 修订：2026-09-16 **第四轮（源码卫生补充）** —— 新增 **J 节**（代码卫生 / SEO 完整性 / 令牌债，J1–J8，全量 grep 实证）；A / B / I 各表补状态标记；D 节执行顺序重排（新增第 0.5 档）；F 节标注已定项。
+> 修订：2026-09-16 **D 节第 0.5 档落地** —— **J1–J8 + I10 共 9 项**修复落地：暗区走令牌（`#242423` 归零）、令牌差集归零、favicon、`aria-current`、robots/sitemap、死样式清理（5 文件 **+94 / −568** 行）、内联样式 29→5。实测 **1440 整页 15878px / 390 整页 14332px，与改前逐元素零位移**。落地口径与刻意保留项见文末「**J 节落地说明**」。
 > **状态标记**（截至 2026-09-16）：✅ 已修 · 🟡 部分已修 · 🚫 已否决（勿再提）· **未标记 = 未动手**。已完成项的原「处置」列保留作历史依据，勿重做。
-> ✅ **交接提示**：**下一会话优先读 J 节与 D 节「第 0.5 档」**；G 节是证据等级审计，H3 是环境与探针踩坑（**探针在 `/tmp/probe/`，会被系统清理，丢失需按 H3 重建**）。
+> ✅ **交接提示**：J 节与「第 0.5 档」**已清空**，下一会话从 **D 节第 1 档 / 第 2 档**起手（A1 / A3 / A8 / A9，其中 A8 / A9 需先定形态）；G 节是证据等级审计，H3 是环境与探针踩坑（**探针在 `/tmp/probe/`，会被系统清理，丢失需按 H3 重建**）。
 
 ## A. 确证缺陷（实测可见）
 
@@ -54,7 +55,7 @@
 ## D. 建议执行顺序
 
 0. ~~**第 0 档**~~ ✅ **已完成 2026-09-14**（commit `feef54b`）：A10 · A14（连带 A13）· A16 · I5 · I7 五项全部落地并实测通过
-0.5 **第 0.5 档（2026-09-16 新增，J 节，仍是一行级 / 零视觉重设计，建议先清）**：J4 favicon · J6 `aria-current` → J1 + J2 令牌化（**必须排在 A4 / A6 布局重排之前**，否则重排要再动一遍内联值）→ 清理批 J3 + J7 + J8 + I10，顺手做 J5（robots + sitemap）
+0.5 ~~**第 0.5 档**~~ ✅ **已完成 2026-09-16**：J4 favicon · J6 `aria-current` · J1 + J2 令牌化（`#242423` → `--color-black`，`#242423` 归零）· 清理批 J3 + J7 + J8 + I10 · J5（robots + sitemap）。**「必须先于 A4 / A6 布局重排」的约束已满足**，第 4 档可安全起手
 1. A1 / A3 / A8 / A9 —— 剩余确证缺陷（**A2 已于 2026-09-15 完成**；A5 复核不成立，剔除）；A8 / A9 需先定形态
 2. ~~B1 + B2 + B4~~ → ✅ **B1 / B2 已完成（2026-09-15）**；**B6 / B7 已否决**；剩 B3 / B4 / B5 未做（其中 B4 数字计数与「量化严谨」最契合，推荐）
 3. C1 metrics strip —— 新模块，纯增量、不动现有 IA（**无行业先例，属差异化尝试**，见 E 节）
@@ -162,7 +163,7 @@
 
 | # | 现象 | 根因 / 位置 | 处置 |
 |---|---|---|---|
-| I10 | `.nav__toggle`（汉堡按钮）是死元素：HTML 有、`display:none` 全局隐藏、无任何断点显示、`main.js` 无绑定 | `index.html:75` + `desktop.css:115` | 删除（当前移动端走内联横排，不需要汉堡） |
+| I10 ✅ | `.nav__toggle`（汉堡按钮）是死元素：HTML 有、`display:none` 全局隐藏、无任何断点显示、`main.js` 无绑定 | `index.html:75` + `desktop.css:115` | 删除（当前移动端走内联横排，不需要汉堡） |
 | I11 | **`.hero__status-bar` 已不存在于 HTML**（`index.html` 0 处命中），但 3 个文件仍保留其样式：`style.css:693`、`desktop.css:280`、`mobile.css:52-67` | 元素在某轮改版中被删、样式忘记回收 | 删样式。**它的缺席同时是「移动端 Hero 底部约 198px 空白」的直接原因**：390px 实测内容底 498 / hero 底 760（−padding 64）→ 空白 198px；<1024 时既无状态栏、`.hero__scroll-indicator` 又是 `display:none`，底部无任何锚定元素。处置：删死样式 + 调低移动端 `min-height`，或补一个底部元素 |
 
 ### I-4 性能与资源
@@ -191,20 +192,29 @@
 
 | # | 现象 | 证据 | 处置 |
 |---|---|---|---|
-| J1 | **暗区背景被内联硬编码，`.section--dark` 的 background 被内联压制**（内联特异性高于 class） | `index.html` 中 `style="…background: #242423"` 共 **5 处**；`#242423` 全站 **8 次**；`.section--dark { background: var(--color-black) }` 位于 `desktop.css:300`（已从媒体查询提到全局档，但仍被内联覆盖） | 删内联 background，让暗区走 class + 令牌。**建议排在 A4 / A6 布局重排之前** —— 否则重排要再动一遍这些内联值 |
-| J2 | **色彩系统有 4 个近似黑**，改一次暗色要动 11 处 | `#000000`（`--color-black-deep`，已令牌化）· `#232323`（`--color-black`，**7 次**）· `#242423`（**8 次**）· `#0A0A0A`（**3 次**） | 新增 `--color-cement: #242423`（保留现有观感）或统一到一档；**方案需你拍板** |
-| J3 | **80 个令牌里 18 个从未被 `var()` 引用**（JS 也不引用任何令牌，已确认） | 声明 **80** / 引用 **62**；差集：`--space-xs/sm/md/lg/2xl/3xl/4xl/5xl` · `--space-1` · `--space-24` · `--font-cjk` · `--weight-semibold` · `--radius-2` · `--color-glass` · `--color-glass-dark` · `--dotted-bg-dark` · `--ease-in-out` · `--nav-height` | 删死令牌（约 350+ 字节）。**其中 `--nav-height: 60px` 与实测冲突**：`.nav` 桌面写死 `52px`（`desktop.css:18`）、移动 `44px`（`mobile.css:11`）→ **三方不一致**（令牌 60 / 桌面 52 / 移动 44），属真 bug 隐患，删或改都会牵动 nav 高度 |
-| J4 | **favicon 完全缺失** | `grep 'rel="icon"\|favicon\|apple-touch' index.html` = **MISSING**；无 `public/`，根目录无 `favicon.ico` | 加 favicon（页头已有内联品牌 SVG，可复用）。用户可见：标签页空白 + 控制台 404。**一行级** |
-| J5 | **robots.txt / sitemap.xml 缺失** | 根目录无这两个文件，也无 `public/` | SEO 的 meta / OG / twitter:card / canonical / JSON-LD **已齐**，独缺这两项；静态站各一个文件即可 |
-| J6 | **导航高亮无 `aria-current`** —— 当前区块只靠 `.nav--active` class，读屏读不出「你在哪」 | `aria-current` 在 `index.html` 与 3 个 js 中命中 **0** | 在 `main.js` 的 scrollspy 里补 `aria-current="location"`；与 I6（筛选 `aria-pressed`）同族，建议同批 |
-| J7 | **死样式规模远大于 I10 / I11 所记**（review 只点了 2 处） | `index.html` + 3 个 js **全 0 命中**的类：`ide-window*`(9) · `skills-list*`(5) · `radial-text__*`(5) · `hero__status-bar` + `status-bar__*`(4) · `section__desc` · `link-dashed` · `chip-card` · `dotted-overlay` · `grid-12` · `section--black`（合计约 28 个类） | 一次清干净。**`sr-only` 与 `char-matrix*` 建议保留**（前者是无障碍工具类，后者已否决但按决策留作备用） |
-| J8 | **冗余内联样式**：全文 **29 处 `style="`** | 含 **3 处 `text-decoration:none`**（全局 `a { text-decoration: none }` 已有，纯冗余）+ 5 处重复 `margin-bottom: var(--space-4)` | 冗余的删、重复的提成工具类；属 J1 的同一类债 |
+| J1 ✅ | **暗区背景被内联硬编码，`.section--dark` 的 background 被内联压制**（内联特异性高于 class） | `index.html` 中 `style="…background: #242423"` 共 **5 处**；`#242423` 全站 **8 次**；`.section--dark { background: var(--color-black) }` 位于 `desktop.css:300`（已从媒体查询提到全局档，但仍被内联覆盖） | 删内联 background，让暗区走 class + 令牌。**建议排在 A4 / A6 布局重排之前** —— 否则重排要再动一遍这些内联值 |
+| J2 ✅ | **色彩系统有 4 个近似黑**，改一次暗色要动 11 处 | `#000000`（`--color-black-deep`，已令牌化）· `#232323`（`--color-black`，**7 次**）· `#242423`（**8 次**）· `#0A0A0A`（**3 次**） | 新增 `--color-cement: #242423`（保留现有观感）或统一到一档；**方案需你拍板** |
+| J3 ✅ | **80 个令牌里 18 个从未被 `var()` 引用**（JS 也不引用任何令牌，已确认） | 声明 **80** / 引用 **62**；差集：`--space-xs/sm/md/lg/2xl/3xl/4xl/5xl` · `--space-1` · `--space-24` · `--font-cjk` · `--weight-semibold` · `--radius-2` · `--color-glass` · `--color-glass-dark` · `--dotted-bg-dark` · `--ease-in-out` · `--nav-height` | 删死令牌（约 350+ 字节）。**其中 `--nav-height: 60px` 与实测冲突**：`.nav` 桌面写死 `52px`（`desktop.css:18`）、移动 `44px`（`mobile.css:11`）→ **三方不一致**（令牌 60 / 桌面 52 / 移动 44），属真 bug 隐患，删或改都会牵动 nav 高度 |
+| J4 ✅ | **favicon 完全缺失** | `grep 'rel="icon"\|favicon\|apple-touch' index.html` = **MISSING**；无 `public/`，根目录无 `favicon.ico` | 加 favicon（页头已有内联品牌 SVG，可复用）。用户可见：标签页空白 + 控制台 404。**一行级** |
+| J5 ✅ | **robots.txt / sitemap.xml 缺失** | 根目录无这两个文件，也无 `public/` | SEO 的 meta / OG / twitter:card / canonical / JSON-LD **已齐**，独缺这两项；静态站各一个文件即可 |
+| J6 ✅ | **导航高亮无 `aria-current`** —— 当前区块只靠 `.nav--active` class，读屏读不出「你在哪」 | `aria-current` 在 `index.html` 与 3 个 js 中命中 **0** | 在 `main.js` 的 scrollspy 里补 `aria-current="location"`；与 I6（筛选 `aria-pressed`）同族，建议同批 |
+| J7 ✅ | **死样式规模远大于 I10 / I11 所记**（review 只点了 2 处） | `index.html` + 3 个 js **全 0 命中**的类：`ide-window*`(9) · `skills-list*`(5) · `radial-text__*`(5) · `hero__status-bar` + `status-bar__*`(4) · `section__desc` · `link-dashed` · `chip-card` · `dotted-overlay` · `grid-12` · `section--black`（合计约 28 个类） | 一次清干净。**`sr-only` 与 `char-matrix*` 建议保留**（前者是无障碍工具类，后者已否决但按决策留作备用） |
+| J8 ✅ | **冗余内联样式**：全文 **29 处 `style="`** | 含 **3 处 `text-decoration:none`**（全局 `a { text-decoration: none }` 已有，纯冗余）+ 5 处重复 `margin-bottom: var(--space-4)` | 冗余的删、重复的提成工具类；属 J1 的同一类债 |
 
 **顺带复核通过（勿当缺陷修）**：`prefers-reduced-motion` **已全局覆盖**（`style.css` 2 处，任何新增 CSS 动效自动降级）· SEO meta / OG / JSON-LD 已齐 · `mono-label` 在用（18 处）· `text-watermark` 在用 · **JS 不引用任何设计令牌**（故 J3 的差集判定成立）。
 
-**J 节建议执行顺序**：J4 + J6（各一行级、用户与无障碍可见）→ J1 + J2（令牌化，先于布局重排）→ J3 + J7 + J8 + I10（纯清理，零视觉风险，可一次提交）→ J5（两个静态文件，顺手）。
+**J 节建议执行顺序**：J4 + J6（各一行级、用户与无障碍可见）→ J1 + J2（令牌化，先于布局重排）→ J3 + J7 + J8 + I10（纯清理，零视觉风险，可一次提交）→ J5（两个静态文件，顺手）。**✅ 2026-09-16 已按此顺序全部执行完毕。**
 
-> ⚠️ **待实测**：`.contact-item-big` 是 flex 且**无 `flex-wrap`**，移动端 `__value` 字号为 `--text-h3`、右侧两枚 `.contact-chip`（各 `min-width: 5.5em`）+ 40px 图标 —— 360px 下（内容宽约 320px）微信行是最挤的一行，**疑横向溢出**。本条为 2026-09-15 新增微信行引入的风险，因 dev server 已停、探针目录被系统清理，**本轮未实测**，需起服务补测后定级。
+### J 节落地说明（2026-09-16 · 含需拍板项的最终口径与刻意保留项）
+
+- **J2 口径**：统一到既有 `--color-black`（`#232323`），**未新增** `--color-cement`。理由：`#232323` 与 `#242423` 仅差 RGB(1,1,0)，肉眼不可分辨，统一后近似黑由 4 个降为 **3 个**（`#000000` / `#232323` / `#0A0A0A`），而 `--color-black` 本就是 CLAUDE.md 记录的唯一暗色令牌。连带把 Hero 分屏右半的 `#242423` 改成 `var(--color-black)`。**若判定要保留 `#242423` 观感，改 1 行即可回退。**
+- **J3 口径**：18 个死令牌全删（含 `--nav-height: 60px` —— 删除即消除「令牌 60 / 桌面 52 / 移动 44」三方不一致）。原「兼容旧变量名」块整块删除，其唯一在用项 `--space-xl` 就地替换为等值的 `--space-8`（同为 2rem）。另新增删除 `--color-ok`（随 `.status-bar__dot` 死样式一并失效）。**终态：声明 60 / 引用 60，双向差集为空。**
+- **J7 口径（比原清单多清出 15 个类）**：除清单所列，另确认并删除 `.section__header--split` · `.tech-stack` · `.tech-cat__num/__body` · `.timeline-list__desc` · `.tool-icon__name` · `.radial-text__*`(5) · `.status-bar__*`(6) · `.bg-dark/.dark-bg` · `.tok-k/__s/__n`，以及关键帧 `statusPing` / `radialSpin` / `fadeIn`；`mobile.css` 中 `.hero__status-bar*` / `.chip-card*` / `.ide-window*` 同步清理。
+  **刻意保留（当前 0 命中，但属通用工具或已定决策）**：`.sr-only` · `.container` · `.text-balance` · `.char-matrix-bg`（配 `char-matrix.js`）· `.mono-label--accent` · `.stagger-1/3/4` · `.tok-*` 全族（终端语法色板，`life.txt` 在用其中 2 个）· 关键帧 `cursorBlink`（留作 B3）。**判定标准：可复用原语 ≠ 被删组件的残骸。**
+- **J8 口径**：29 处内联 → **5 处**。删冗余（3× `text-decoration:none`、4× 图标 `color: var(--color-white)` —— 由 `.section--dark` 继承即为白）；提为类（新增 `.text-lead` / `.text-lead--spaced` / `.object-bottom`，并新增 `#intro` 作用域规则与 `.project-item__section > .mono-label`）；`.video-cover video` 样式回归 CSS。**余下 5 处是 5 个区块各自的 padding 节奏值，非冗余，且其中 2 个区块无 `id` 可挂，故保留。**
+- **回归口径**：用 `git worktree` 检出 HEAD 作对照，CDP 对 72 个元素做逐元素几何 diff —— **零差异**；整页高度 1440＝15878px / 390＝14332px 与改前完全一致；基线复现 `GET /favicon.ico → 404`，修复后消失；交互回归（视频弹层 ESC 关闭并清空内容、焦点接管与还原、二维码弹层、技术栈筛选 7 dim / 1 可见 / 可复位、锚点跳转 + scrollspy `aria-current` 跟随）**全通过**，控制台零错误。
+
+> ✅ **原「`.contact-item-big` 360px 疑横向溢出」复核不成立**（2026-09-16 补测）：360px 下微信行 `rowW=328`、内部 `scrollWidth == clientWidth == 328`（**零溢出**），两枚 `.contact-chip` 右缘 `340.1` 距行右缘 `344` 尚有 **3.9px** 余量、距视口右缘 19.9px；`documentElement.scrollWidth == 360 == innerWidth`，**全页无横向滚动**；375px 余量更大。原因是 `.contact-item-big__value` 所在 flex 项可收缩，未触发溢出。**该风险关闭。**
 
 ## H. 本轮完成 / 未完成清单（交接下一会话）
 
@@ -220,7 +230,7 @@
 | 性能 | 传输字节（Network 域）· FCP/LCP/CLS · 字体实际加载 · 图片懒加载 | Network + Resource Timing + PerformanceObserver |
 | 参考站正文抓取 | **4 个** | 宇树 / 智元 / 云深处 / Awwwards SOTD《Robot》 |
 | 源码通读 | index.html 981 + style.css 881 + desktop.css 1561 + mobile.css 251 + main.js 188 + animations.js 56 | 全文读过 |
-| 全页高度实测 | 桌面 1440＝15769px / 1280＝15092px / 移动 390＝14227px | CDP 实测（第三轮复测；A7 记录的 1440＝15828px 是第一轮数值，两者差 59px，属后续布局微调所致） |
+| 全页高度实测 | **桌面 1440＝15878px / 移动 390＝14332px**（2026-09-16 复测，已用作第 0.5 档回归基准） | CDP 实测。第三轮曾记 1440＝15769px / 390＝14227px，差值源于 2026-09-15 新增微信联系方式行（+1 行），**不是布局回归** |
 
 ### H2 未完成（下一会话按序执行）
 
@@ -228,7 +238,7 @@
 
 **2. 生产构建复测** —— 本轮全部数据来自 `npm run dev`（无 gzip、无打包）。I12/I15 的体积与耗时必须在 `npm run build` + `npm run preview` 产物上复测才有交付意义
 
-**3. A–I / J 节的修复落地** —— 按 D 节顺序。截至 2026-09-16：**已落地** A2 / A10 / A13 / A14 / A16 / B1 / B2 / I2 / I3 / I5 / I7；**部分** I4（`playsinline` 已补，自动播放策略未决）；**未动手** A1 / A3 / A4 / A6 / A7 / A8 / A9 / A11 / A12 / A15 / B3 / B4 / B5 / C1–C5 / I1 / I6 / I8 / I9 / I10 / I11 / I12 / I13 / I14 / I15 + **J1–J8**
+**3. A–I / J 节的修复落地** —— 按 D 节顺序。截至 2026-09-16：**已落地** A2 / A10 / A13 / A14 / A16 / B1 / B2 / I2 / I3 / I5 / I7 / **I10** / **J1–J8**；**部分** I4（`playsinline` 已补，自动播放策略未决）；**未动手** A1 / A3 / A4 / A6 / A7 / A8 / A9 / A11 / A12 / A15 / B3 / B4 / B5 / C1–C5 / I1 / I6 / I8 / I9 / I11 / I12 / I13 / I14 / I15
 
 **4. 已否决项（勿重走）** —— 通栏黑带分隔条 · 全站统一暗色 · 竖版视频适配 · char-matrix 接入 · **B6 锚点落点描边（2026-09-15）** · **B7 Hero SCROLL 刻度（2026-09-15）**
 

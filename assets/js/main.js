@@ -63,10 +63,15 @@ function initScrollSpy() {
       currentId = sections[sections.length - 1].id;
     }
 
-    links.forEach(l => l.classList.remove('nav--active'));
+    links.forEach(l => {
+      l.classList.remove('nav--active');
+      l.removeAttribute('aria-current');
+    });
     const active = linkByHref[currentId];
     if (active) {
       active.classList.add('nav--active');
+      // 纯视觉的 .nav--active 读屏读不出，补 aria-current 让辅助技术知道「当前在哪一节」
+      active.setAttribute('aria-current', 'location');
       placeIndicator(active);
     }
   };
