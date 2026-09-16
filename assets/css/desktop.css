@@ -415,7 +415,7 @@
   max-width: 100%;
 }
 
-/* --- 简介区（A4 布局重排前的过渡形态；原为逐层内联 grid 与图片样式） --- */
+/* --- 简介区（A4 已重排：桌面 12 栅格「文字 6 列 + 照片 5 列右偏」） --- */
 #intro .section__body {
   display: grid;
   grid-template-columns: 1fr;
@@ -439,6 +439,23 @@
   object-fit: cover;
   object-position: 20% 35%;
   border-radius: var(--radius-8);
+}
+
+/* A4：≥1024 由「正文 65ch 靠左 + 满宽大图」改为并列 —— 文字占 1–6 列、
+   照片占 8–12 列（右偏），第 7 列留作呼吸空隙；照片列窄了，4:3 下高度随之收敛，
+   消除「头重脚轻」 */
+@media (min-width: 1024px) {
+  #intro .section__body {
+    grid-template-columns: repeat(12, 1fr);
+  }
+
+  #intro .section__body > div:first-child {
+    grid-column: 1 / span 6;
+  }
+
+  #intro .section__body > img {
+    grid-column: 8 / span 5;
+  }
 }
 
 /* 滚动入场样式已移至 style.css：全局生效 + 无 JS 兜底 + .stagger-* 错峰 */
@@ -490,8 +507,9 @@
 @media (min-width: 1024px) {
   .project-item {
     display: grid;
-    /* A1：100px 装不下「机械臂运控负责人」（8 个全角字 ≈ 104px）会折成两行 → 132px + 不折行 */
-    grid-template-columns: 132px 1fr;
+    /* A1：100px 装不下「机械臂运控负责人」（8 个全角字 ≈ 104px）会折成两行 → 132px + 不折行
+       A6：内容区再分两列 —— 描述占左列、成果占右列（并排），其余元素仍跨满 2/-1 */
+    grid-template-columns: 132px 1fr 1fr;
     gap: var(--space-8);
     align-items: start;
   }
@@ -534,7 +552,8 @@
   line-height: 1.65;
   max-width: 70ch;
   margin-bottom: var(--space-6);
-  grid-column: 2 / -1;
+  /* A6：只占内容区左列，右列让给成果段；<1024 是 flex 布局，本属性不参与 */
+  grid-column: 2 / 3;
 }
 
 /* 标签 — 极简等宽风格 */
@@ -570,6 +589,11 @@
 /* 分段内小标题（原为逐处内联 margin-bottom） */
 .project-item__section > .mono-label {
   margin-bottom: var(--space-4);
+}
+
+/* A6：成果段与描述并排 —— 占内容区右列（起 3 列格）；须写在本段基类之后（同特异性） */
+.project-item__section--results {
+  grid-column: 3 / 4;
 }
 
 /* 成果列表 */
