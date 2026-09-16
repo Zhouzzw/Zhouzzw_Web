@@ -84,6 +84,11 @@
   /* 点阵纹理 — CRT/终端质感 */
   --dotted-bg:          repeating-conic-gradient(rgba(255,255,255,0.22) 0% 25%, transparent 0% 50%);
 
+  /* 交互高光坐标 — B5 卡片鼠标跟随（main.js 按指针位置写 px；默认居中，
+     在此声明以满足红线「用 var() 前必须已声明」） */
+  --spot-x:             50%;
+  --spot-y:             50%;
+
   /* 容器最大宽 */
   --container-max:      1440px;
   --gutter-mobile:      1rem;    /* 16px */
@@ -232,6 +237,14 @@ img {
   object-position: center 90%;
 }
 
+/* 数字滚动计数（B4）：终值写在 HTML 里（无 JS / 爬虫 / 减动效下直接可读）。
+   inline-block 防数字跨行折断；tabular-nums 让逐帧数字等宽不跳动。
+   动画期间 JS 再按终值实测锁 min-width，增长不推挤同句文字。 */
+.js-count {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+}
+
 /* 锚点落点 — 区块顶边与视口顶边严格对齐，避免上一区块残留在视口顶部。
    导航是居中浮动药丸（底边 84px），且各区块 padding-top ≥64px、标题靠左，不会被遮。
    例外：#projects 的 padding-top 为 0、顶边就是终端分隔条，需让出药丸高度。 */
@@ -282,7 +295,7 @@ section[id] {
 
 /* --- 关键帧动画 --- */
 
-/* 光标闪烁（终端风格）— 当前无消费者，留作 review B3「Hero 打字机」备用 */
+/* 光标闪烁（终端风格）— 消费者：B3 hero__term-cursor（2026-09-16 接入） */
 @keyframes cursorBlink {
   0%, 49.9% { opacity: 1; }
   50%, 100% { opacity: 0; }

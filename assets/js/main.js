@@ -279,6 +279,35 @@ function initContactCopy() {
   });
 }
 
+/* ===== B5 卡片鼠标跟随高光 =====
+   把指针位置写进卡片的 --spot-x / --spot-y，::after 的 radial-gradient 跟着走。
+   与 CSS 的「精细指针 + 支持 hover」门控同口径：不满足则一个监听都不挂。
+   一次 pointermove 最多排一个 rAF（高频事件里不做布局计算）。 */
+function initSpotlight() {
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+  const cards = document.querySelectorAll('.chip-board .tech-cat, .project-item__image');
+  if (!cards.length) return;
+
+  cards.forEach((card) => {
+    let raf = null;
+    let x = 0;
+    let y = 0;
+
+    card.addEventListener('pointermove', (e) => {
+      x = e.clientX;
+      y = e.clientY;
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = null;
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty('--spot-x', `${x - rect.left}px`);
+        card.style.setProperty('--spot-y', `${y - rect.top}px`);
+      });
+    });
+  });
+}
+
 /* ===== 技术栈筛选 ===== */
 function initTechFilter() {
   const btns = document.querySelectorAll('.tech-filter__btn');
@@ -327,6 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollSpy();
   initVideoModal();
   initTechFilter();
+  initSpotlight();
   initVideoCovers();
   initScrollProgress();
   initContactCopy();

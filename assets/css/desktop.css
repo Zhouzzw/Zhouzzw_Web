@@ -168,15 +168,39 @@
   }
 }
 
-.hero__kicker {
-  font-family: var(--font-mono);
-  font-size: var(--text-mono-large);
+/* B3 终端打字机 — hero 眉题（2026-09-16 用户拍板：替代原 .hero__kicker 并放大）。
+   aria-hidden 纯装饰。行内 flex：提示符 / 光标恒定，打字只改中间文本宽度，
+   不影响其他行；整行占位恒定 → 打字前后页面总高不变。
+   继承原 kicker 的 0.1s 入场时隙与 space-4 底距，字号放大一档（--text-body-large）。 */
+.hero__term {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  width: max-content;
+  /* Geist Mono 无 CJK 字形；显式接 Noto Sans SC，避免「周子惟」掉到不可控的系统字体（I14 同源教训） */
+  font-family: var(--font-mono), 'Noto Sans SC';
+  font-size: var(--text-body-large);
   color: var(--color-dark-grey);
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
   margin-bottom: var(--space-4);
   opacity: 0;
   animation: fadeUp 0.7s var(--ease-out) 0.1s forwards;
+}
+
+/* $ 提示符按正文橙色规则用浅色底安全档（I7：浅色底上一律 --color-accent-deep） */
+.hero__term-prompt {
+  color: var(--color-accent-deep);
+}
+
+/* 光标块是纯装饰填充，用品牌橙提亮 */
+.hero__term-cursor {
+  width: 0.55em;
+  height: 1.05em;
+  background: var(--color-accent);
+  animation: cursorBlink 1.1s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__term-cursor { animation: none; }
 }
 
 .hero__title {
@@ -823,6 +847,46 @@
   height: 12px;
   border: 1.5px solid rgba(255, 255, 255, 0.25);
   border-radius: 50%;
+}
+
+/* --- B5 卡片鼠标跟随高光 ---
+   仅精细指针 + 支持 hover 的设备启用（触屏无 hover，跟随无意义）。
+   坐标由 main.js 写入 --spot-x / --spot-y（:root 已声明默认 50%）。
+   用 ::after 叠加层 + radial-gradient，不占布局、不拦截事件；
+   overlay 自带圆角（各自匹配卡片圆角），不裁剪既有元素（避开 img 的 scale hover 效果）。
+   进入/退出只过渡 opacity，不做跟随位移动画。 */
+@media (hover: hover) and (pointer: fine) {
+  .chip-board .tech-cat,
+  .project-item__image {
+    position: relative;   /* 只建定位，不偏移 —— 零布局影响 */
+  }
+
+  .chip-board .tech-cat::after,
+  .project-item__image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--duration-base) var(--ease-out);
+    background: radial-gradient(
+      220px circle at var(--spot-x) var(--spot-y),
+      rgba(255, 255, 255, 0.1),
+      transparent 65%
+    );
+  }
+
+  .chip-board .tech-cat::after { border-radius: 6px; }              /* 同卡片圆角 */
+  .project-item__image::after { border-radius: var(--radius-8); }   /* 同 img 圆角 */
+
+  .chip-board .tech-cat:hover::after,
+  .project-item__image:hover::after { opacity: 1; }
+}
+
+/* 减动效：高光是 hover 反馈（同边框变色），保留；只去掉淡入淡出 */
+@media (prefers-reduced-motion: reduce) {
+  .chip-board .tech-cat::after,
+  .project-item__image::after { transition: none; }
 }
 
 /* --- 开发工具箱 --- */
