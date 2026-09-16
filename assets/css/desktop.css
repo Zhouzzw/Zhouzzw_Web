@@ -866,6 +866,90 @@
   content: none;
 }
 
+/* --- C3：技能掌握度（F 方案 · 名称 + 掌握度条 + 档位） ---
+   每个技能 = 双行小卡片（上行名称 / 下行「进度条 + 档位文字」），列表为两列网格；
+   档位由 li 的 data-lv 驱动：5 = 熟练（条 100%）· 3 = 熟悉（60%）· 1 = 了解（20%）。
+   条色 = 暖米灰 #C8C1B2（2026-09-16 用户四选一定稿）—— 站点强调橙只留给交互与焦点，
+   不用于长期装饰（橙色铺满 40 条会形成高饱和噪声）。
+   ⚠️ 档位数据为占位，待用户确认真实档位。 */
+.chip-board .tech-cat__list--rated {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.chip-board .tech-cat__list--rated li {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;   /* 必须显式声明：column 下若被 center 覆盖，子项收缩为内容宽、条宽变 0 */
+  gap: 9px;
+  min-width: 0;
+  padding: 10px 12px 11px;
+  background: rgba(255, 255, 255, 0.02);
+  line-height: 1.4;
+  transition: border-color var(--duration-base) var(--ease-out);
+}
+
+.chip-board .tech-cat__list--rated li:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.tech-skill__name {
+  color: var(--color-ghost-grey);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tech-skill__meter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tech-skill__track {
+  flex: 1;
+  min-width: 0;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.tech-skill__fill {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: #C8C1B2;   /* 暖米灰 · B 方案（呼应浅色区米白 #F1EEE7） */
+}
+
+.tech-skill__lv {
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* 档位 → 条长（1/5 · 3/5 · 5/5） */
+.chip-board .tech-cat__list--rated li[data-lv="5"] .tech-skill__fill { width: 100%; }
+.chip-board .tech-cat__list--rated li[data-lv="4"] .tech-skill__fill { width: 80%; }
+.chip-board .tech-cat__list--rated li[data-lv="3"] .tech-skill__fill { width: 60%; }
+.chip-board .tech-cat__list--rated li[data-lv="2"] .tech-skill__fill { width: 40%; }
+.chip-board .tech-cat__list--rated li[data-lv="1"] .tech-skill__fill { width: 20%; }
+
+/* 档位 → 文字亮度（熟练最亮 / 了解最弱） */
+.chip-board .tech-cat__list--rated li[data-lv="5"] .tech-skill__lv { color: rgba(255, 255, 255, 0.8); }
+.chip-board .tech-cat__list--rated li[data-lv="4"] .tech-skill__lv { color: rgba(255, 255, 255, 0.68); }
+.chip-board .tech-cat__list--rated li[data-lv="3"] .tech-skill__lv { color: rgba(255, 255, 255, 0.55); }
+.chip-board .tech-cat__list--rated li[data-lv="2"] .tech-skill__lv { color: rgba(255, 255, 255, 0.46); }
+.chip-board .tech-cat__list--rated li[data-lv="1"] .tech-skill__lv { color: rgba(255, 255, 255, 0.4); }
+
+/* 减动效：hover 反馈保留，只去掉过渡 */
+@media (prefers-reduced-motion: reduce) {
+  .chip-board .tech-cat__list--rated li { transition: none; }
+}
+
 /* 芯片引脚 */
 .chip-board__pins {
   display: flex;

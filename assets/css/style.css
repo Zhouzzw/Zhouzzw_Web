@@ -518,6 +518,7 @@ section[id] {
 }
 
 .cta-split__right {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -525,11 +526,82 @@ section[id] {
   font-size: 18px;
   color: var(--color-accent);
   border-left: 1px solid var(--color-border-dark);
-  transition: background var(--duration-fast) var(--ease-standard);
+  overflow: hidden;
 }
 
-.cta-split:hover .cta-split__right {
-  background: rgba(255, 255, 255, 0.06);
+/* 悬停 / 按下时点亮的橙色底块：自「左下角」向右上生长铺满（对角跃迁，非平移） */
+.cta-split__right::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--color-accent);
+  transform: scale(0);
+  transform-origin: left bottom;   /* 起点 = 左下角，终点 = 铺满至右上 */
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+/* 箭头字符恒为 ↗（全程指向右上，不随状态转向）；静止时略偏左下，作为跃迁起点 */
+.cta-split__arrow {
+  position: relative;
+  z-index: 1;
+  display: block;
+  line-height: 1;
+  transform: translate(-4px, 4px);
+  transition: transform 0.22s var(--ease-out),
+              color var(--duration-base) var(--ease-out);
+}
+
+/* 跃变：左下淡出 →（换位）→ 右上淡入，全程不旋转、无平移中间态 */
+@keyframes ctaArrowJump {
+  0%   { transform: translate(-4px, 4px); opacity: 1; }
+  40%  { transform: translate(-4px, 4px); opacity: 0; }
+  41%  { transform: translate(4px, -4px); opacity: 0; }
+  100% { transform: translate(4px, -4px); opacity: 1; }
+}
+
+/* 鼠标端：hover = 底块自左下角跃变铺满 + 箭头同向跃变至右上 */
+@media (hover: hover) and (pointer: fine) {
+  .cta-split:hover .cta-split__right::before {
+    transform: scale(1);
+  }
+
+  .cta-split:hover .cta-split__arrow {
+    color: var(--color-black-deep);
+    animation: ctaArrowJump 0.42s var(--ease-out) forwards;
+  }
+}
+
+/* 按下：底块保持点亮，箭头沿 ↗ 飞出、自左下飞回（同为对角跃迁语言；跳转交给 href） */
+.cta-split:active .cta-split__right::before {
+  transform: scale(1);
+}
+
+.cta-split:active .cta-split__arrow {
+  color: var(--color-black-deep);
+  animation: ctaArrowDash 0.5s var(--ease-out);
+}
+
+@keyframes ctaArrowDash {
+  0%   { transform: translate(4px, -4px); opacity: 1; }
+  38%  { transform: translate(190%, -190%); opacity: 0; }
+  39%  { transform: translate(-190%, 190%); opacity: 0; }
+  100% { transform: translate(4px, -4px); opacity: 1; }
+}
+
+/* 按下的下压反馈（归位；hover 的 -2px 上浮在此让位） */
+.cta-split:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-card);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-split__right::before,
+  .cta-split__arrow { transition: none; }
+
+  .cta-split__arrow { transform: none; }
+
+  .cta-split:hover .cta-split__arrow,
+  .cta-split:active .cta-split__arrow { animation: none; }
 }
 
 /* 终端语法高亮 token（终端档案 life.txt 在用） */
@@ -588,12 +660,13 @@ section[id] {
 }
 
 /* --- 页脚升级 --- */
+/* 品牌字：8×9 点阵像素字（内联 SVG · 蓝→青→绿渐变 + 同色描边）。
+   原为 6px 灰 ASCII 字符画（不可读 · review A9），2026-09-16 改为彩色像素字。 */
 .footer__ascii {
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: 6px;
-  line-height: 1.0;
-  color: rgba(255, 255, 255, 0.12);
+  display: block;
+  width: 100%;
+  max-width: 640px;
+  height: auto;
   user-select: none;
 }
 
