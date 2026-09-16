@@ -118,7 +118,7 @@
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr auto;
   align-items: center;
-  padding: 8rem var(--gutter-mobile) 4rem;
+  padding: 8rem var(--gutter) 4rem;
   position: relative;
   overflow: hidden;                 /* 螺旋上下/右侧溢出被 hero 边界截断 */
   background: var(--color-off-white);
@@ -128,7 +128,7 @@
   .hero {
     grid-template-columns: repeat(12, 1fr);
     grid-template-rows: 1fr auto;
-    padding: 0 var(--gutter-desktop);
+    padding: 0 var(--gutter);
     gap: 0;
     /* 左右分屏：左米白 / 右水泥灰 */
     background: linear-gradient(
@@ -204,7 +204,12 @@
 }
 
 .hero__title {
-  font-size: var(--text-headline-2);
+  /* <1024（单列全宽）：三道上限取小 ——
+     ① --text-headline-2 的正常曲线；② 可用列宽 / 9（最长行「上下位机全栈工程师」9 个全角字，
+     超出则末字孤行，A15）；③ 3rem(48px) —— 恰为桌面档在 1024px 的取值（见下方公式），
+     让 769–1023 区间收敛到同一字号，消除断点处 −33% 的反向跳变（A11）。
+     列宽约束额外扣 16px 作滚动条余量，确保任何环境下都不折行。 */
+  font-size: min(var(--text-headline-2), calc((100vw - 2 * var(--gutter) - 16px) / 9), 3rem);
   font-weight: var(--weight-medium);
   letter-spacing: -0.03em;
   line-height: 1.0;
@@ -218,10 +223,11 @@
 /* Hero 标题字号跟随左列宽而非视口：左列宽 = 50vw − gutter（12 栅格 gap 为 0，
    6 列恰为内容宽的一半）。标题最长行「上下位机全栈工程师」为 9 个全角字
    （中文 1 字 = 1em），字号须 ≤ 列宽 / 9，否则末字「师」孤行到第三行。
-   视口 ≤1616px 时该值小于 --text-headline-2 的 80px 上限，故取 min()。 */
+   视口 ≤1616px 时该值小于 --text-headline-2 的 80px 上限，故取 min()。
+   1024px 处 = 48px，与 <1024 档的 3rem 上限严丝合缝（A11 断点连续）。 */
 @media (min-width: 1024px) {
   .hero__title {
-    font-size: min(var(--text-headline-2), calc((50vw - var(--gutter-desktop)) / 9));
+    font-size: min(var(--text-headline-2), calc((50vw - var(--gutter)) / 9));
   }
 }
 
@@ -296,8 +302,17 @@
 
 /* --- Section 通用 — 参考站大留白 + 12 列栅格 --- */
 .section {
-  padding: var(--space-20) var(--gutter-mobile);
+  padding: var(--space-20) var(--gutter);
   position: relative;
+}
+
+/* 平板档（769–1023px）：浮动药丸导航底边在 84px，而基线顶部留白只有 80px
+   → 锚点跳转后 kicker 顶边高于导航底边（窄平板横向也重叠）。此处随视口
+   96px@768 → 128px@1024 流式，769px 起即留 12px 净空，1024px 处与桌面档无缝。 */
+@media (min-width: 769px) and (max-width: 1023.98px) {
+  .section {
+    padding-top: clamp(6rem, 12.5vw, 8rem);
+  }
 }
 
 @media (min-width: 1024px) {
@@ -305,7 +320,7 @@
      等值（--space-40=160px）时导航底边到 kicker 的视觉间距达 76px，明显偏大；
      收到 --space-32（128px）后为 44px，与 #techstack 的既有观感一致 */
   .section {
-    padding: var(--space-32) var(--gutter-desktop) var(--space-40);
+    padding: var(--space-32) var(--gutter) var(--space-40);
   }
 }
 
@@ -336,6 +351,13 @@
 @media (max-width: 767px) {
   #techstack {
     padding-top: var(--space-12);
+  }
+}
+
+/* 平板档：64px 的顶部留白会被导航（底边 84px）压住 20px，与 .section 同步提档 */
+@media (min-width: 769px) and (max-width: 1023.98px) {
+  #techstack {
+    padding-top: clamp(6rem, 12.5vw, 8rem);
   }
 }
 
@@ -1467,7 +1489,7 @@
 .footer {
   background: var(--color-black-deep);
   color: var(--color-white);
-  padding: 96px var(--gutter-desktop) 48px;
+  padding: 96px var(--gutter) 48px;
   display: flex;
   flex-direction: column;
   gap: 48px;
@@ -1475,9 +1497,9 @@
   margin-top: auto;
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 1023.98px) {
   .footer {
-    padding: 64px 20px 32px;
+    padding: 64px var(--gutter) 32px;
   }
 }
 
@@ -1584,8 +1606,9 @@
 }
 
 /* --- 响应式断点触达 (移动端样式在 mobile.css) --- */
-/* 1024px 是桌面布局的第一档（min-width:1024px），此处必须写 1023px 才互为补集 */
-@media (max-width: 1023px) {
+/* 1024px 是桌面布局的第一档（min-width:1024px），此处写 1023.98px 与之互补，
+   同时堵住 1023–1024px 之间的分数宽度缺口（红线 #1） */
+@media (max-width: 1023.98px) {
   .hero__visual {
     display: none;
   }

@@ -91,8 +91,24 @@
 
   /* 容器最大宽 */
   --container-max:      1440px;
+
+  /* 水平边距（gutter）三档：
+     <768 移动档 16px ｜ 769–1023 平板档 ｜ ≥1024 桌面档 80px。
+     平板档此前无人接管（正文贴边 16px，A12），此处按视口流式：768px→16px、1024px→80px。
+     全站引用统一走 --gutter，档位切换只发生在下面两个媒体查询里，元素不再各自写断点。 */
   --gutter-mobile:      1rem;    /* 16px */
   --gutter-desktop:     5rem;    /* 80px */
+  --gutter-tablet:      clamp(1rem, 25vw - 176px, 5rem);
+  --gutter:             var(--gutter-mobile);
+}
+
+/* gutter 档位切换：769 起进入平板档（与 mobile.css 的 max-width:768px 互补，红线 #1），1024 起进入桌面档 */
+@media (min-width: 769px) {
+  :root { --gutter: var(--gutter-tablet); }
+}
+
+@media (min-width: 1024px) {
+  :root { --gutter: var(--gutter-desktop); }
 }
 
 /* --- Reset --- */
@@ -197,13 +213,7 @@ img {
   width: 100%;
   max-width: var(--container-max);
   margin: 0 auto;
-  padding: 0 var(--gutter-mobile);
-}
-
-@media (min-width: 1024px) {
-  .container {
-    padding: 0 var(--gutter-desktop);
-  }
+  padding: 0 var(--gutter);
 }
 
 .sr-only {
@@ -416,13 +426,13 @@ section[id] {
   max-width: none;  /* 覆盖全局 p{max-width:65ch}，否则被截断在 ~665px */
   padding: 14px 20px;
   /* 两端对称内缩：比正文列更宽、不与段首平齐 —— 才能读作分隔物而非一行正文 */
-  margin: 0 calc(var(--space-2) - var(--gutter-mobile)) var(--space-10);
+  margin: 0 calc(var(--space-2) - var(--gutter)) var(--space-10);
 }
 
 @media (min-width: 1024px) {
   .term-divider {
-    margin-left: calc(var(--space-8) - var(--gutter-desktop));   /* 两侧各外延 48px，距视口 32px */
-    margin-right: calc(var(--space-8) - var(--gutter-desktop));
+    margin-left: calc(var(--space-8) - var(--gutter));   /* 两侧各外延 48px，距视口 32px */
+    margin-right: calc(var(--space-8) - var(--gutter));
   }
 }
 

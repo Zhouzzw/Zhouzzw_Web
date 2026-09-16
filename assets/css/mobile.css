@@ -65,7 +65,7 @@
 
   /* --- Section 间距 --- */
   .section {
-    padding: var(--space-16) var(--space-4);
+    padding: var(--space-16) var(--gutter);
   }
 
   .section__header {
@@ -166,7 +166,7 @@
   /* --- 终端分隔符：窄屏收起长路径，回退为短命令 $ cd techstack --- */
   .term-divider {
     font-size: 0.875rem;
-    padding: 11px var(--gutter-mobile);
+    padding: 11px var(--gutter);
   }
 
   .term-divider__dots span {
