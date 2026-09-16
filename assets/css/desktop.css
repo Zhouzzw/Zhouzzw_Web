@@ -415,7 +415,9 @@
   max-width: 100%;
 }
 
-/* --- 简介区（A4 已重排：桌面 12 栅格「文字 6 列 + 照片 5 列右偏」） --- */
+/* --- 简介区（桌面单列：正文靠左 + 满宽 4:3 大图） ---
+   A4 提案（≥1024 改 12 栅格「文字 6 列 + 照片 5 列右偏」）已于 2026-09-16
+   经用户看效果否决并退回，勿再提；如需重做先定新方向。 */
 #intro .section__body {
   display: grid;
   grid-template-columns: 1fr;
@@ -439,23 +441,6 @@
   object-fit: cover;
   object-position: 20% 35%;
   border-radius: var(--radius-8);
-}
-
-/* A4：≥1024 由「正文 65ch 靠左 + 满宽大图」改为并列 —— 文字占 1–6 列、
-   照片占 8–12 列（右偏），第 7 列留作呼吸空隙；照片列窄了，4:3 下高度随之收敛，
-   消除「头重脚轻」 */
-@media (min-width: 1024px) {
-  #intro .section__body {
-    grid-template-columns: repeat(12, 1fr);
-  }
-
-  #intro .section__body > div:first-child {
-    grid-column: 1 / span 6;
-  }
-
-  #intro .section__body > img {
-    grid-column: 8 / span 5;
-  }
 }
 
 /* 滚动入场样式已移至 style.css：全局生效 + 无 JS 兜底 + .stagger-* 错峰 */
@@ -606,7 +591,8 @@
 }
 
 .project-item__results li {
-  font-size: var(--text-body);
+  /* 与描述同级字号（2026-09-16 用户反馈：成果原为 --text-body，并排后比描述小一档） */
+  font-size: var(--text-body-large);
   color: var(--color-ghost-grey);
   padding-left: var(--space-6);
   position: relative;
