@@ -39,8 +39,8 @@
     │   ├── desktop.css     # ≥1024px 桌面布局
     │   └── mobile.css      # <768px / <480px 移动端适配
     ├── js/
-    │   ├── main.js         # scrollspy + 滑动指示器 + 视频弹窗 + 技术栈筛选
-    │   ├── animations.js   # IntersectionObserver 入场动画（2026-09-15 恢复启用）
+    │   ├── main.js         # scrollspy + 滑动指示器 + 视频弹窗 + 技术栈筛选 + 卡片跟随高光（B5）
+    │   ├── animations.js   # IntersectionObserver 入场动画（2026-09-15 恢复启用）+ 数字滚动计数 .js-count（B4）+ Hero 打字机 .hero__term（B3），均 2026-09-16
     │   └── char-matrix.js  # Canvas 字符矩阵（备用，未接入页面）
     ├── images/             # 图片资源（长边 ≤1920 已压缩）
     └── videos/             # 演示视频（1080p H.264，共 16MB，已入库）
@@ -80,6 +80,7 @@
 - 视频弹窗播放：封面是 **`<button>`**（键盘可达，Enter / Space 由平台原生触发）+ `aria-label`，内部 `<video preload="metadata">` 由 `main.js` 截 0.5s 首帧作静帧；封面只负责打开弹层
 - 联系方式：微信行提供「二维码」弹层与「复制微信号」两枚 chip；微信号必须明文常显（可读屏/可复制/无 JS 也能拿到），二维码只是补充
 - 弹层统一走 `main.js` 的 `openDialog` / `closeDialog`：`role="dialog"` + `aria-modal`、打开前记住触发元素关闭后还原焦点、ESC 与点遮罩关闭、Tab 焦点陷阱；关闭收尾动作（如清空 `<video>`）通过 `openDialog` 的第三个参数注册，避免某条关闭路径漏执行
+- 卡片鼠标跟随高光（B5）：`@media (hover:hover) and (pointer:fine)` 门控（JS 同口径，触屏零监听）；`pointermove` 经 rAF 写 `--spot-x/--spot-y`，`::after` 的 radial-gradient 跟随指针；叠加层自带卡片同款圆角 + `pointer-events:none`，不裁剪既有 img scale hover
 - 移动端导航内联横排（无汉堡折叠，`<480px` 隐藏"首页"项）
 
 ## 开发规范
@@ -99,12 +100,12 @@
    grep -oh 'var(--[a-zA-Z0-9-]*' assets/css/*.css index.html assets/js/*.js | sed 's/var(//' | sort -u > /tmp/r.txt
    comm -3 /tmp/d.txt /tmp/r.txt          # 空 = 通过
    ```
-   当前基线：**声明 60 / 引用 60**。
+   当前基线：**声明 62 / 引用 62**（2026-09-16 B5 新增 `--spot-x` / `--spot-y`）。
 3. **改样式前先清内联** —— 内联 `style` 优先级高于 class，会**静默压制**样式表里的规则（`.section--dark { background }` 就因此整轮没生效）。**布局重排必须排在清内联之后**；新代码不要写内联，重复的提成工具类（现有 `.text-lead` / `.text-lead--spaced` / `.object-bottom`）。
 4. **页面高度依赖视口高度，跨 `--h` 不比较** —— `.hero` 用 `100svh`（桌面）/ `90svh`（移动），视口高 900 与 844 会让整页差 56px。回归比对必须**锁定同一 `--h`**，且只信「同一轮 run 内 base↔cur」的差值，跨版本 / 跨参数的绝对值一律不可比。
    当前高度基准（CDP 实测）：**1440×900＝15640px · 390×844＝14332px · 360×844＝14555px**。
    配套验证手段：用 `git worktree add --detach <tmp> <旧 commit>` 另起一个 dev server，在同 run 内做**逐元素几何比对** —— 这是「清理 / 重构类改动零位移」最可靠的证明方式，别只看单页总高度。
-5. **review 报告动手后必须回写状态标记** —— `docs/review-v3.md` 是「当时快照」，任何一项落地后立刻回写 ✅ / 🟡 / 🚫 并同步 `TODO.md`，否则下一轮会把已完成项当待办重做（已多次发生）。
+5. **review 报告动手后必须回写状态标记** —— 任何一项落地后立刻回写 ✅ / 🟡 / 🚫 并同步 `TODO.md`，否则下一轮会把已完成项当待办重做（已多次发生）。`docs/review-v3.md` 已于 2026-09-16 瘦身为**「未决事项 + 已否决 + 已确认结论 + 复现环境」**：**已完成项不再往正文堆细节**（细节回落 PROGRESS/git），新增待办往「一、待处理」加，落地后从正文移除并同步 TODO.md。
 
 ## 构建 & 部署
 
