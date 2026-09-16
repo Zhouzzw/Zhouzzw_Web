@@ -30,6 +30,7 @@
 │                           #   → #life(关于: 工作之外的我) → #contact(联系) → footer
 ├── vite.config.js          # 单入口构建配置（base: '/Zhouzzw_Web/'，勿删）
 ├── package.json
+├── public/                 # Vite 原样拷进 dist 根（robots.txt / sitemap.xml）
 ├── .github/
 │   └── workflows/deploy.yml  # push 到 v2 → 构建 → 部署到 GitHub Pages
 └── assets/
@@ -39,7 +40,7 @@
     │   └── mobile.css      # <768px / <480px 移动端适配
     ├── js/
     │   ├── main.js         # scrollspy + 滑动指示器 + 视频弹窗 + 技术栈筛选
-    │   ├── animations.js   # IntersectionObserver（当前入场动画已禁用）
+    │   ├── animations.js   # IntersectionObserver 入场动画（2026-09-15 恢复启用）
     │   └── char-matrix.js  # Canvas 字符矩阵（备用，未接入页面）
     ├── images/             # 图片资源（长边 ≤1920 已压缩）
     └── videos/             # 演示视频（1080p H.264，共 16MB，已入库）
@@ -58,10 +59,10 @@
 
 | 类别 | 值 |
 |------|-----|
-| **配色** | 米白 `#F1EEE7` / 水泥灰 `#242423` / 深灰黑 `#232323` / 纯黑 `#000000` / 橙色 `#FF9100` |
+| **配色** | 米白 `#F1EEE7` / 深灰黑 `#232323` / 纯黑 `#000000` / 橙色 `#FF9100` · **全部暗区统一走 `--color-black`（`#242423` 已废弃，勿再引入）** · 浅色底上的橙色正文与焦点环改用深一档 `--color-accent-deep: #A05200` |
 | **字体** | Geist + Geist Mono + Noto Sans SC |
-| **间距** | 4px 基数：`--space-1..40` |
-| **圆角** | 2px / 4px / 8px / 9999px |
+| **间距** | 4px 基数：`--space-2..40` |
+| **圆角** | 4px / 8px / 9999px |
 | **过渡** | `cubic-bezier(0.23,1,0.32,1)` / `cubic-bezier(0.4,0,0.2,1)` |
 | **设计参考** | contentarchitecture.dev + 终端极客美学 |
 
@@ -75,7 +76,8 @@
 - 导航滚动微缩（`.nav--scrolled`）
 - 项目卡片 hover 微动效
 - 技术栈分类标签筛选 (纯 JS)
-- 视频点击弹窗播放（封面首帧截取）
+- 区块留白节奏：桌面端 `.section` **顶部 128px / 底部 160px**（顶部刻意收一档）—— 浮动药丸导航底边在 84px 处压着这段留白，等值 160px 时「导航底边 → kicker」净空达 76px，收到 128px 后为 44px，与 `#techstack` 观感齐平
+- 视频弹窗播放：封面是 **`<button>`**（键盘可达，Enter / Space 由平台原生触发）+ `aria-label`，内部 `<video preload="metadata">` 由 `main.js` 截 0.5s 首帧作静帧；封面只负责打开弹层
 - 联系方式：微信行提供「二维码」弹层与「复制微信号」两枚 chip；微信号必须明文常显（可读屏/可复制/无 JS 也能拿到），二维码只是补充
 - 弹层统一走 `main.js` 的 `openDialog` / `closeDialog`：`role="dialog"` + `aria-modal`、打开前记住触发元素关闭后还原焦点、ESC 与点遮罩关闭、Tab 焦点陷阱；关闭收尾动作（如清空 `<video>`）通过 `openDialog` 的第三个参数注册，避免某条关闭路径漏执行
 - 移动端导航内联横排（无汉堡折叠，`<480px` 隐藏"首页"项）
@@ -87,6 +89,22 @@
 - **JS**: 模块化分文件，`type="module"` 引入，避免全局污染
 - **图片**: 当前为压缩后的 JPEG（长边 ≤1920 + `-q:v 3`）；`<picture>` + WebP 是待办的可选优化
 - **视频**: 用 YouTube/Bilibili iframe embed 或 `<video>` 标签 + poster 封面
+
+## 工程红线（历次踩坑沉淀 · 改动前必读）
+
+1. **断点对必须互为补集** —— `min-width: N` 与 `max-width: N` 会在宽度**正好为 N 时同时命中**，必须写 `N` / `N-1`。历史上 `max-width: 1024px` 与 `min-width: 1024px` 撞车，让 1024px（iPad Pro 竖屏正好命中）成为唯一坏档。
+2. **用 `var()` 前确认该变量已声明** —— 未声明的 CSS 自定义属性**不报错、不告警**，整条属性静默失效。改动后跑一次双向差集（**结果必须为空**）：
+   ```bash
+   grep -oh '\-\-[a-zA-Z0-9-]*[[:space:]]*:' assets/css/*.css | sed 's/[[:space:]]*:$//' | sort -u > /tmp/d.txt
+   grep -oh 'var(--[a-zA-Z0-9-]*' assets/css/*.css index.html assets/js/*.js | sed 's/var(//' | sort -u > /tmp/r.txt
+   comm -3 /tmp/d.txt /tmp/r.txt          # 空 = 通过
+   ```
+   当前基线：**声明 60 / 引用 60**。
+3. **改样式前先清内联** —— 内联 `style` 优先级高于 class，会**静默压制**样式表里的规则（`.section--dark { background }` 就因此整轮没生效）。**布局重排必须排在清内联之后**；新代码不要写内联，重复的提成工具类（现有 `.text-lead` / `.text-lead--spaced` / `.object-bottom`）。
+4. **页面高度依赖视口高度，跨 `--h` 不比较** —— `.hero` 用 `100svh`（桌面）/ `90svh`（移动），视口高 900 与 844 会让整页差 56px。回归比对必须**锁定同一 `--h`**，且只信「同一轮 run 内 base↔cur」的差值，跨版本 / 跨参数的绝对值一律不可比。
+   当前高度基准（CDP 实测）：**1440×900＝15640px · 390×844＝14332px · 360×844＝14555px**。
+   配套验证手段：用 `git worktree add --detach <tmp> <旧 commit>` 另起一个 dev server，在同 run 内做**逐元素几何比对** —— 这是「清理 / 重构类改动零位移」最可靠的证明方式，别只看单页总高度。
+5. **review 报告动手后必须回写状态标记** —— `docs/review-v3.md` 是「当时快照」，任何一项落地后立刻回写 ✅ / 🟡 / 🚫 并同步 `TODO.md`，否则下一轮会把已完成项当待办重做（已多次发生）。
 
 ## 构建 & 部署
 
