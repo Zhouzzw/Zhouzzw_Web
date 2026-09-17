@@ -479,7 +479,7 @@ section[id] {
   .term-divider__cursor { animation: none; }
 }
 
-/* --- 双药丸 CTA 按钮 --- */
+/* --- CTA 按钮（画面切换式动效：带箭头的新画面整体推入 / 推出） --- */
 .cta-split {
   display: inline-flex;
   align-items: stretch;
@@ -488,7 +488,7 @@ section[id] {
   background-image: var(--dotted-bg);
   background-size: 4px 4px;
   border: 1px solid var(--color-border-dark);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-8);   /* 圆角矩形（原药丸形已按需求收缩） */
   overflow: hidden;
   box-shadow: var(--shadow-card);
   text-decoration: none;
@@ -511,81 +511,94 @@ section[id] {
   align-items: center;
   padding: 0 28px;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 14px;
+  font-weight: 600;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   color: var(--color-white);
 }
 
+/* 箭头画面窗口：默认画面 = 黑底 + 橙色箭头（箭头恒居中，自身无动画） */
 .cta-split__right {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 48px;
-  font-size: 18px;
+  font-size: 22px;                     /* 箭头适当放大 */
+  font-weight: 700;                    /* 加粗（符号字形随字重变化有限，配下方描边） */
+  -webkit-text-stroke: 0.5px currentColor;   /* 描边补粗：两个画面的箭头同步生效 */
   color: var(--color-accent);
   border-left: 1px solid var(--color-border-dark);
   overflow: hidden;
 }
 
-/* 悬停 / 按下时点亮的橙色底块：自「左下角」向右上生长铺满（对角跃迁，非平移） */
+/* 默认画面的箭头：静止层（z 序最底：被新画面覆盖、随新画面退出自然露出） */
+.cta-split__arrow {
+  position: relative;
+  z-index: 0;
+  display: block;
+  line-height: 1;
+}
+
+/* 新画面底块（橙）：默认在画面左下角外 → hover 沿 ↗ 对角推入（左下 → 右上，平移非生长） */
 .cta-split__right::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: var(--color-accent);
-  transform: scale(0);
-  transform-origin: left bottom;   /* 起点 = 左下角，终点 = 铺满至右上 */
-  transition: transform var(--duration-base) var(--ease-out);
-}
-
-/* 箭头字符恒为 ↗（全程指向右上，不随状态转向）；静止时略偏左下，作为跃迁起点 */
-.cta-split__arrow {
-  position: relative;
   z-index: 1;
-  display: block;
+  background: var(--color-accent);
+  transform: translate(-101%, 101%);
+  transition: transform 0.22s var(--ease-out) 0.05s;   /* 退出：沿 ↙ 退回左下角（让箭头先动，块随后） */
+}
+
+/* 新画面所带的箭头（黑）：默认在画面左下角外 → hover 随画面沿 ↗ 滑入居中（相对位置恒为居中） */
+.cta-split__right::after {
+  content: '↗';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1;
-  transform: translate(-4px, 4px);
-  transition: transform 0.22s var(--ease-out),
-              color var(--duration-base) var(--ease-out);
+  color: var(--color-black-deep);
+  transform: translate(-40px, 40px);
+  transition: transform 0.16s cubic-bezier(0.55, 0, 0.9, 1);   /* 退出：沿 ↙ 加速退回画面外 */
 }
 
-/* 跃变：左下淡出 →（换位）→ 右上淡入，全程不旋转、无平移中间态 */
-@keyframes ctaArrowJump {
-  0%   { transform: translate(-4px, 4px); opacity: 1; }
-  40%  { transform: translate(-4px, 4px); opacity: 0; }
-  41%  { transform: translate(4px, -4px); opacity: 0; }
-  100% { transform: translate(4px, -4px); opacity: 1; }
-}
-
-/* 鼠标端：hover = 底块自左下角跃变铺满 + 箭头同向跃变至右上 */
+/* 鼠标端：hover = 带箭头的新画面从按钮左下角沿 ↗ 推入替代原画面（块与箭头同时出发，块先到位） */
 @media (hover: hover) and (pointer: fine) {
   .cta-split:hover .cta-split__right::before {
-    transform: scale(1);
+    transform: translate(0, 0);
+    transition: transform 0.18s var(--ease-out);
   }
 
-  .cta-split:hover .cta-split__arrow {
-    color: var(--color-black-deep);
-    animation: ctaArrowJump 0.42s var(--ease-out) forwards;
+  .cta-split:hover .cta-split__right::after {
+    transform: translate(0, 0);
+    transition: transform 0.26s var(--ease-out);
+  }
+
+  /* 按下：画面保持点亮 + 箭头在画面内轻冲（同 ↗ 指向，无跳变） */
+  .cta-split:active .cta-split__right::after {
+    animation: ctaArrowNudge 0.32s var(--ease-out) 0.02s;
   }
 }
 
-/* 按下：底块保持点亮，箭头沿 ↗ 飞出、自左下飞回（同为对角跃迁语言；跳转交给 href） */
+@keyframes ctaArrowNudge {
+  0%   { transform: translate(0, 0); }
+  40%  { transform: translate(5px, -5px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* 触屏：按下 = 新画面沿 ↗ 推入点亮（与 hover 同款，无跳变） */
 .cta-split:active .cta-split__right::before {
-  transform: scale(1);
+  transform: translate(0, 0);
+  transition: transform 0.18s var(--ease-out);
 }
 
-.cta-split:active .cta-split__arrow {
-  color: var(--color-black-deep);
-  animation: ctaArrowDash 0.5s var(--ease-out);
-}
-
-@keyframes ctaArrowDash {
-  0%   { transform: translate(4px, -4px); opacity: 1; }
-  38%  { transform: translate(190%, -190%); opacity: 0; }
-  39%  { transform: translate(-190%, 190%); opacity: 0; }
-  100% { transform: translate(4px, -4px); opacity: 1; }
+.cta-split:active .cta-split__right::after {
+  transform: translate(0, 0);
 }
 
 /* 按下的下压反馈（归位；hover 的 -2px 上浮在此让位） */
@@ -596,12 +609,11 @@ section[id] {
 
 @media (prefers-reduced-motion: reduce) {
   .cta-split__right::before,
+  .cta-split__right::after,
   .cta-split__arrow { transition: none; }
 
-  .cta-split__arrow { transform: none; }
-
-  .cta-split:hover .cta-split__arrow,
-  .cta-split:active .cta-split__arrow { animation: none; }
+  .cta-split:hover .cta-split__right::after,
+  .cta-split:active .cta-split__right::after { animation: none; }
 }
 
 /* 终端语法高亮 token（终端档案 life.txt 在用） */
@@ -622,7 +634,9 @@ section[id] {
 .spiral-text__svg {
   width: 100%;
   height: 100%;
-  filter: drop-shadow(0 0 60px rgba(0, 0, 0, 0.4));
+  /* 原 filter: drop-shadow(0 0 60px rgba(0,0,0,0.4)) 已删：深色背景上视觉贡献为零
+     （停转后 A/B 像素 diff = 0.000%），却因每帧随动画重算 60px 模糊成为首屏卡顿主因
+     （实测稳态 17 → 44 FPS）。勿加回。 */
 }
 
 .spiral-text__ring {
@@ -637,26 +651,39 @@ section[id] {
 .spiral-text__ring--r3 { opacity: 0.62; }
 .spiral-text__ring--r4 { opacity: 0.84; }
 
-/* 16 圈螺旋：全部同方向旋转，外圈快内圈慢，形成螺旋卷入感 */
-.spiral-text__ring--r1  { animation: spiralSpin 160s linear infinite; }
-.spiral-text__ring--r2  { animation: spiralSpin 150s linear infinite; }
-.spiral-text__ring--r3  { animation: spiralSpin 140s linear infinite; }
-.spiral-text__ring--r4  { animation: spiralSpin 130s linear infinite; }
-.spiral-text__ring--r5  { animation: spiralSpin 120s linear infinite; }
-.spiral-text__ring--r6  { animation: spiralSpin 110s linear infinite; }
-.spiral-text__ring--r7  { animation: spiralSpin 100s linear infinite; }
-.spiral-text__ring--r8  { animation: spiralSpin 90s linear infinite; }
-.spiral-text__ring--r9  { animation: spiralSpin 80s linear infinite; }
-.spiral-text__ring--r10 { animation: spiralSpin 70s linear infinite; }
-.spiral-text__ring--r11 { animation: spiralSpin 60s linear infinite; }
-.spiral-text__ring--r12 { animation: spiralSpin 55s linear infinite; }
-.spiral-text__ring--r13 { animation: spiralSpin 50s linear infinite; }
-.spiral-text__ring--r14 { animation: spiralSpin 45s linear infinite; }
-.spiral-text__ring--r15 { animation: spiralSpin 42s linear infinite; }
-.spiral-text__ring--r16 { animation: spiralSpin 40s linear infinite; }
+/* 16 圈螺旋：全部同方向旋转，外圈快内圈慢，形成螺旋卷入感。
+   启动门控 html.spiral-on：首屏加载期间不转（避免与字体/图片/入场动画抢光栅化），
+   由 index.html head 内联脚本在 load 后延迟添加（A2）。 */
+html.spiral-on .spiral-text__ring--r1  { animation: spiralSpin 160s linear infinite; }
+html.spiral-on .spiral-text__ring--r2  { animation: spiralSpin 150s linear infinite; }
+html.spiral-on .spiral-text__ring--r3  { animation: spiralSpin 140s linear infinite; }
+html.spiral-on .spiral-text__ring--r4  { animation: spiralSpin 130s linear infinite; }
+html.spiral-on .spiral-text__ring--r5  { animation: spiralSpin 120s linear infinite; }
+html.spiral-on .spiral-text__ring--r6  { animation: spiralSpin 110s linear infinite; }
+html.spiral-on .spiral-text__ring--r7  { animation: spiralSpin 100s linear infinite; }
+html.spiral-on .spiral-text__ring--r8  { animation: spiralSpin 90s linear infinite; }
+html.spiral-on .spiral-text__ring--r9  { animation: spiralSpin 80s linear infinite; }
+html.spiral-on .spiral-text__ring--r10 { animation: spiralSpin 70s linear infinite; }
+html.spiral-on .spiral-text__ring--r11 { animation: spiralSpin 60s linear infinite; }
+html.spiral-on .spiral-text__ring--r12 { animation: spiralSpin 55s linear infinite; }
+html.spiral-on .spiral-text__ring--r13 { animation: spiralSpin 50s linear infinite; }
+html.spiral-on .spiral-text__ring--r14 { animation: spiralSpin 45s linear infinite; }
+html.spiral-on .spiral-text__ring--r15 { animation: spiralSpin 42s linear infinite; }
+html.spiral-on .spiral-text__ring--r16 { animation: spiralSpin 40s linear infinite; }
 
 @keyframes spiralSpin {
   to { transform: rotate(360deg); }
+}
+
+/* 不可见即暂停（A3）：滚出视口 / 切到后台时由 animations.js 给 .hero__visual 挂 is-paused，
+   16 圈旋转停摆（特异性 0,3,0 > 动画规则的 0,2,1，可靠覆盖） */
+.hero__visual.is-paused .spiral-text__ring {
+  animation-play-state: paused;
+}
+
+/* 减动效（A4）：螺旋保持静态装饰，不旋转 */
+@media (prefers-reduced-motion: reduce) {
+  html.spiral-on .spiral-text__ring { animation: none; }
 }
 
 /* --- 页脚升级 --- */

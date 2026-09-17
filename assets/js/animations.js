@@ -143,7 +143,29 @@ function initTypewriter() {
   setTimeout(tick, START_DELAY);
 }
 
+/* ===== 螺旋动画节能门控（A3） =====
+   hero 螺旋的 16 圈旋转在滚出视口 / 页面切后台时暂停（is-paused → animation-play-state），
+   旋转本身不再消耗光栅化资源；回到视口/前台自动恢复。
+   启动由 index.html head 脚本在 load+600ms 加 html.spiral-on 负责（A2），本函数只管暂停。 */
+function initSpiralGating() {
+  const visual = document.querySelector('.hero__visual');
+  if (!visual || !('IntersectionObserver' in window)) return;
+
+  let inView = true;
+  const update = () => {
+    visual.classList.toggle('is-paused', document.hidden || !inView);
+  };
+
+  new IntersectionObserver((entries) => {
+    inView = entries[entries.length - 1].isIntersecting;
+    update();
+  }, { threshold: 0 }).observe(visual);
+
+  document.addEventListener('visibilitychange', update);
+}
+
 /* ===== 初始化 ===== */
 document.addEventListener('DOMContentLoaded', initScrollAnimations);
 document.addEventListener('DOMContentLoaded', initCountUp);
 document.addEventListener('DOMContentLoaded', initTypewriter);
+document.addEventListener('DOMContentLoaded', initSpiralGating);

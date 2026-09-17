@@ -48,19 +48,19 @@
     display: none;
   }
 
-  /* --- CTA 双药丸移动端保持 --- */
+  /* --- CTA 按钮移动端保持（字重沿用桌面 600，仅收字号） --- */
   .cta-split {
     height: 44px;
   }
 
   .cta-split__left {
     padding: 0 20px;
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .cta-split__right {
     width: 44px;
-    font-size: 16px;
+    font-size: 20px;
   }
 
   /* --- Section 间距 --- */

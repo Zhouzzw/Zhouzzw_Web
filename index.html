@@ -18,6 +18,14 @@
         }, 800);
       });
     }
+    // 螺旋动画延迟启动：等首屏（字体/图片/入场动画）稳定后再开转，
+    // 避免 16 圈文字与首屏资源抢光栅化（加载期 12 → 30+ FPS）。
+    // 无 JS 时 html 无 spiral-on → 螺旋保持静态装饰，零退化。
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        document.documentElement.classList.add('spiral-on');
+      }, 600);
+    });
   </script>
   <meta name="description" content="周子惟 | 嵌入式 & ROS 机器人开发工程师 - 武汉科技大学电子信息工程在读，RoboMaster 战队电控组负责人，武汉晴山科技机器人系统集成实习工程师。RoboMaster 项目、G1-D 工业项目与技术栈全览。" />
   <meta name="keywords" content="周子惟, 嵌入式, ROS, ROS2, 具身智能, 强化学习, RoboMaster, STM32, 机器人开发" />
