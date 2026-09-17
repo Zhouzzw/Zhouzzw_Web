@@ -35,9 +35,9 @@
 |---|------|------|
 | I4 🟡 | 视频弹窗自动播放策略 | `playsinline` 已补；点封面后视频 `paused=true` 需再点一次 play（**浏览器自动播放策略，代码无错**）。二选一：加 `muted` 自动播（但演示视频多半要声音）/ 接受现状。**待拍板** |
 | I11 | 移动端 Hero 底部约 198px 空白 | 根因：`.hero__status-bar` 已从 HTML 删除但 3 个文件仍留死样式，且 <1024 时底部无锚定元素。处置：删死样式 + 调低 `min-height`，或补一个底部元素 |
-| I12 | 首屏即下载 ≈4.2MB 视频（**生产产物同样复现**，数据见下） | `initVideoCovers()` 的 `v.load()` + `currentTime = 0.5s` 强制拉流、绕过 `preload="metadata"`。处置：改为进入视口 / 首次 hover 时才截帧，或补 3 张静态封面（**收益最大**） |
+| I12 ✅ | 首屏即下载 ≈4.2MB 视频（**生产产物同样复现**，数据见下） | **2026-09-17 已修**：`initVideoCovers()` 改 IntersectionObserver 门控（rootMargin 300px 预热，进视口才 `load()` 截帧）+ video `preload` metadata→none。实测首屏零 mp4 请求（3 个视频 `netState=IDLE`/`buffered=0`），滚到项目区正常截帧（`currentTime=0.5`、封面画面正常） |
 | I13 | 20/20 图片无 `width`/`height` | 实测 **CLS＝0**（图片均在定比容器内）→ 预防性，优先级低 |
-| I14 | 等宽字体跨平台不一致 | Geist / Geist Mono **已在 `index.html` 引用**，本沙箱 `cdn.jsdelivr.net` 不可达（环境非代码）→ **需正常外网复测**才能定级；另 **Noto Sans SC 19 个 woff2 子集 = 1082KB**，是仅次于视频的第二大可优化项 |
+| I14 🟡 | 等宽字体跨平台不一致 | Geist / Geist Mono 走 `cdn.jsdelivr.net`（本沙箱不可达），字体加载成败直接改变全站等宽字与**螺旋字形**（fallback 字体宽度不同 → 曾因 `spacingAndGlyphs` 被压缩成不同变形）。2026-09-17 已缓解最坏情形：螺旋 `lengthAdjust` 改 `spacing`（字形恒不变形、只差字距）。根治方向 = **字体自托管 + 子集化**（螺旋仅约 30 个唯一字符，woff2 子集可压到几 KB）；另 **Noto Sans SC 19 个 woff2 子集 = 1082KB** 为第二大可优化项 |
 | I15 | 字体样式表渲染阻塞 | 生产 DCL 839ms / FCP 1004ms；已有 `preconnect` ✓，可自托管或 `media="print" onload` 异步化。优先级低于 I12 与 Noto 体积 |
 
 **I12 生产复测数据（2026-09-16）**：3 条封面视频在用户交互前已缓冲 3.2–4.0s，按时长折算 ≈ **4.2MB**；生产首屏可测总字节 **2320.8KB**（jpeg 1118 / woff2 1082 / css 98.6 / js 2.9）· CLS 0。

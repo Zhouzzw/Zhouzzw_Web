@@ -117,6 +117,8 @@
    **同族教训（2026-09-16 已累积 4 例：B6 / B7 / A3 / A4）**：**视觉 / 布局类改动实施后先出截图给用户确认，再做文档收尾与提交** —— 四项均为「量化验证全部通过、用户看效果后仍被否决」；几何 / 页高 / 对比度验证覆盖不了观感。给方案时宜并列 2 个方向供选，降低整案被否概率。
 6. **`filter`（drop-shadow / blur）不要挂在"内容持续动画"的元素上** —— 静止时滤镜结果可缓存（几乎零成本），一旦其内部每帧变化就必须**每帧重算模糊**：螺旋 SVG 的 `drop-shadow(0 0 60px)` 曾让稳态 44 → 17 FPS、加载期跌到 12 FPS（2026-09-17 已删）。处置套路：先**停转后 A/B 像素 diff** 确认视觉贡献（实测 0.000% → 直接删；有贡献再找静态替代如 radial-gradient）——⚠️ 对比动画元素必须**停转后再截图**，否则 diff 混入旋转相位噪声（曾把 10.6% 的相位差误读为滤镜贡献）。长跑装饰动画另配两道闸（螺旋已落地）：**首屏延迟启动**（`html.spiral-on`，load+600ms；无 JS 时静态不转，零退化）+ **不可见即暂停**（`.hero__visual.is-paused` ↔ `animation-play-state`，含 `visibilitychange`）。验证：`/tmp/probe/fps-profile.mjs <preset>`（baseline / no-filter / no-spin / hide-visual / no-both 五变体一键测加载期+稳态 FPS）。
 
+7. **CDN 字体依赖与首屏媒体拉流**（2026-09-17）—— ① `textPath` 文字**不用 `lengthAdjust="spacingAndGlyphs"`**：字体 fallback 时字形会按各自宽度被压缩变形（"不同设备呈现不一样 / 效果差"的根源），改 `spacing` 只调字距、字形恒定（螺旋 16 圈已改；根治 = 字体自托管 + 子集化，螺旋约 30 个唯一字符、woff2 子集仅几 KB）。② 封面视频用 `preload="none"` + IntersectionObserver 门控 `load()`（rootMargin 300px 预热）——原实现加载即 `load()`，用户未交互前首屏被强制拉流 ≈4.2MB（生产实测）。
+
 ## 构建 & 部署
 
 ```bash
