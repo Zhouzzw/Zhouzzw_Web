@@ -340,7 +340,9 @@ function initTechFilter() {
 /* ===== 视频封面截取首帧 ===== */
 function initVideoCovers() {
   const covers = document.querySelectorAll('.video-cover video');
-  covers.forEach(v => {
+  if (!covers.length) return;
+
+  const capture = (v) => {
     const seekAndPause = () => {
       v.currentTime = 0.5;
       v.removeEventListener('loadeddata', seekAndPause);
@@ -348,7 +350,22 @@ function initVideoCovers() {
     v.addEventListener('loadeddata', seekAndPause);
     v.addEventListener('seeked', () => { v.pause(); }, { once: true });
     v.load();
-  });
+  };
+
+  // I12：进视口才截首帧 —— 原实现加载即 load()，用户未交互前首屏被强制拉流 ≈4.2MB（生产实测）；
+  // 改为提前 300px 预热、滚到卡片附近才开始截帧；无 IO 环境退回「立即截帧」保证封面可用。
+  if (!('IntersectionObserver' in window)) {
+    covers.forEach(capture);
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      io.unobserve(entry.target);
+      capture(entry.target);
+    });
+  }, { rootMargin: '300px 0px' });
+  covers.forEach((v) => io.observe(v));
 }
 
 document.addEventListener('DOMContentLoaded', () => {
