@@ -374,6 +374,10 @@ function initVideoCovers() {
   const covers = document.querySelectorAll('.video-cover video');
   if (!covers.length) return;
 
+  // 播放键光圈环（纯装饰）：SVG 在 CSS 里由 stroke-dashoffset 驱动，hover 时顺时针画圆
+  const RING = '<svg class="video-cover__ring" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="31"></circle></svg>';
+  document.querySelectorAll('.video-cover__play-icon').forEach((icon) => icon.insertAdjacentHTML('afterbegin', RING));
+
   const capture = (v) => {
     const seekAndPause = () => {
       v.currentTime = 0.5;

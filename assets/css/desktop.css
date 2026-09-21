@@ -1572,6 +1572,7 @@
 }
 
 .video-cover__play-icon {
+  position: relative;      /* 光圈环（SVG）的定位参照 */
   width: 64px;
   height: 64px;
   border-radius: 50%;
@@ -1583,14 +1584,43 @@
   align-items: center;
   justify-content: center;
   transition: transform var(--duration-base) var(--ease-out),
-              background var(--duration-fast) var(--ease-standard),
-              border-color var(--duration-fast) var(--ease-standard);
+             background var(--duration-fast) var(--ease-standard);
 }
 
 .video-cover:hover .video-cover__play-icon {
   transform: scale(1.1);
   background: rgba(13, 13, 15, 0.62);
-  border-color: var(--color-accent);
+}
+
+/* --- 播放键光圈：hover 时橙色圆弧自 12 点顺时针「画圆」（替代原整圈变橙）
+   SVG stroke-dashoffset 驱动：r=31 → 周长 2π×31 ≈ 194.78，未 hover 时整段隐藏。
+   环由 main.js 注入（装饰性元素，无 JS 时只是少一圈光，不影响可用性）。 --- */
+.video-cover__ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);   /* 起点从 3 点挪到 12 点方向 */
+  pointer-events: none;
+}
+
+.video-cover__ring circle {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 194.78;
+  stroke-dashoffset: 194.78;   /* 未 hover：不可见 */
+  transition: stroke-dashoffset 0.22s var(--ease-out);   /* 移出：收笔略快 */
+}
+
+.video-cover:hover .video-cover__ring circle {
+  stroke-dashoffset: 0;        /* hover：自 12 点顺时针画满一圈 */
+  transition: stroke-dashoffset 0.65s var(--ease-standard);   /* 标准缓动：起笔可见，最接近「圆规画圆」 */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video-cover__ring circle { transition: none; }
 }
 
 .video-cover__play-icon::before {
