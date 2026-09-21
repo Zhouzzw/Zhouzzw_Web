@@ -311,35 +311,6 @@ function initContactCopy() {
   });
 }
 
-/* ===== B5 卡片鼠标跟随高光 =====
-   把指针位置写进卡片的 --spot-x / --spot-y，::after 的 radial-gradient 跟着走。
-   与 CSS 的「精细指针 + 支持 hover」门控同口径：不满足则一个监听都不挂。
-   一次 pointermove 最多排一个 rAF（高频事件里不做布局计算）。 */
-function initSpotlight() {
-  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-
-  const cards = document.querySelectorAll('.chip-board .tech-cat, .project-item__image');
-  if (!cards.length) return;
-
-  cards.forEach((card) => {
-    let raf = null;
-    let x = 0;
-    let y = 0;
-
-    card.addEventListener('pointermove', (e) => {
-      x = e.clientX;
-      y = e.clientY;
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = null;
-        const rect = card.getBoundingClientRect();
-        card.style.setProperty('--spot-x', `${x - rect.left}px`);
-        card.style.setProperty('--spot-y', `${y - rect.top}px`);
-      });
-    });
-  });
-}
-
 /* ===== 技术栈筛选 ===== */
 function initTechFilter() {
   const btns = document.querySelectorAll('.tech-filter__btn');
@@ -366,6 +337,71 @@ function initTechFilter() {
       });
     });
   });
+}
+
+/* ===== C 方案：关键词标签的近距磁吸 =====
+   输入只有「距离」：指针进入 R 半径后被拉向指针，最强 MAX 像素，离开回弹（CSS 过渡）。
+   与 B5 高光同口径 —— 精细指针 + 支持 hover 才挂监听（触屏零开销），减动效直接不挂。
+   一帧最多一次 rAF；先把几何读完再统一写 transform（读写分离，避免布局抖动）。 */
+function initMagneticTags() {
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const groups = document.querySelectorAll('.project-item__tags');
+  if (!groups.length) return;
+
+  const R = 140;   // 吸附半径（px）
+  const MAX = 8;   // 位移上限（px）—— 再大会让标签漂移/压字
+
+  let x = 0;
+  let y = 0;
+  let raf = null;
+
+  const clear = (el) => {
+    el.style.transform = '';
+    el.classList.remove('is-pulled');
+  };
+
+  function update() {
+    // 读阶段：只量「可能受影响」的分组（指针 R 邻域内），远的整组复位
+    const near = [];
+    groups.forEach((group) => {
+      const g = group.getBoundingClientRect();
+      const hit = x > g.left - R && x < g.right + R && y > g.top - R && y < g.bottom + R;
+      if (!hit) { near.push(null); return; }
+      const items = [];
+      group.querySelectorAll('.project-tag').forEach((el) => {
+        const r = el.getBoundingClientRect();
+        items.push({ el, cx: r.left + r.width / 2, cy: r.top + r.height / 2 });
+      });
+      near.push(items);
+    });
+
+    // 写阶段：近的按距离给位移，远的复位
+    groups.forEach((group, i) => {
+      const items = near[i];
+      if (!items) {
+        group.querySelectorAll('.project-tag.is-pulled').forEach(clear);
+        return;
+      }
+      items.forEach(({ el, cx, cy }) => {
+        const dx = x - cx;
+        const dy = y - cy;
+        const d = Math.hypot(dx, dy);
+        if (d >= R || d === 0) { clear(el); return; }
+        const k = (1 - d / R) ** 2;   // 近距急升、远距近零
+        el.style.transform = `translate3d(${(dx / d * k * MAX).toFixed(2)}px, ${(dy / d * k * MAX).toFixed(2)}px, 0)`;
+        el.classList.add('is-pulled');
+      });
+    });
+  }
+
+  window.addEventListener('pointermove', (e) => {
+    x = e.clientX;
+    y = e.clientY;
+    if (raf) return;
+    raf = requestAnimationFrame(() => { raf = null; update(); });
+  }, { passive: true });
 }
 
 /* ===== 初始化 ===== */
@@ -409,7 +445,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollSpy();
   initVideoModal();
   initTechFilter();
-  initSpotlight();
+  initMagneticTags();
   initVideoCovers();
   initScrollProgress();
   initContactCopy();

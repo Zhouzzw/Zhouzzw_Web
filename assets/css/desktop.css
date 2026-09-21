@@ -565,6 +565,24 @@
   border-color: var(--color-white);
 }
 
+/* --- 关键词标签「近距磁吸」（C 方案，2026-09-21 落地；同日替代已删除的 B5 跟随高光）
+   只有「距离」一个输入：指针进入 R=140px 后被拉向指针、最强 8px（参数写在 main.js），
+   离开回弹。门控为精细指针 + hover（触屏不挂监听），减动效由 JS 直接跳过。
+   位移上限是安全线：再大会让点击目标漂移，也会让标签互相压字。 */
+@media (hover: hover) and (pointer: fine) {
+  .project-tag {
+    will-change: transform;
+    transition: transform 0.28s cubic-bezier(0.23, 1, 0.32, 1),
+                color var(--duration-fast) var(--ease-standard),
+                border-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .project-tag.is-pulled {
+    color: var(--color-accent);
+    border-color: rgba(255, 145, 0, 0.5);
+  }
+}
+
 /* 项目分段（视频/成果） */
 .project-item__section {
   margin-bottom: var(--space-8);
@@ -974,46 +992,6 @@
   height: 12px;
   border: 1.5px solid rgba(255, 255, 255, 0.25);
   border-radius: 50%;
-}
-
-/* --- B5 卡片鼠标跟随高光 ---
-   仅精细指针 + 支持 hover 的设备启用（触屏无 hover，跟随无意义）。
-   坐标由 main.js 写入 --spot-x / --spot-y（:root 已声明默认 50%）。
-   用 ::after 叠加层 + radial-gradient，不占布局、不拦截事件；
-   overlay 自带圆角（各自匹配卡片圆角），不裁剪既有元素（避开 img 的 scale hover 效果）。
-   进入/退出只过渡 opacity，不做跟随位移动画。 */
-@media (hover: hover) and (pointer: fine) {
-  .chip-board .tech-cat,
-  .project-item__image {
-    position: relative;   /* 只建定位，不偏移 —— 零布局影响 */
-  }
-
-  .chip-board .tech-cat::after,
-  .project-item__image::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity var(--duration-base) var(--ease-out);
-    background: radial-gradient(
-      220px circle at var(--spot-x) var(--spot-y),
-      rgba(255, 255, 255, 0.1),
-      transparent 65%
-    );
-  }
-
-  .chip-board .tech-cat::after { border-radius: 6px; }              /* 同卡片圆角 */
-  .project-item__image::after { border-radius: var(--radius-8); }   /* 同 img 圆角 */
-
-  .chip-board .tech-cat:hover::after,
-  .project-item__image:hover::after { opacity: 1; }
-}
-
-/* 减动效：高光是 hover 反馈（同边框变色），保留；只去掉淡入淡出 */
-@media (prefers-reduced-motion: reduce) {
-  .chip-board .tech-cat::after,
-  .project-item__image::after { transition: none; }
 }
 
 /* --- 开发工具箱 --- */
