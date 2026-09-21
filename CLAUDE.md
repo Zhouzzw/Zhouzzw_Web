@@ -43,7 +43,8 @@
     │   ├── animations.js   # IntersectionObserver 入场动画（2026-09-15 恢复启用）+ 数字滚动计数 .js-count（B4）+ Hero 打字机 .hero__term（B3），均 2026-09-16
     │   └── char-matrix.js  # Canvas 字符矩阵（备用，未接入页面）
     ├── images/             # 图片资源（长边 ≤1920 已压缩）
-    └── videos/             # 演示视频（1080p H.264，共 16MB，已入库）
+    └── videos/             # 演示视频 8 段（1080p30 H.264 CRF 26 + faststart，共 ~99MB）：
+                    #   001×3 串联腿 · 003×4 Tesseract/抓卡/视觉伺服/鲁棒性 · 004×1 RL
 ```
 
 > 已删除 projects.html / techstack.html / about.html，全部内容合并进 index.html。
@@ -80,7 +81,8 @@
 - 区块留白节奏：桌面端 `.section` **顶部 128px / 底部 160px**（顶部刻意收一档）—— 浮动药丸导航底边在 84px 处压着这段留白，等值 160px 时「导航底边 → kicker」净空达 76px，收到 128px 后为 44px，与 `#techstack` 观感齐平
 - 平板档留白（769–1023px）：`.section` 与 `#techstack` 顶部走 `clamp(6rem, 12.5vw, 8rem)`（96px@768 → 128px@1024 流式）—— 基线 80px / #techstack 64px 都会被导航（底边 84px）压住；此档同时把断点边界写为 `1023.98px`（与 `min-width:1024px` 互补，堵分数宽度缺口）
 - Hero 标题字号两档**严格连续**：双列档（≥1024）`min(--text-headline-2, (50vw − gutter)/9)`；单列档（<1024）`min(--text-headline-2, (100vw − 2·gutter − 16px)/9, 3rem)` —— `3rem(48px)` 恰为桌面档在 1024px 的取值，1023px 与 1024px 同为 48px（消除原 −33% 反向跳变）；列宽约束保证「上下位机全栈工程师」9 个全角字永不孤行（扣 16px 为滚动条余量）
-- 视频弹窗播放：封面是 **`<button>`**（键盘可达，Enter / Space 由平台原生触发）+ `aria-label`，内部 `<video preload="metadata">` 由 `main.js` 截 0.5s 首帧作静帧；封面只负责打开弹层
+- 视频弹窗播放：封面是 **`<button>`**（键盘可达，Enter / Space 由平台原生触发）+ `aria-label`，内部 `<video preload="none">`（`main.js` 经 IntersectionObserver 门控后截 0.5s 首帧作静帧）；封面只负责打开弹层
+- **封面一律 16:9 居中裁切（竖版片段同样裁切，保证网格风格统一）；弹层按视频真实比例自适应、完整不裁切** —— 两条硬约束：① `.video-modal__content` 必须有确定高度（`width/height: 100%`），缺它时内层 video 的 `height:100%` 失效、退回内在比例并溢出弹层与视口（竖版实测 960×1707，表现为「弹层画面严重偏移」）；② `.video-modal__inner { min-height: 0 }` 不能删（flex 项的内容最小高会按竖版比例顶开盒子）。盒尺寸由 `main.js` 的 `fitModalTo()` 在 `loadedmetadata` 按视频比例计算（上限 960 宽 / 视口高 − 64），关闭时 `resetModalSize()` 复位
 - 联系方式：微信行提供「二维码」弹层与「复制微信号」两枚 chip；微信号必须明文常显（可读屏/可复制/无 JS 也能拿到），二维码只是补充
 - 弹层统一走 `main.js` 的 `openDialog` / `closeDialog`：`role="dialog"` + `aria-modal`、打开前记住触发元素关闭后还原焦点、ESC 与点遮罩关闭、Tab 焦点陷阱；关闭收尾动作（如清空 `<video>`）通过 `openDialog` 的第三个参数注册，避免某条关闭路径漏执行
 - 卡片鼠标跟随高光（B5）：`@media (hover:hover) and (pointer:fine)` 门控（JS 同口径，触屏零监听）；`pointermove` 经 rAF 写 `--spot-x/--spot-y`，`::after` 的 radial-gradient 跟随指针；叠加层自带卡片同款圆角 + `pointer-events:none`，不裁剪既有 img scale hover
@@ -111,7 +113,7 @@
    当前基线：**声明 64 / 引用 64**（2026-09-16 B5 新增 `--spot-x` / `--spot-y`；断点族修复新增 `--gutter` / `--gutter-tablet`）。
 3. **改样式前先清内联** —— 内联 `style` 优先级高于 class，会**静默压制**样式表里的规则（`.section--dark { background }` 就因此整轮没生效）。**布局重排必须排在清内联之后**；新代码不要写内联，重复的提成工具类（现有 `.text-lead` / `.text-lead--spaced` / `.object-bottom`）。
 4. **页面高度依赖视口高度，跨 `--h` 不比较** —— `.hero` 用 `100svh`（桌面）/ `90svh`（移动），视口高 900 与 844 会让整页差 56px。回归比对必须**锁定同一 `--h`**，且只信「同一轮 run 内 base↔cur」的差值，跨版本 / 跨参数的绝对值一律不可比。
-   当前高度基准（CDP 实测）：**1440×900＝15315px · 390×844＝15113px · 360×844＝15181px**（C3 掌握度卡片（F 方案 + 暖米灰）+ 页脚像素品牌字（640px）落地后的值，2026-09-16；相对旧基线 15120 / 14407 / 14633：桌面 +195、移动 +706 / +548px，移动端增量全部来自 F 卡片在单列下的双行高度）。
+   当前高度基准（CDP 实测）：**1440×900＝15698px · 390×844＝15968px · 360×844＝15986px**（003 大卡 + 小卡区 3 格后的值，2026-09-21；封面统一 16:9 裁切，竖版片段不例外）。
    配套验证手段：用 `git worktree add --detach <tmp> <旧 commit>` 另起一个 dev server，在同 run 内做**逐元素几何比对** —— 这是「清理 / 重构类改动零位移」最可靠的证明方式，别只看单页总高度。
 5. **review 报告动手后必须回写状态标记** —— 任何一项落地后立刻回写 ✅ / 🟡 / 🚫 并同步 `TODO.md`，否则下一轮会把已完成项当待办重做（已多次发生）。`docs/review-v3.md` 已于 2026-09-16 瘦身为**「未决事项 + 已否决 + 已确认结论 + 复现环境」**：**已完成项不再往正文堆细节**（细节回落 PROGRESS/git），新增待办往「一、待处理」加，落地后从正文移除并同步 TODO.md。
    **同族教训（2026-09-16 已累积 4 例：B6 / B7 / A3 / A4）**：**视觉 / 布局类改动实施后先出截图给用户确认，再做文档收尾与提交** —— 四项均为「量化验证全部通过、用户看效果后仍被否决」；几何 / 页高 / 对比度验证覆盖不了观感。给方案时宜并列 2 个方向供选，降低整案被否概率。
@@ -134,7 +136,7 @@ npm run preview  # 本地预览构建产物 → http://localhost:4173/Zhouzzw_We
 - ⚠️ **git 远程为 SSH**（`git@github.com:Zhouzzw/Zhouzzw_Web.git`）：HTTPS 在此环境有 TLS 握手故障，勿改回 https URL；SSH 密钥已配置且验证通过。
 
 - ⚠️ **`vite.config.js` 的 `base: '/Zhouzzw_Web/'` 不能删**。仓库名是 `Zhouzzw_Web`，项目站点带子路径；少了这个 base，所有 `/assets/...` 都会 404。
-- ⚠️ **大文件进不了 git**：GitHub 单文件 100MB 硬限制。新增视频请先压到 10MB 以内再入库（现有 3 个是 4K60 HEVC 转出来的 1080p H.264 CRF 26，共 16MB）。原始素材备份在仓库外 `d:/DSEKTOP/原始素材备份/`。
+- ⚠️ **大文件进不了 git**：GitHub 单文件 100MB 硬限制（Pages 站点软上限 1GB）。视频入库统一走 `-vf scale=1920:1080:flags=lanczos,fps=30 -c:v libx264 -crf 26 -pix_fmt yuv420p -c:a aac -b:a 128k -movflags +faststart`。⚠️ 体积随内容与时长浮动（文本 / 终端类素材 1080p30 实测 1.6–2.6Mbps），**原「≤10MB」约定已被 4 段 G1-D 长视频（14.9–32.7MB）突破，收紧方案待拍板（见 TODO P3）**。原始素材备份在仓库外：新片源 `/home/qskj-2/视频/最终演示视频/`、早期素材 `d:/DSEKTOP/原始素材备份/`。
 - ⚠️ 项目用 `type="module"`，`index.html` **不能直接双击打开**（file:// 下 CORS 拦截模块脚本），必须通过 Vite 服务器或构建后部署。
 - 方案已按 Vite 定型，不要再提议改造成纯静态 HTML。
 
