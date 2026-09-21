@@ -39,7 +39,7 @@
     │   ├── desktop.css     # ≥1024px 桌面布局
     │   └── mobile.css      # <768px / <480px 移动端适配
     ├── js/
-    │   ├── main.js         # scrollspy + 滑动指示器 + 视频弹窗 + 技术栈筛选 + 卡片跟随高光（B5）
+    │   ├── main.js         # scrollspy + 滑动指示器 + 视频弹窗 + 技术栈筛选 + 标签近距磁吸
     │   ├── animations.js   # IntersectionObserver 入场动画（2026-09-15 恢复启用）+ 数字滚动计数 .js-count（B4）+ Hero 打字机 .hero__term（B3），均 2026-09-16
     │   └── char-matrix.js  # Canvas 字符矩阵（备用，未接入页面）
     ├── images/             # 图片资源（长边 ≤1920 已压缩）
@@ -86,7 +86,7 @@
 - **封面一律 16:9 居中裁切（竖版片段同样裁切，保证网格风格统一）；弹层按视频真实比例自适应、完整不裁切** —— 两条硬约束：① `.video-modal__content` 必须有确定高度（`width/height: 100%`），缺它时内层 video 的 `height:100%` 失效、退回内在比例并溢出弹层与视口（竖版实测 960×1707，表现为「弹层画面严重偏移」）；② `.video-modal__inner { min-height: 0 }` 不能删（flex 项的内容最小高会按竖版比例顶开盒子）。盒尺寸由 `main.js` 的 `fitModalTo()` 在 `loadedmetadata` 按视频比例计算（上限 960 宽 / 视口高 − 64），关闭时 `resetModalSize()` 复位
 - 联系方式：微信行提供「二维码」弹层与「复制微信号」两枚 chip；微信号必须明文常显（可读屏/可复制/无 JS 也能拿到），二维码只是补充
 - 弹层统一走 `main.js` 的 `openDialog` / `closeDialog`：`role="dialog"` + `aria-modal`、打开前记住触发元素关闭后还原焦点、ESC 与点遮罩关闭、Tab 焦点陷阱；关闭收尾动作（如清空 `<video>`）通过 `openDialog` 的第三个参数注册，避免某条关闭路径漏执行
-- 卡片鼠标跟随高光（B5）：`@media (hover:hover) and (pointer:fine)` 门控（JS 同口径，触屏零监听）；`pointermove` 经 rAF 写 `--spot-x/--spot-y`，`::after` 的 radial-gradient 跟随指针；叠加层自带卡片同款圆角 + `pointer-events:none`，不裁剪既有 img scale hover
+- 关键词标签「近距磁吸」（2026-09-21 落地，**同日移除 B5 卡片跟随高光** —— 用户判定「光标高亮区域冗余」）：`.project-tag` 在指针进入 R=140px 后被拉向指针、最强 8px（`k=(1−d/R)²`，参数写死在 `main.js` 的 `initMagneticTags`），离开回弹（`transform 0.28s`），被吸时转强调橙；门控与旧 B5 同口径（`@media (hover:hover) and (pointer:fine)` + JS 同步判断，触屏零监听），`prefers-reduced-motion` 直接不挂。实现纪律：一帧最多一次 rAF + **先读完几何再统一写 transform**（读写分离）+ 视口外分组整组跳过。⚠️ 位移上限 8px 是安全线，再大会让点击目标漂移、标签互相压字
 - 简介区布局：单列（正文靠左 + 下接满宽 4:3 大图、`object-position: 20% 35%`）。**A4 的 12 栅格方案（文字 6 列 + 照片 5 列右偏）已于 2026-09-16 实现后经用户看效果否决并退回**，勿再提
 - 项目卡布局（A6，≥1024）：`.project-item` 三列 `132px | 1fr | 1fr` —— 编号列 + **描述左列 + 成果右列并排**（成果段挂 `.project-item__section--results` 占第 3 列）；标题 / 标签 / 图片 / 视频段仍跨 `2 / -1`；**成果列表与描述同级字号**（`--text-body-large`）。`--results` 的 `grid-column` 须写在 `.project-item__section` 基类**之后**（同特异性靠顺序取胜）；<1024 为 flex 竖排，`grid-column` 不参与
 - 技术栈技能条目（C3，2026-09-16 三轮迭代后定稿 **F 方案**）：每项 = **双行小卡片**（上行名称 / 下行「进度条 + 档位文字」），列表两列网格；`li[data-lv]` 驱动条长 —— **5 熟练（100%）/ 3 熟悉（60%）/ 1 了解（20%）**，档位文字亮度同步分档（0.8 / 0.55 / 0.4 白）。**条色 = 暖米灰 `#C8C1B2`**（用户四选一定稿）—— **站点强调橙只留给交互与焦点，不做长期装饰**（橙色铺满 40 条即"花哨"感的根源）。⚠️ **档位数据仍为占位，待用户给定真实档位**（只改 `data-lv` 与档位文字）。实现注意：column 布局下 `align-items: stretch` 必须显式声明（被 center 覆盖会让子项收缩、条宽变 0）。🚫 已否决：E 方案（五格刻度 + 尾标，观感仍乱）· 橙色条 · 参考图蓝绿像素字配色
@@ -111,7 +111,7 @@
    grep -oh 'var(--[a-zA-Z0-9-]*' assets/css/*.css index.html assets/js/*.js | sed 's/var(//' | sort -u > /tmp/r.txt
    comm -3 /tmp/d.txt /tmp/r.txt          # 空 = 通过
    ```
-   当前基线：**声明 64 / 引用 63**（2026-09-21 复核：`--radius-full` 自 CTA 圆角改 8px 后已无引用 —— 差集只余这一条，属已知遗留，清理或复用待定）。
+   当前基线：**声明 62 / 引用 61**（2026-09-21 移除 B5 跟随高光后，`--spot-x` / `--spot-y` 一并删除；差集只余 `--radius-full` —— 自 CTA 圆角改 8px 后无引用，属已知遗留）。
 3. **改样式前先清内联** —— 内联 `style` 优先级高于 class，会**静默压制**样式表里的规则（`.section--dark { background }` 就因此整轮没生效）。**布局重排必须排在清内联之后**；新代码不要写内联，重复的提成工具类（现有 `.text-lead` / `.text-lead--spaced` / `.object-bottom`）。
 4. **页面高度依赖视口高度，跨 `--h` 不比较** —— `.hero` 用 `100svh`（桌面）/ `90svh`（移动），视口高 900 与 844 会让整页差 56px。回归比对必须**锁定同一 `--h`**，且只信「同一轮 run 内 base↔cur」的差值，跨版本 / 跨参数的绝对值一律不可比。
    当前高度基准（CDP 实测）：**1440×900＝15698px · 390×844＝15968px · 360×844＝15986px**（003 大卡 + 小卡区 3 格后的值，2026-09-21；封面统一 16:9 裁切，竖版片段不例外）。

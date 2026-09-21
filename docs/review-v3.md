@@ -59,7 +59,7 @@
 - **复核通过项（勿误修）**：锚点跳转落点 · DOM 语义基础（`lang` / 单一 h1 / alt 全齐 / 无失效锚点）· CLS 0 · 视频弹层开关与焦点管理 · 技术栈筛选逻辑 · 360px 微信行零溢出 · `prefers-reduced-motion` 全局覆盖 · **JS 不引用任何设计令牌**
 - **断点三档（2026-09-16 落地，勿回退）**：`--gutter` 统一入口 —— <768 16px ｜ 769–1023 流式 `clamp(1rem, 25vw - 176px, 5rem)`（实测 16.25→49→79.75px）｜ ≥1024 80px；平板档 `.section`/`#techstack` 顶部 `clamp(6rem, 12.5vw, 8rem)`；hero 标题在 1023px 与 1024px 同为 48px（`<1024` 公式第三项 `3rem` 即此值）。断点边界统一 `1023.98px` / `769px`
 - **J7 刻意保留的可复用原语**（0 命中但勿删）：`.sr-only` · `.container` · `.text-balance` · `.char-matrix*` · `.mono-label--accent` · `.stagger-1/3/4` · `.tok-*` 色板 · 关键帧 `cursorBlink`（已被 B3 消费）
-- **令牌基线**：声明 / 引用 **64 / 64**，双向差集为空（B5 新增 `--spot-x` / `--spot-y`；断点族新增 `--gutter` / `--gutter-tablet`）
+- **令牌基线**：声明 / 引用 **62 / 61**（2026-09-21：B5 跟随高光移除，`--spot-x` / `--spot-y` 删除；差集余额仅 `--radius-full`，见 TODO P3）
 - **页高基线（CDP 实测）**：1440×900＝**15315** · 390×844＝**15113** · 360×844＝**15181**（C3 F 方案 + 暖米灰条色 + 页脚像素品牌字 640px，2026-09-16；相对旧基线 15120 / 14407 / 14633 增 +195 / +706 / +548px，移动端增量来自 F 卡片在单列下的双行高度）。⚠️ hero 用 `svh`，**跨 `--h` 比较无意义**；只信同 run 内 base↔cur 差值
 - **E 节参考站结论**：宇树/智元/云深处均以「Hero 强主张 + 里程碑独立模块」为惯例（支持 C2）；**数字看板无行业先例**（C1 属差异化）；纯双色大字排版牺牲可用性（Awwwards SOTD 可用性 6.99）→ 本项目保留橙色点缀与骨架导航更稳
 
@@ -70,7 +70,7 @@
 - 探针清单：`cdp.mjs`（截屏 / 定点 / eval / 键鼠 / 媒体仿真）· `bp2.js`（断点巡检：gutter / hero 字号行分布 / kicker 遮挡判定 / 即时锚点落点）· `interact.mjs`（交互 + Tab + 无障碍）· `contrast.js`（逐条对比度）· `perf.js` / `perf2.mjs`（体积 / LCP / CLS）· `b5-diff.py`（像素差分）
 - 用法：`node cdp.mjs --url http://localhost:<port>/Zhouzzw_Web/ --w 1440 --h 900 --wait 2600 [--eval x.js] [--shot out.png] [--scroll N] [--mouse x,y]`；**端口必须每档唯一**；`--viewport 1` 只截当前视口（fixed 元素才会出现）
 - **cdp.mjs 开关（2026-09-16）**：`--mouse x,y`（真实鼠标事件 —— CSS `:hover` 只认真实输入，合成 PointerEvent 不触发）· `--scrollInstant 1`（smooth 滚动落定耗时不定，跨 run 截图比对会被残余位移污染出假 diff）· `--rm 1`（仿真 prefers-reduced-motion，页面内 stub matchMedia 做不到）· `--touch 1`（仿真触屏 hover:none）· `--inject f.js`（页面脚本前注入）· `--keys Tab,Enter`
-- ⚠️ **headless 默认 `(hover:none)(pointer:none)`**：`@media (hover:hover) and (pointer:fine)` 类规则全部静默不生效（B5 首测假阴性）。已在启动参数强制 `--blink-settings` 声明桌面鼠标；`--touch 1` 则反向仿真触屏
+- ⚠️ **headless 默认 `(hover:none)(pointer:none)`**：`@media (hover:hover) and (pointer:fine)` 类规则全部静默不生效（B5 首测假阴性；2026-09-21 标签磁吸再次踩到）。启动参数强制声明桌面指针：`--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4`；`--touch 1` 则反向仿真触屏。**`Emulation.setEmulatedMedia` 不支持 `hover` / `pointer` 两个特性**（传了也不生效），别走这条路
 - ⚠️ **几何量 / 截图时序坑**：① `fadeUp` 含 `translateY(20px)`，IO 刚触发时读 `getBoundingClientRect()` 量到的是动画中间态（曾把 76px 读成 92px）→ 读几何量前等入场动画结束（≥2.5s，对比度探针同理）；② `Page.captureScreenshot` 走 `captureBeyondViewport + clip` 时**只重绘指定区域、不合成 fixed 图层**（导航药丸 / 进度条不出现在图里）；要拍含导航的对照图，需把 `.nav` 临时改 `position:absolute` 再按页面坐标 clip；③ 纯视口截图（不带 clip）在 `setDeviceMetricsOverride` 下会被当成整面捕获（实测 1440×8000），**别指望它给视口尺寸**；④ 锚点跳转读落点：hash + smooth 在长距离（如 #contact）下 1.8s 读不全、读数失真，改用 `scrollIntoView({behavior:'instant'})`；⑤ 截图前若图片仍在加载，无 `width/height` 的图会让上方内容位移（I13），reading 有 ~28px 漂移
 - ⚠️ **页高依赖视口高**：`.hero` 桌面 `100svh` / 移动 `90svh` → `--h 900` 与 `--h 844` 差 56px，跨 `--h` 比绝对值无意义
 - ⚠️ 探针旧坑：`--virtual-time-budget` 会跳过平滑滚动与 rAF；hero 的 `100svh` 会被超大 `--window-size` 撑坏 → 用 `captureBeyondViewport` 分段截（每段 ≤8000px）；锚点跳转用 `Runtime.evaluate` 触发后再读 `scrollY`
