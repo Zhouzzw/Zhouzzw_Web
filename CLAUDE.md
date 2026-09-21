@@ -42,6 +42,7 @@
     │   ├── main.js         # scrollspy + 滑动指示器 + 视频弹窗 + 技术栈筛选 + 标签近距磁吸
     │   ├── animations.js   # IntersectionObserver 入场动画（2026-09-15 恢复启用）+ 数字滚动计数 .js-count（B4）+ Hero 打字机 .hero__term（B3），均 2026-09-16
     │   └── char-matrix.js  # Canvas 字符矩阵（备用，未接入页面）
+    ├── posters/            # 视频封面静帧（8 张，0.5s 帧 / 长边 ≤1280 / ≤300KB）—— `<video poster>` 用
     ├── images/             # 图片资源（长边 ≤1920 已压缩）
     └── videos/             # 演示视频 8 段（1080p30 H.264 CRF 26 + faststart，共 ~99MB）：
                     #   001×3 串联腿 · 003×4 Tesseract/抓卡/视觉伺服/鲁棒性 · 004×1 RL
@@ -81,7 +82,8 @@
 - 区块留白节奏：桌面端 `.section` **顶部 128px / 底部 160px**（顶部刻意收一档）—— 浮动药丸导航底边在 84px 处压着这段留白，等值 160px 时「导航底边 → kicker」净空达 76px，收到 128px 后为 44px，与 `#techstack` 观感齐平
 - 平板档留白（769–1023px）：`.section` 与 `#techstack` 顶部走 `clamp(6rem, 12.5vw, 8rem)`（96px@768 → 128px@1024 流式）—— 基线 80px / #techstack 64px 都会被导航（底边 84px）压住；此档同时把断点边界写为 `1023.98px`（与 `min-width:1024px` 互补，堵分数宽度缺口）
 - Hero 标题字号两档**严格连续**：双列档（≥1024）`min(--text-headline-2, (50vw − gutter)/9)`；单列档（<1024）`min(--text-headline-2, (100vw − 2·gutter − 16px)/9, 3rem)` —— `3rem(48px)` 恰为桌面档在 1024px 的取值，1023px 与 1024px 同为 48px（消除原 −33% 反向跳变）；列宽约束保证「上下位机全栈工程师」9 个全角字永不孤行（扣 16px 为滚动条余量）
-- 视频弹窗播放：封面是 **`<button>`**（键盘可达，Enter / Space 由平台原生触发）+ `aria-label`，内部 `<video preload="none">`（`main.js` 经 IntersectionObserver 门控后截 0.5s 首帧作静帧）；封面只负责打开弹层
+- 视频弹窗播放：封面是 **`<button>`**（键盘可达，Enter / Space 由平台原生触发）+ `aria-label`，内部 `<video preload="none" poster="...">` —— **封面一律用 `assets/posters/` 的静帧图（2026-09-21 起不再用 JS seek 截帧）**：JS 截帧每张封面要拉流数 MB，弱网实测 12.6s 才出画面；poster 方案 0 个媒体请求、无 JS 也出图、微信内置浏览器同样可靠。封面只负责打开弹层
+- 弹层加载/播放反馈（2026-09-21）：本地视频弹层 = `<video poster controls autoplay playsinline>` + **覆盖层**（大号「▶ 播放」按钮 + mono 状态行）—— 移动端 autoplay 普遍被拦截、弱网缓冲要十几秒，覆盖层把这两种"看起来是黑的"情形变成明确动作与进度：`点击播放` / `加载中 x%`（按 `buffered/duration` 计算，`playing` 后整层隐藏）。⚠️ 覆盖层用 `[hidden]` 控制显隐，CSS 里必须写 `.video-modal__overlay[hidden]{display:none}`（`display:flex` 会顶掉 hidden 的默认行为）
 - 视频封面 hover 反馈（2026-09-21 按用户要求替换旧版「整圈变橙」）：**播放键边缘的橙色光圈自 12 点顺时针「画圆」** —— SVG 圆环 `stroke-dashoffset` 194.78 → 0（`r=31`，0.65s `var(--ease-standard)`，最接近圆规手感；移出 0.22s 收笔）；`prefers-reduced-motion` 下瞬时显示不画。**不要再用 `border-color: var(--color-accent)` 让整圈变橙**。环由 `main.js` 注入（装饰性，无 JS 只少一圈光）
 - **封面一律 16:9 居中裁切（竖版片段同样裁切，保证网格风格统一）；弹层按视频真实比例自适应、完整不裁切** —— 两条硬约束：① `.video-modal__content` 必须有确定高度（`width/height: 100%`），缺它时内层 video 的 `height:100%` 失效、退回内在比例并溢出弹层与视口（竖版实测 960×1707，表现为「弹层画面严重偏移」）；② `.video-modal__inner { min-height: 0 }` 不能删（flex 项的内容最小高会按竖版比例顶开盒子）。盒尺寸由 `main.js` 的 `fitModalTo()` 在 `loadedmetadata` 按视频比例计算（上限 960 宽 / 视口高 − 64），关闭时 `resetModalSize()` 复位
 - 联系方式：微信行提供「二维码」弹层与「复制微信号」两枚 chip；微信号必须明文常显（可读屏/可复制/无 JS 也能拿到），二维码只是补充
@@ -120,7 +122,7 @@
    **同族教训（2026-09-16 已累积 4 例：B6 / B7 / A3 / A4）**：**视觉 / 布局类改动实施后先出截图给用户确认，再做文档收尾与提交** —— 四项均为「量化验证全部通过、用户看效果后仍被否决」；几何 / 页高 / 对比度验证覆盖不了观感。给方案时宜并列 2 个方向供选，降低整案被否概率。
 6. **`filter`（drop-shadow / blur）不要挂在"内容持续动画"的元素上** —— 静止时滤镜结果可缓存（几乎零成本），一旦其内部每帧变化就必须**每帧重算模糊**：螺旋 SVG 的 `drop-shadow(0 0 60px)` 曾让稳态 44 → 17 FPS、加载期跌到 12 FPS（2026-09-17 已删）。处置套路：先**停转后 A/B 像素 diff** 确认视觉贡献（实测 0.000% → 直接删；有贡献再找静态替代如 radial-gradient）——⚠️ 对比动画元素必须**停转后再截图**，否则 diff 混入旋转相位噪声（曾把 10.6% 的相位差误读为滤镜贡献）。长跑装饰动画另配两道闸（螺旋已落地）：**首屏延迟启动**（`html.spiral-on`，load+600ms；无 JS 时静态不转，零退化）+ **不可见即暂停**（`.hero__visual.is-paused` ↔ `animation-play-state`，含 `visibilitychange`）。验证：`/tmp/probe/fps-profile.mjs <preset>`（baseline / no-filter / no-spin / hide-visual / no-both 五变体一键测加载期+稳态 FPS）。
 
-7. **CDN 字体依赖与首屏媒体拉流**（2026-09-17）—— ① `textPath` 文字**不用 `lengthAdjust="spacingAndGlyphs"`**：字体 fallback 时字形会按各自宽度被压缩变形（"不同设备呈现不一样 / 效果差"的根源），改 `spacing` 只调字距、字形恒定（螺旋 16 圈已改；根治 = 字体自托管 + 子集化，螺旋约 30 个唯一字符、woff2 子集仅几 KB）。② 封面视频用 `preload="none"` + IntersectionObserver 门控 `load()`（rootMargin 300px 预热）——原实现加载即 `load()`，用户未交互前首屏被强制拉流 ≈4.2MB（生产实测）。
+7. **CDN 字体依赖与首屏媒体拉流**（2026-09-17）—— ① `textPath` 文字**不用 `lengthAdjust="spacingAndGlyphs"`**：字体 fallback 时字形会按各自宽度被压缩变形（"不同设备呈现不一样 / 效果差"的根源），改 `spacing` 只调字距、字形恒定（螺旋 16 圈已改；根治 = 字体自托管 + 子集化，螺旋约 30 个唯一字符、woff2 子集仅几 KB）。② 封面视频 `preload="none"` + **`poster` 静帧**，**封面阶段完全不再 `load()` 媒体**（2026-09-21 起）：早期实现加载即 `load()`（首屏被强制拉流 ≈4.2MB），中期改成 IO 门控 seek 截帧（弱网 12.6s 才出画面），现在封面只加载一张 ≤300KB 的 JPG —— 项目区封面阶段的 mp4 请求数为 **0**。
 
 ## 构建 & 部署
 

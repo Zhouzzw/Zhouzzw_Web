@@ -213,9 +213,42 @@ function initVideoModal() {
           ></iframe>`;
       } else {
         // playsinline：缺失时 iOS Safari 会强制全屏播放
+        // poster + 覆盖层：移动端 autoplay 普遍被拦截，没有 poster 时弹层就是「一片黑」；
+        // 覆盖层给出「点击播放 / 加载中 x%」，让用户知道是"在加载"而不是"坏了"。
+        const poster = inlineVideo?.getAttribute('poster') || '';
         content.innerHTML = `
-          <video src="${src}" controls autoplay playsinline></video>`;
+          <video src="${src}"${poster ? ` poster="${poster}"` : ''} controls autoplay playsinline></video>
+          <div class="video-modal__overlay" data-overlay>
+            <button type="button" class="video-modal__play" data-play aria-label="播放视频"><span aria-hidden="true">▶</span></button>
+            <p class="video-modal__hint" data-hint>加载中…</p>
+          </div>`;
         const v = content.querySelector('video');
+        const overlay = content.querySelector('[data-overlay]');
+        const playBtn = content.querySelector('[data-play]');
+        const hint = content.querySelector('[data-hint]');
+        let started = false;
+
+        const loadingText = () => {
+          const buffered = v.buffered.length ? v.buffered.end(v.buffered.length - 1) : 0;
+          const total = v.duration || 0;
+          if (!total) return '加载中…';
+          return `加载中 ${Math.min(99, Math.round(buffered / total * 100))}%`;
+        };
+        const showOverlay = (text) => {
+          overlay.hidden = false;
+          playBtn.hidden = started;      // 已经播过就不再给「播放」按钮，只留缓冲提示
+          hint.textContent = text;
+        };
+        const start = () => { v.play().catch(() => showOverlay('点击播放')); };
+
+        v.addEventListener('playing', () => { started = true; overlay.hidden = true; });
+        v.addEventListener('waiting', () => showOverlay(loadingText()));
+        v.addEventListener('progress', () => { if (!overlay.hidden && !v.paused) hint.textContent = loadingText(); });
+        v.addEventListener('loadedmetadata', () => { if (!started && v.paused) showOverlay('点击播放'); });
+        v.addEventListener('pause', () => { if (!started) showOverlay('点击播放'); });
+        overlay.addEventListener('click', start);
+        playBtn.addEventListener('click', (e) => { e.stopPropagation(); start(); });
+
         fitVideo = v;
         v.addEventListener('loadedmetadata', () => fitModalTo(v));
         fitModalTo(v);   // 元数据已在缓存时 loadedmetadata 不再触发，主动试一次
@@ -404,40 +437,15 @@ function initMagneticTags() {
   }, { passive: true });
 }
 
-/* ===== 初始化 ===== */
-/* ===== 视频封面截取首帧 ===== */
-function initVideoCovers() {
-  const covers = document.querySelectorAll('.video-cover video');
-  if (!covers.length) return;
-
-  // 播放键光圈环（纯装饰）：SVG 在 CSS 里由 stroke-dashoffset 驱动，hover 时顺时针画圆
+/* ===== 播放键光圈环（纯装饰）=====
+   2026-09-21：封面改用 `<video poster>` 静帧后，这里**不再做「seek 到 0.5s 截首帧」**——
+   那条路径每张封面都要拉流数 MB（弱网实测 12.6s 才出画面）。换成 poster：0 个媒体请求、
+   无 JS 也出图、微信内置浏览器同样可靠。本函数只负责注入 hover 画圆用的 SVG 环。 */
+function initVideoRings() {
+  const icons = document.querySelectorAll('.video-cover__play-icon');
+  if (!icons.length) return;
   const RING = '<svg class="video-cover__ring" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="31"></circle></svg>';
-  document.querySelectorAll('.video-cover__play-icon').forEach((icon) => icon.insertAdjacentHTML('afterbegin', RING));
-
-  const capture = (v) => {
-    const seekAndPause = () => {
-      v.currentTime = 0.5;
-      v.removeEventListener('loadeddata', seekAndPause);
-    };
-    v.addEventListener('loadeddata', seekAndPause);
-    v.addEventListener('seeked', () => { v.pause(); }, { once: true });
-    v.load();
-  };
-
-  // I12：进视口才截首帧 —— 原实现加载即 load()，用户未交互前首屏被强制拉流 ≈4.2MB（生产实测）；
-  // 改为提前 300px 预热、滚到卡片附近才开始截帧；无 IO 环境退回「立即截帧」保证封面可用。
-  if (!('IntersectionObserver' in window)) {
-    covers.forEach(capture);
-    return;
-  }
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      io.unobserve(entry.target);
-      capture(entry.target);
-    });
-  }, { rootMargin: '300px 0px' });
-  covers.forEach((v) => io.observe(v));
+  icons.forEach((icon) => icon.insertAdjacentHTML('afterbegin', RING));
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -446,7 +454,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initVideoModal();
   initTechFilter();
   initMagneticTags();
-  initVideoCovers();
+  initVideoRings();
   initScrollProgress();
   initContactCopy();
   initQrModal();
