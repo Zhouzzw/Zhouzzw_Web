@@ -29,7 +29,7 @@
 
 ### P1 功能缺口 / 无障碍命门
 
-- [ ] **v3 预览版已临时上线（生产环境），待回滚 v2 正式上线** —— 2026-09-21 为验证移动端表现，把 `v3-full` 以 `--no-ff` 合并到 `v2`（合并点 `d185ad1`）并推送触发部署（Actions run #3 success）。线上现为 v3 预览版：https://zhouzzw.github.io/Zhouzzw_Web/ 。**确认满足要求后回滚**：`git checkout v2 && git revert -m 1 d185ad1 && git push origin v2`（软回滚，非破坏）；基线 tag：`v2.4-frozen`（b00dae8，回滚目标）/ `v3-preview`（d185ad1）。⚠️ 回滚前 v2 不再是"冻结"状态
+- [ ] **v3 预览版已临时上线（生产环境），待回滚 v2 正式上线** —— 2026-09-21 为验证移动端表现，把 `v3-full` 以 `--no-ff` 合并到 `v2` 并推送触发部署：**第一次** `d185ad1`（run #3）→ **第二次（poster + 弹层覆盖层修复）`8403a10`（run #4）**。线上现为 v3 预览版：https://zhouzzw.github.io/Zhouzzw_Web/ 。**确认满足要求后回滚**：`git checkout v2 && git revert -m 1 8403a10 && git push origin v2`（软回滚，非破坏，会把 v2 恢复成 `v2.4-frozen` 的树）；基线 tag：`v2.4-frozen`（b00dae8）/ `v3-preview`（d185ad1）/ `v3-preview-2`（8403a10）。⚠️ 回滚前 v2 不是"冻结"状态
 
 - [~] I4 视频弹窗自动播放策略（**部分缓解 2026-09-21**）：弹层已加 poster + 覆盖层（`点击播放` / `加载中 x%`），"点开是黑的以为坏了"已消除；**是否再加 `muted` 自动播仍待拍板**（演示视频多半要声音，属体验取舍）。I 节其余（I1–I9）全清
 
