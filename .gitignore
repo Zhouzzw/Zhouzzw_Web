@@ -12,3 +12,6 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+
+# 临时验证页（无头浏览器截图 / 几何量测用，用完即删）
+_probe.html

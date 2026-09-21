@@ -3,8 +3,70 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="周子惟 | 嵌入式 & 机器人控制工程师 - 个人作品集" />
-  <title>周子惟 - 嵌入式 & 机器人控制</title>
+
+  <!-- 渐进增强标记：仅在支持 IntersectionObserver 时才隐藏待入场元素。
+       无 JS / 老浏览器 / 爬虫下不加此标记，正文始终可见（不依赖 JS 才能读到内容）。
+       兜底：若 animations.js 未就绪（加载失败/报错），load 后自动移除标记，避免内容永久不可见。 -->
+  <script>
+    if ('IntersectionObserver' in window) {
+      document.documentElement.classList.add('anim');
+      window.addEventListener('load', function () {
+        setTimeout(function () {
+          if (!document.documentElement.hasAttribute('data-anim-ready')) {
+            document.documentElement.classList.remove('anim');
+          }
+        }, 800);
+      });
+    }
+    // 螺旋动画延迟启动：等首屏（字体/图片/入场动画）稳定后再开转，
+    // 避免 16 圈文字与首屏资源抢光栅化（加载期 12 → 30+ FPS）。
+    // 无 JS 时 html 无 spiral-on → 螺旋保持静态装饰，零退化。
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        document.documentElement.classList.add('spiral-on');
+      }, 600);
+    });
+  </script>
+  <meta name="description" content="周子惟 | 嵌入式 & ROS 机器人开发工程师 - 武汉科技大学电子信息工程在读，RoboMaster 战队电控组负责人，武汉晴山科技机器人系统集成实习工程师。RoboMaster 项目、G1-D 工业项目与技术栈全览。" />
+  <meta name="keywords" content="周子惟, 嵌入式, ROS, ROS2, 具身智能, 强化学习, RoboMaster, STM32, 机器人开发" />
+  <meta name="author" content="周子惟" />
+  <link rel="canonical" href="https://zhouzzw.github.io/Zhouzzw_Web/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="周子惟 · 上下位机全栈工程师" />
+  <meta property="og:title" content="周子惟 - 嵌入式 & ROS 机器人开发" />
+  <meta property="og:description" content="从芯片到机器人 — 上下位机全栈工程师。RoboMaster 电控负责人 + 晴山科技机器人系统集成实习，项目经历与技术栈全览。" />
+  <meta property="og:url" content="https://zhouzzw.github.io/Zhouzzw_Web/" />
+  <meta property="og:image" content="https://zhouzzw.github.io/Zhouzzw_Web/assets/images/比赛人物照.jpg" />
+  <meta property="og:locale" content="zh_CN" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="周子惟 - 嵌入式 & ROS 机器人开发" />
+  <meta name="twitter:description" content="从芯片到机器人 — 上下位机全栈工程师。RoboMaster 电控负责人 + 晴山科技机器人系统集成实习。" />
+  <meta name="twitter:image" content="https://zhouzzw.github.io/Zhouzzw_Web/assets/images/比赛人物照.jpg" />
+
+  <title>周子惟 - 嵌入式 & ROS 机器人开发</title>
+
+  <!-- favicon：内联品牌芯片 SVG（无 rel=icon 时浏览器会额外请求 /favicon.ico → 404）。
+       用 data URI 而非 public/ 文件：不依赖构建期 base 前缀重写，零额外请求，也无二进制文件入库 -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23232323'/%3E%3Cg fill='none' stroke='%23FF9100' stroke-width='2'%3E%3Crect x='9' y='9' width='14' height='14' rx='2'/%3E%3Cpath d='M13 5v4M19 5v4M13 23v4M19 23v4M5 13h4M5 19h4M23 13h4M23 19h4'/%3E%3C/g%3E%3Crect x='13.5' y='13.5' width='5' height='5' fill='%23FF9100'/%3E%3C/svg%3E" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "周子惟",
+    "alternateName": "Zhou Ziwei",
+    "url": "https://zhouzzw.github.io/Zhouzzw_Web/",
+    "jobTitle": "嵌入式 & ROS 机器人开发工程师",
+    "description": "武汉科技大学电子信息工程在读，RoboMaster 战队电控组负责人，武汉晴山科技机器人系统集成实习工程师",
+    "alumniOf": { "@type": "CollegeOrUniversity", "name": "武汉科技大学" },
+    "knowsAbout": ["嵌入式开发", "ROS2", "运动控制", "强化学习", "RoboMaster", "STM32", "Isaac Lab"],
+    "address": { "@type": "PostalAddress", "addressLocality": "武汉", "addressCountry": "CN" }
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -29,17 +91,15 @@
     </a>
     <span class="nav__logo">Zhou Ziwei</span>
     <nav>
+      <span class="nav__links-indicator" aria-hidden="true"></span>
       <ul class="nav__links">
-        <span class="nav__links-indicator" aria-hidden="true"></span>
         <li><a href="#hero">首页</a></li>
-        <li><a href="#projects">项目</a></li>
         <li><a href="#techstack">技术栈</a></li>
-        <li><a href="#about">关于</a></li>
+        <li><a href="#projects">项目</a></li>
+        <li><a href="#internship">实习竞赛</a></li>
+        <li><a href="#life">关于</a></li>
       </ul>
     </nav>
-    <button class="nav__toggle" aria-label="菜单">
-      <span></span><span></span><span></span>
-    </button>
   </header>
 
   <main>
@@ -47,18 +107,31 @@
     <!-- ========== Hero 首页 ========== -->
     <section class="hero" id="hero">
       <div class="hero__content">
-        <p class="hero__kicker">Embedded · Robotics · Control</p>
+        <!-- B3 终端打字机（2026-09-16 用户拍板：替代原 kicker「Embedded · ROS2 · Embodied AI」并放大、大写）。
+             aria-hidden 纯装饰 —— 身份信息由 h1 / 副标题承载。
+             命令终值写在 HTML 里：无 JS / 减动效时整行直接显示，零退化；
+             animations.js 把 .hero__term-text 清空后逐字打出，光标常驻闪烁。 -->
+        <p class="hero__term" aria-hidden="true">
+          <span class="hero__term-prompt">$</span>
+          <span class="hero__term-text">WHOAMI 周子惟</span>
+          <span class="hero__term-cursor"></span>
+        </p>
         <h1 class="hero__title">
-          从芯片到机器人<br>全栈控制工程师
+          从芯片到机器人<br>上下位机全栈工程师
         </h1>
         <p class="hero__subtitle">
-          武汉科技大学电子信息工程在读 — RoboMaster 战队电控组负责人。
-          深耕嵌入式系统、机器人运动控制与算法仿真，用真实项目验证每一项能力。
+          武汉科技大学电子信息工程在读 — RoboMaster 战队电控组负责人，武汉晴山科技机器人系统集成实习工程师。
+          从 STM32 底层驱动到 ROS2 运动规划，从强化学习策略训练到机载部署，用真实项目验证每一项能力。
         </p>
         <a href="#projects" class="hero__cta cta-split">
           <span class="cta-split__left">查看项目</span>
-          <span class="cta-split__right" aria-hidden="true">→</span>
+          <span class="cta-split__right" aria-hidden="true"><span class="cta-split__arrow">↗</span></span>
         </a>
+        <p class="hero__contact">
+          <a href="https://github.com/Zhouzzw" target="_blank" rel="noopener">GitHub</a>
+          <span aria-hidden="true">/</span>
+          <a href="mailto:2661762781@qq.com">2661762781@qq.com</a>
+        </p>
       </div>
 
       <!-- 螺旋文字装饰 -->
@@ -86,119 +159,119 @@
   <!-- 第 1 圈：17px 18词 + 横线x4 -->
   <g class="spiral-text__ring spiral-text__ring--r1">
     <text font-family="Geist Mono, monospace" font-size="17" letter-spacing="3.5" fill="rgba(255,255,255,0.62)">
-      <textPath href="#spiral-r1" textLength="2262" lengthAdjust="spacingAndGlyphs">
-        EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN ·------------------------------------------------------------------------
+      <textPath href="#spiral-r1" textLength="2262" lengthAdjust="spacing">
+        EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · ROS2 · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN ·------------------------------------------------------------------------
       </textPath>
     </text>
   </g>
   <!-- 第 2 圈：16.5px 17词 + 横线x4 -->
   <g class="spiral-text__ring spiral-text__ring--r2">
     <text font-family="Geist Mono, monospace" font-size="16.5" letter-spacing="3.5" fill="rgba(255,255,255,0.64)">
-      <textPath href="#spiral-r2" textLength="2136" lengthAdjust="spacingAndGlyphs">
-        LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER ·------------------------------------------------------------------------
+      <textPath href="#spiral-r2" textLength="2136" lengthAdjust="spacing">
+        LQR · VMC · CAN · FREERTOS · ROS2 · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · ROS2 · ROBOMASTER ·------------------------------------------------------------------------
       </textPath>
     </text>
   </g>
   <!-- 第 3 圈：16px 17词 + 横线x4 -->
   <g class="spiral-text__ring spiral-text__ring--r3">
     <text font-family="Geist Mono, monospace" font-size="16" letter-spacing="3" fill="rgba(255,255,255,0.66)">
-      <textPath href="#spiral-r3" textLength="2011" lengthAdjust="spacingAndGlyphs">
-        MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL ·------------------------------------------------------------------------
+      <textPath href="#spiral-r3" textLength="2011" lengthAdjust="spacing">
+        ROS2 · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · ROS2 · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL ·------------------------------------------------------------------------
       </textPath>
     </text>
   </g>
   <!-- 第 4 圈：15.5px 16词 + 横线x4 -->
   <g class="spiral-text__ring spiral-text__ring--r4">
     <text font-family="Geist Mono, monospace" font-size="15.5" letter-spacing="3" fill="rgba(255,255,255,0.68)">
-      <textPath href="#spiral-r4" textLength="1885" lengthAdjust="spacingAndGlyphs">
-        ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC ·------------------------------------------------------------------------
+      <textPath href="#spiral-r4" textLength="1885" lengthAdjust="spacing">
+        ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · ROS2 · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC ·------------------------------------------------------------------------
       </textPath>
     </text>
   </g>
   <!-- 第 5 圈：15px 16词 + 横线x4 -->
   <g class="spiral-text__ring spiral-text__ring--r5">
     <text font-family="Geist Mono, monospace" font-size="15" letter-spacing="3" fill="rgba(255,255,255,0.7)">
-      <textPath href="#spiral-r5" textLength="1759" lengthAdjust="spacingAndGlyphs">
-        VMC · CAN · FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER ·------------------------------------------------------------------------
+      <textPath href="#spiral-r5" textLength="1759" lengthAdjust="spacing">
+        VMC · CAN · FREERTOS · ROS2 · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · ROS2 · ROBOMASTER ·------------------------------------------------------------------------
       </textPath>
     </text>
   </g>
   <!-- 第 6 圈：14.5px 15词 + 横线x4 -->
   <g class="spiral-text__ring spiral-text__ring--r6">
     <text font-family="Geist Mono, monospace" font-size="14.5" letter-spacing="2.5" fill="rgba(255,255,255,0.72)">
-      <textPath href="#spiral-r6" textLength="1634" lengthAdjust="spacingAndGlyphs">
-        ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS ·------------------------------------------------------------------------
+      <textPath href="#spiral-r6" textLength="1634" lengthAdjust="spacing">
+        ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · ROS2 · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS ·------------------------------------------------------------------------
       </textPath>
     </text>
   </g>
   <!-- 第 7 圈：14px 14词 + 横线x3 -->
   <g class="spiral-text__ring spiral-text__ring--r7">
     <text font-family="Geist Mono, monospace" font-size="14" letter-spacing="2.5" fill="rgba(255,255,255,0.74)">
-      <textPath href="#spiral-r7" textLength="1508" lengthAdjust="spacingAndGlyphs">
-        CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR ·------------------------------------------------------
+      <textPath href="#spiral-r7" textLength="1508" lengthAdjust="spacing">
+        CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · ROS2 · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR ·------------------------------------------------------
       </textPath>
     </text>
   </g>
   <!-- 第 8 圈：13.5px 14词 + 横线x3 -->
   <g class="spiral-text__ring spiral-text__ring--r8">
     <text font-family="Geist Mono, monospace" font-size="13.5" letter-spacing="2.5" fill="rgba(255,255,255,0.76)">
-      <textPath href="#spiral-r8" textLength="1382" lengthAdjust="spacingAndGlyphs">
-        CAN · FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB ·------------------------------------------------------
+      <textPath href="#spiral-r8" textLength="1382" lengthAdjust="spacing">
+        CAN · FREERTOS · ROS2 · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · ROS2 ·------------------------------------------------------
       </textPath>
     </text>
   </g>
   <!-- 第 9 圈：13px 13词 + 横线x3 -->
   <g class="spiral-text__ring spiral-text__ring--r9">
     <text font-family="Geist Mono, monospace" font-size="13" letter-spacing="2" fill="rgba(255,255,255,0.78)">
-      <textPath href="#spiral-r9" textLength="1257" lengthAdjust="spacingAndGlyphs">
-        ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED ·------------------------------------------------------
+      <textPath href="#spiral-r9" textLength="1257" lengthAdjust="spacing">
+        ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · ROS2 · ROBOMASTER · ZHOU ZIWEI · EMBEDDED ·------------------------------------------------------
       </textPath>
     </text>
   </g>
   <!-- 第 10 圈：12.5px 12词 + 横线x3 -->
   <g class="spiral-text__ring spiral-text__ring--r10">
     <text font-family="Geist Mono, monospace" font-size="12.5" letter-spacing="2" fill="rgba(255,255,255,0.8)">
-      <textPath href="#spiral-r10" textLength="1131" lengthAdjust="spacingAndGlyphs">
-        STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 ·------------------------------------------------------
+      <textPath href="#spiral-r10" textLength="1131" lengthAdjust="spacing">
+        STM32 · LQR · VMC · CAN · FREERTOS · ROS2 · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 ·------------------------------------------------------
       </textPath>
     </text>
   </g>
   <!-- 第 11 圈：12px 11词 + 横线x3 -->
   <g class="spiral-text__ring spiral-text__ring--r11">
     <text font-family="Geist Mono, monospace" font-size="12" letter-spacing="2" fill="rgba(255,255,255,0.82)">
-      <textPath href="#spiral-r11" textLength="1005" lengthAdjust="spacingAndGlyphs">
-        FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN ·------------------------------------------------------
+      <textPath href="#spiral-r11" textLength="1005" lengthAdjust="spacing">
+        FREERTOS · ROS2 · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN ·------------------------------------------------------
       </textPath>
     </text>
   </g>
   <!-- 第 12 圈：11.5px 10词 + 横线x3 -->
   <g class="spiral-text__ring spiral-text__ring--r12">
     <text font-family="Geist Mono, monospace" font-size="11.5" letter-spacing="2" fill="rgba(255,255,255,0.85)">
-      <textPath href="#spiral-r12" textLength="880" lengthAdjust="spacingAndGlyphs">
-        EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER ·------------------------------------------------------
+      <textPath href="#spiral-r12" textLength="880" lengthAdjust="spacing">
+        EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS · ROS2 · ROBOMASTER ·------------------------------------------------------
       </textPath>
     </text>
   </g>
   <!-- 第 13 圈：11px 9词 + 横线x2 -->
   <g class="spiral-text__ring spiral-text__ring--r13">
     <text font-family="Geist Mono, monospace" font-size="11" letter-spacing="2" fill="rgba(255,255,255,0.88)">
-      <textPath href="#spiral-r13" textLength="754" lengthAdjust="spacingAndGlyphs">
-        LQR · VMC · CAN · FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS ·------------------------------------
+      <textPath href="#spiral-r13" textLength="754" lengthAdjust="spacing">
+        LQR · VMC · CAN · FREERTOS · ROS2 · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS ·------------------------------------
       </textPath>
     </text>
   </g>
   <!-- 第 14 圈：10.5px 8词 + 横线x2 -->
   <g class="spiral-text__ring spiral-text__ring--r14">
     <text font-family="Geist Mono, monospace" font-size="10.5" letter-spacing="1.5" fill="rgba(255,255,255,0.92)">
-      <textPath href="#spiral-r14" textLength="628" lengthAdjust="spacingAndGlyphs">
-        MATLAB · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR ·------------------------------------
+      <textPath href="#spiral-r14" textLength="628" lengthAdjust="spacing">
+        ROS2 · ROBOMASTER · ZHOU ZIWEI · EMBEDDED · ROBOTICS · CONTROL · STM32 · LQR ·------------------------------------
       </textPath>
     </text>
   </g>
   <!-- 第 15 圈：10px 7词 + 横线x2 -->
   <g class="spiral-text__ring spiral-text__ring--r15">
     <text font-family="Geist Mono, monospace" font-size="10" letter-spacing="1.5" fill="rgba(255,255,255,0.95)">
-      <textPath href="#spiral-r15" textLength="503" lengthAdjust="spacingAndGlyphs">
+      <textPath href="#spiral-r15" textLength="503" lengthAdjust="spacing">
         ROBOTICS · CONTROL · STM32 · LQR · VMC · CAN · FREERTOS ·------------------------------------
       </textPath>
     </text>
@@ -206,212 +279,77 @@
   <!-- 第 16 圈：9.5px 6词 + 横线x2 -->
   <g class="spiral-text__ring spiral-text__ring--r16">
     <text font-family="Geist Mono, monospace" font-size="9.5" letter-spacing="1.5" fill="rgba(255,255,255,0.98)">
-      <textPath href="#spiral-r16" textLength="377" lengthAdjust="spacingAndGlyphs">
-        VMC · CAN · FREERTOS · MATLAB · ROBOMASTER · ZHOU ZIWEI ·------------------------------------
+      <textPath href="#spiral-r16" textLength="377" lengthAdjust="spacing">
+        VMC · CAN · FREERTOS · ROS2 · ROBOMASTER · ZHOU ZIWEI ·------------------------------------
       </textPath>
     </text>
   </g>
 </svg>
       </div>
 
-      <!-- 滚动刻度指示器 -->
-      <div class="hero__scroll-indicator" aria-hidden="true">
-        <span>Scroll</span>
-        <div class="hero__scroll-track">
-          <div class="hero__scroll-cue"></div>
-        </div>
-      </div>
     </section>
 
     <!-- ========== 个人简介 ========== -->
     <section class="section" id="intro">
       <div class="section__header animate-on-scroll">
-        <p class="section__kicker">About</p>
+        <p class="section__kicker">01 / About</p>
         <h2 class="section__title">让硬件听从算法的指挥</h2>
       </div>
-      <div class="section__body animate-on-scroll stagger-2" style="display: grid; grid-template-columns: 1fr; gap: var(--space-8); align-items: start;">
-        <div style="display: grid; grid-template-columns: 1fr; gap: var(--space-6);">
-          <p style="font-size: var(--text-body-large);">
+      <div class="section__body animate-on-scroll stagger-2">
+        <div>
+          <p>
             我是周子惟，武汉科技大学电子信息工程专业大二在读（荆楚卓越人才计划）。
             RoboMaster 战队电控组负责人，主导串联腿平衡步兵和全向轮步兵两款机器人的
-            电控系统开发。从 STM32 底层驱动到 LQR 最优控制、从 FreeRTOS 实时调度到
-            MATLAB 动力学仿真，我享受让硬件听从算法的过程。
+            电控系统开发；现任武汉晴山科技机器人系统集成实习工程师，全权负责宇树 G1-D 人形机器人的
+            机械臂运控（七自由度机械臂 + 末端夹爪）。从 STM32 底层驱动、LQR 最优控制与 FreeRTOS 实时调度，
+            到 ROS2 运动规划与具身智能策略部署，我享受让硬件听从算法的过程。
           </p>
-          <p style="font-family: var(--font-mono); font-size: var(--text-mono); text-transform: uppercase; color: var(--color-dark-grey);">
-            Wuhan University of Science & Technology · Class of 2028
+          <p class="mono-label">
+            Wuhan University of Science & Technology · Class of 2028<br />
+            Embedded · ROS2 · Motion Planning · Embodied AI
           </p>
         </div>
-        <img src="/assets/images/比赛人物照.jpg" alt="比赛现场" style="width: 100%; border-radius: var(--radius-8); aspect-ratio: 4 / 3; object-fit: cover; object-position: 20% 35%;" />
-      </div>
-    </section>
-
-    <!-- ========== 项目经历 ========== -->
-    <section class="section" id="projects" style="padding-bottom: var(--space-12);">
-      <div class="section__header animate-on-scroll">
-        <p class="section__kicker">Projects</p>
-        <h2 class="section__title">两款机器人，一套电控体系</h2>
-      </div>
-      <div class="section__body animate-on-scroll stagger-2">
-        <p style="font-size: var(--text-body-large); max-width: 60ch;">
-          从底层驱动到顶层控制策略，从零搭建完整的机器人电控系统。
-          每一行代码都经过仿真验证，每一次调参都有数据支撑。
-        </p>
-      </div>
-    </section>
-
-    <!-- 项目列表 -->
-    <section class="section section--dark text-watermark" style="padding-top: var(--space-20); background: #242423;">
-      <div class="section__body">
-        <div class="project-list">
-
-          <!-- ===== 项目一：串联腿平衡步兵 ===== -->
-            <article class="project-item animate-on-scroll">
-              <div class="project-item__header">
-                <span class="project-item__num">
-                  <span class="mono-label mono-label--dark">001</span>
-                </span>
-                <div class="project-item__meta">
-                  <p class="project-item__role">电控组负责人</p>
-                </div>
-              </div>
-
-              <h3 class="project-item__title">RoboMaster 串联腿平衡步兵机器人</h3>
-
-              <p class="project-item__desc">
-                独立完成平衡步兵动力学建模，推导腿部连杆机构运动学模型，建立系统状态空间方程。
-                设计 VMC + LQR 控制器实现双腿 12 状态量、4 关节电机 2 轮电机协同控制。
-                开发卡尔曼滤波器融合 IMU 数据、轮足跳跃算法（稳定跳跃 40cm）、底盘功率控制配合超级电容。
-              </p>
-
-              <div class="project-item__tags">
-                <span class="project-tag">LQR</span>
-                <span class="project-tag">VMC</span>
-                <span class="project-tag">卡尔曼滤波</span>
-                <span class="project-tag">MATLAB/Simulink</span>
-                <span class="project-tag">STM32</span>
-              </div>
-
-              <!-- 项目照片 -->
-              <div class="project-item__image">
-                <img src="/assets/images/平衡轮腿机器人项目照片1.jpg" alt="串联腿平衡步兵" style="object-position: center 90%;" />
-              </div>
-
-              <!-- 演示视频 -->
-              <div class="project-item__section">
-                <p class="mono-label mono-label--dark" style="margin-bottom: var(--space-4);">演示视频</p>
-                <div class="video-grid">
-                  <div class="video-cover" data-video-type="local">
-                    <video src="/assets/videos/串联腿小跳上台阶演示视频.mp4" preload="metadata" muted style="width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; pointer-events: none;"></video>
-                    <div class="video-cover__play">
-                      <div class="video-cover__play-icon"></div>
-                    </div>
-                    <p class="video-cover__label">跳跃上台阶</p>
-                  </div>
-                  <div class="video-cover" data-video-type="local">
-                    <video src="/assets/videos/串联腿跳跃演示视频.mp4" preload="metadata" muted style="width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; pointer-events: none;"></video>
-                    <div class="video-cover__play">
-                      <div class="video-cover__play-icon"></div>
-                    </div>
-                    <p class="video-cover__label">旋转跳跃演示</p>
-                  </div>
-                  <div class="video-cover" data-video-type="local">
-                    <video src="/assets/videos/串联腿飞坡演示视频.mp4" preload="metadata" muted style="width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; pointer-events: none;"></video>
-                    <div class="video-cover__play">
-                      <div class="video-cover__play-icon"></div>
-                    </div>
-                    <p class="video-cover__label">飞坡演示</p>
-                  </div>
-                </div>
-              </div>
-
-              <!-- 成果 -->
-              <div class="project-item__section">
-                <p class="mono-label mono-label--dark" style="margin-bottom: var(--space-4);">成果</p>
-                <ul class="project-item__results">
-                  <li>控制精度及稳定性提升约 40%</li>
-                  <li>仿真验证缩短实车调试周期约 30%</li>
-                  <li>RoboMaster 2026 超级对抗赛中发挥优异</li>
-                </ul>
-              </div>
-            </article>
-
-          <!-- ===== 项目二：全向轮步兵 ===== -->
-            <article class="project-item animate-on-scroll stagger-2">
-              <div class="project-item__header">
-                <span class="project-item__num">
-                  <span class="mono-label mono-label--dark">002</span>
-                </span>
-                <div class="project-item__meta">
-                  <p class="project-item__role">电控组负责人</p>
-                </div>
-              </div>
-
-              <h3 class="project-item__title">RoboMaster 全向轮步兵机器人</h3>
-
-              <p class="project-item__desc">
-                基于 STM32G4 完成全向轮底盘运动学解算，实现复杂战场环境下的平滑移动与精准定位。
-                采用 FreeRTOS 设计多任务调度架构，设计双环 PID + 前馈控制策略提升云台轨迹跟踪精度。
-                基于 CAN 总线设计整车通信网络，保证控制指令低延迟传输。
-              </p>
-
-              <div class="project-item__tags">
-                <span class="project-tag">STM32G4</span>
-                <span class="project-tag">FreeRTOS</span>
-                <span class="project-tag">PID + 前馈</span>
-                <span class="project-tag">CAN 总线</span>
-                <span class="project-tag">运动学解算</span>
-              </div>
-
-              <!-- 成果 -->
-              <div class="project-item__section">
-                <p class="mono-label mono-label--dark" style="margin-bottom: var(--space-4);">成果</p>
-                <ul class="project-item__results">
-                  <li>底盘运动精度提升 30%，响应速度提升 25%</li>
-                  <li>高校联盟赛 3v3 (安徽站) 国家一等奖</li>
-                  <li>步兵对抗赛 国家二等奖</li>
-                </ul>
-              </div>
-
-              <div class="project-item__image">
-                <img src="/assets/images/全向轮机器人项目照片.jpg" alt="全向轮步兵" />
-              </div>
-            </article>
-
-        </div>
+        <img src="/assets/images/比赛人物照.jpg" alt="比赛现场" />
       </div>
     </section>
 
     <!-- ========== 技术栈 ========== -->
-    <section class="section" id="techstack" style="padding-bottom: var(--space-12);">
+    <section class="section section--dark text-watermark" id="techstack" style="padding-bottom: var(--space-8);">
       <div class="section__header animate-on-scroll">
-        <p class="section__kicker">Tech Stack</p>
+        <p class="section__kicker">02 / Tech Stack</p>
         <h2 class="section__title">从底层到顶层的完整栈</h2>
       </div>
       <div class="section__body animate-on-scroll stagger-2">
-        <p style="font-size: var(--text-body-large); max-width: 60ch;">
-          六个技术领域，覆盖从芯片驱动到控制算法的完整链路。
+        <p class="text-lead">
+          八个技术领域，覆盖从芯片驱动、ROS2 运动规划到具身智能的完整链路。
           每一项都是实战中打磨过的硬技能。
         </p>
       </div>
     </section>
 
     <!-- 技术分类 -->
-    <section class="section section--dark text-watermark" style="padding-top: var(--space-20);">
+    <section class="section section--dark text-watermark" style="padding-top: var(--space-12);">
       <div class="section__body">
         <!-- 筛选器 -->
+        <!-- 筛选器：单选的切换按钮组，用 aria-pressed 暴露选中态（纯 class 读屏读不出）；
+             初始态写在 HTML 里，无 JS 时也是正确的 -->
         <div class="tech-filter animate-on-scroll">
-          <button class="tech-filter__btn is-active" data-filter="all">全部</button>
-          <button class="tech-filter__btn" data-filter="mcu">单片机</button>
-          <button class="tech-filter__btn" data-filter="control">控制算法</button>
-          <button class="tech-filter__btn" data-filter="sim">仿真建模</button>
-          <button class="tech-filter__btn" data-filter="lang">编程语言</button>
+          <button type="button" class="tech-filter__btn is-active" data-filter="all" aria-pressed="true">全部</button>
+          <button type="button" class="tech-filter__btn" data-filter="mcu" aria-pressed="false">单片机</button>
+          <button type="button" class="tech-filter__btn" data-filter="control" aria-pressed="false">控制算法</button>
+          <button type="button" class="tech-filter__btn" data-filter="ros" aria-pressed="false">ROS 开发</button>
+          <button type="button" class="tech-filter__btn" data-filter="sim" aria-pressed="false">仿真建模</button>
+          <button type="button" class="tech-filter__btn" data-filter="ai" aria-pressed="false">具身智能</button>
+          <button type="button" class="tech-filter__btn" data-filter="lang" aria-pressed="false">编程语言</button>
         </div>
 
-        <!-- 技术分类列表：芯片框图 -->
+        <!-- 技术分类列表：芯片框图
+             技能条目带 data-lv 档位（5 熟练 / 3 熟悉 / 1 了解），由 CSS 驱动条长与文字亮度；
+             ⚠️ 档位为占位数据（形态于 2026-09-16 选定 F 方案），待替换为真实档位。 -->
         <div class="chip-board">
           <div class="chip-board__header">
-            <span class="chip-board__title">TECH STACK</span>
-            <span class="chip-board__sub">STM32G4 · FreeRTOS · CAN · LQR</span>
+            <span class="chip-board__title">OVERVIEW</span>
+            <span class="chip-board__sub">ROS2 · DDS · OMPL · Isaac Lab · LQR</span>
               </div>
               <div class="chip-board__grid">
 
@@ -421,12 +359,27 @@
                     <span class="mono-label mono-label--dark">001</span>
                   </div>
                   <h3 class="tech-cat__title">单片机开发</h3>
-                  <ul class="tech-cat__list">
-                    <li>STM32 系列 (F4 / G4)</li>
-                    <li>ESP32</li>
-                    <li>MSP-M0</li>
-                    <li>FreeRTOS 实时操作系统</li>
-                    <li>多任务调度架构设计</li>
+                  <ul class="tech-cat__list tech-cat__list--rated">
+                    <li data-lv="5">
+                      <span class="tech-skill__name">STM32 系列 (F4 / G4)</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟练</span></span>
+                    </li>
+                    <li data-lv="3">
+                      <span class="tech-skill__name">ESP32</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟悉</span></span>
+                    </li>
+                    <li data-lv="1">
+                      <span class="tech-skill__name">MSP-M0</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">了解</span></span>
+                    </li>
+                    <li data-lv="3">
+                      <span class="tech-skill__name">FreeRTOS 实时操作系统</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟悉</span></span>
+                    </li>
+                    <li data-lv="3">
+                      <span class="tech-skill__name">多任务调度架构设计</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟悉</span></span>
+                    </li>
                   </ul>
                 </div>
 
@@ -436,12 +389,27 @@
                     <span class="mono-label mono-label--dark">002</span>
                   </div>
                   <h3 class="tech-cat__title">外设与通信</h3>
-                  <ul class="tech-cat__list">
-                    <li>UART</li>
-                    <li>IIC</li>
-                    <li>SPI</li>
-                    <li>CAN 总线</li>
-                    <li>整车通信网络设计</li>
+                  <ul class="tech-cat__list tech-cat__list--rated">
+                    <li data-lv="5">
+                      <span class="tech-skill__name">UART</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟练</span></span>
+                    </li>
+                    <li data-lv="5">
+                      <span class="tech-skill__name">IIC</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟练</span></span>
+                    </li>
+                    <li data-lv="5">
+                      <span class="tech-skill__name">SPI</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟练</span></span>
+                    </li>
+                    <li data-lv="5">
+                      <span class="tech-skill__name">CAN 总线</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟练</span></span>
+                    </li>
+                    <li data-lv="3">
+                      <span class="tech-skill__name">整车通信网络设计</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟悉</span></span>
+                    </li>
                   </ul>
                 </div>
 
@@ -451,55 +419,177 @@
                     <span class="mono-label mono-label--dark">003</span>
                   </div>
                   <h3 class="tech-cat__title">控制算法</h3>
-                  <ul class="tech-cat__list">
-                    <li>双环 PID</li>
-                    <li>前馈 PID</li>
-                    <li>LQR 最优控制</li>
-                    <li>VMC 虚拟模型控制</li>
-                    <li>MPC 模型预测控制</li>
-                    <li>卡尔曼滤波</li>
+                  <ul class="tech-cat__list tech-cat__list--rated">
+                    <li data-lv="5">
+                      <span class="tech-skill__name">双环 PID</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟练</span></span>
+                    </li>
+                    <li data-lv="5">
+                      <span class="tech-skill__name">前馈 PID</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟练</span></span>
+                    </li>
+                    <li data-lv="5">
+                      <span class="tech-skill__name">LQR 最优控制</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟练</span></span>
+                    </li>
+                    <li data-lv="3">
+                      <span class="tech-skill__name">VMC 虚拟模型控制</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟悉</span></span>
+                    </li>
+                    <li data-lv="1">
+                      <span class="tech-skill__name">MPC 模型预测控制</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">了解</span></span>
+                    </li>
+                    <li data-lv="3">
+                      <span class="tech-skill__name">卡尔曼滤波</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟悉</span></span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="tech-cat" data-category="ros">
+                  <div class="tech-cat__head">
+                    <span class="tech-cat__label">ROS DEVELOPMENT</span>
+                    <span class="mono-label mono-label--dark">004</span>
+                  </div>
+                  <h3 class="tech-cat__title">ROS 机器人开发</h3>
+                  <ul class="tech-cat__list tech-cat__list--rated">
+                    <li data-lv="5">
+                      <span class="tech-skill__name">ROS2 (Humble / Foxy)</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟练</span></span>
+                    </li>
+                    <li data-lv="5">
+                      <span class="tech-skill__name">rclcpp / rclpy</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟练</span></span>
+                    </li>
+                    <li data-lv="3">
+                      <span class="tech-skill__name">colcon / CMake 工作空间</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟悉</span></span>
+                    </li>
+                    <li data-lv="3">
+                      <span class="tech-skill__name">URDF / SRDF · TF2</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟悉</span></span>
+                    </li>
+                    <li data-lv="3">
+                      <span class="tech-skill__name">Tesseract / OMPL 运动规划</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟悉</span></span>
+                    </li>
+                    <li data-lv="1">
+                      <span class="tech-skill__name">DDS (CycloneDDS) · Gazebo</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">了解</span></span>
+                    </li>
                   </ul>
                 </div>
 
                 <div class="tech-cat" data-category="sim">
                   <div class="tech-cat__head">
                     <span class="tech-cat__label">SIMULATION</span>
-                    <span class="mono-label mono-label--dark">004</span>
+                    <span class="mono-label mono-label--dark">005</span>
                   </div>
                   <h3 class="tech-cat__title">仿真与建模</h3>
-                  <ul class="tech-cat__list">
-                    <li>MATLAB / Simulink</li>
-                    <li>机器人运动建模</li>
-                    <li>动力学建模</li>
-                    <li>算法仿真验证</li>
-                    <li>数据拟合与分析</li>
+                  <ul class="tech-cat__list tech-cat__list--rated">
+                    <li data-lv="5">
+                      <span class="tech-skill__name">MATLAB / Simulink</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟练</span></span>
+                    </li>
+                    <li data-lv="5">
+                      <span class="tech-skill__name">机器人运动建模</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟练</span></span>
+                    </li>
+                    <li data-lv="3">
+                      <span class="tech-skill__name">动力学建模</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟悉</span></span>
+                    </li>
+                    <li data-lv="3">
+                      <span class="tech-skill__name">算法仿真验证</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟悉</span></span>
+                    </li>
+                    <li data-lv="3">
+                      <span class="tech-skill__name">数据拟合与分析</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟悉</span></span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="tech-cat" data-category="ai">
+                  <div class="tech-cat__head">
+                    <span class="tech-cat__label">EMBODIED AI</span>
+                    <span class="mono-label mono-label--dark">006</span>
+                  </div>
+                  <h3 class="tech-cat__title">具身智能 / 强化学习</h3>
+                  <ul class="tech-cat__list tech-cat__list--rated">
+                    <li data-lv="3">
+                      <span class="tech-skill__name">Isaac Lab / Isaac Sim</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟悉</span></span>
+                    </li>
+                    <li data-lv="3">
+                      <span class="tech-skill__name">rsl_rl PPO 策略训练</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟悉</span></span>
+                    </li>
+                    <li data-lv="3">
+                      <span class="tech-skill__name">GPU 并行环境采样</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟悉</span></span>
+                    </li>
+                    <li data-lv="1">
+                      <span class="tech-skill__name">sim2real 域随机化</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">了解</span></span>
+                    </li>
+                    <li data-lv="3">
+                      <span class="tech-skill__name">ONNX Runtime 部署</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟悉</span></span>
+                    </li>
+                    <li data-lv="3">
+                      <span class="tech-skill__name">MuJoCo</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟悉</span></span>
+                    </li>
                   </ul>
                 </div>
 
                 <div class="tech-cat" data-category="lang">
                   <div class="tech-cat__head">
                     <span class="tech-cat__label">LANGUAGES</span>
-                    <span class="mono-label mono-label--dark">005</span>
+                    <span class="mono-label mono-label--dark">007</span>
                   </div>
                   <h3 class="tech-cat__title">编程语言</h3>
-                  <ul class="tech-cat__list">
-                    <li>C</li>
-                    <li>C++</li>
-                    <li>Python</li>
+                  <ul class="tech-cat__list tech-cat__list--rated">
+                    <li data-lv="5">
+                      <span class="tech-skill__name">C</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟练</span></span>
+                    </li>
+                    <li data-lv="5">
+                      <span class="tech-skill__name">C++</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟练</span></span>
+                    </li>
+                    <li data-lv="5">
+                      <span class="tech-skill__name">Python</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟练</span></span>
+                    </li>
                   </ul>
                 </div>
 
                 <div class="tech-cat" data-category="mcu">
                   <div class="tech-cat__head">
                     <span class="tech-cat__label">TOOLS &amp; DEBUG</span>
-                    <span class="mono-label mono-label--dark">006</span>
+                    <span class="mono-label mono-label--dark">008</span>
                   </div>
                   <h3 class="tech-cat__title">工具链与调试</h3>
-                  <ul class="tech-cat__list">
-                    <li>Keil / STM32CubeIDE</li>
-                    <li>JLink / ST-Link</li>
-                    <li>逻辑分析仪 / 示波器</li>
-                    <li>CAN 分析仪</li>
+                  <ul class="tech-cat__list tech-cat__list--rated">
+                    <li data-lv="5">
+                      <span class="tech-skill__name">Keil / STM32CubeIDE</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟练</span></span>
+                    </li>
+                    <li data-lv="5">
+                      <span class="tech-skill__name">JLink / ST-Link</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟练</span></span>
+                    </li>
+                    <li data-lv="3">
+                      <span class="tech-skill__name">逻辑分析仪 / 示波器</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟悉</span></span>
+                    </li>
+                    <li data-lv="3">
+                      <span class="tech-skill__name">CAN 分析仪</span>
+                      <span class="tech-skill__meter"><span class="tech-skill__track"><span class="tech-skill__fill"></span></span><span class="tech-skill__lv">熟悉</span></span>
+                    </li>
                   </ul>
                 </div>
 
@@ -550,6 +640,10 @@
                   <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/raspberrypi/raspberrypi-original.svg" alt="Raspberry Pi" loading="lazy" />
                 </div>
 
+                <div class="tool-icon tool-icon--light" title="ROS2">
+                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ros/ros-original.svg" alt="ROS2" loading="lazy" />
+                </div>
+
               </div>
             </div>
 
@@ -557,11 +651,327 @@
       </div>
     </section>
 
+    <!-- ========== 项目经历 ========== -->
+    <section class="section section--dark text-watermark" id="projects" style="padding-bottom: var(--space-16);">
+      <p class="term-divider" aria-hidden="true">
+        <span class="term-divider__dots"><span></span><span></span><span></span></span>
+        <span class="term-divider__cmd"><span class="term-divider__prompt">$</span>cd <span class="term-divider__path">~/usr/src/Zhouzzw_Web/</span>projects<span class="term-divider__cursor"></span></span>
+      </p>
+      <div class="section__header animate-on-scroll">
+        <p class="section__kicker">03 / Projects</p>
+        <h2 class="section__title">项目经历</h2>
+      </div>
+      <div class="section__body animate-on-scroll stagger-2">
+        <p class="text-lead">
+          从 RoboMaster 赛场到工业落地场景，四个项目贯穿同一条主线：从零搭建两款竞赛机器人的完整电控体系，
+          主导人形机器人 G1-D 机械臂运控的两条技术路线。每一行代码都经过仿真验证，每一次调参都有数据支撑。
+        </p>
+      </div>
+    </section>
+
+    <!-- 项目列表 -->
+    <section class="section section--dark text-watermark" style="padding-top: var(--space-20); padding-bottom: 0;">
+      <div class="section__body">
+        <div class="project-list">
+
+          <!-- ===== 项目一：串联腿平衡步兵 ===== -->
+            <article class="project-item animate-on-scroll">
+              <div class="project-item__header">
+                <span class="project-item__num">
+                  <span class="mono-label mono-label--dark">001</span>
+                </span>
+                <div class="project-item__meta">
+                  <p class="project-item__role">电控组负责人</p>
+                </div>
+              </div>
+
+              <h3 class="project-item__title">RoboMaster 串联腿平衡步兵机器人</h3>
+
+              <p class="project-item__desc">
+                独立完成平衡步兵动力学建模，推导腿部连杆机构运动学模型，建立系统状态空间方程。
+                设计 VMC + LQR 控制器实现双腿 12 状态量、4 关节电机 2 轮电机协同控制。
+                开发卡尔曼滤波器融合 IMU 数据、轮足跳跃算法（稳定跳跃 40cm）、底盘功率控制配合超级电容。
+              </p>
+
+              <div class="project-item__section project-item__section--results">
+                <p class="mono-label mono-label--dark">成果</p>
+                <ul class="project-item__results">
+                  <li>控制精度及稳定性提升约 <span class="js-count" data-to="40" data-suffix="%">40%</span></li>
+                  <li>仿真验证缩短实车调试周期约 <span class="js-count" data-to="30" data-suffix="%">30%</span></li>
+                  <li>RoboMaster 2026 超级对抗赛中发挥优异</li>
+                </ul>
+              </div>
+
+              <div class="project-item__tags">
+                <span class="project-tag">LQR</span>
+                <span class="project-tag">VMC</span>
+                <span class="project-tag">卡尔曼滤波</span>
+                <span class="project-tag">MATLAB/Simulink</span>
+                <span class="project-tag">STM32</span>
+              </div>
+
+              <!-- 项目照片 -->
+              <div class="project-item__image">
+                <img src="/assets/images/平衡轮腿机器人项目照片1.jpg" alt="串联腿平衡步兵" class="object-bottom" />
+              </div>
+
+              <!-- 演示视频 -->
+              <div class="project-item__section">
+                <p class="mono-label mono-label--dark">演示视频</p>
+                <div class="video-grid">
+                  <!-- I1：封面是弹层的唯一入口，用真 <button> 才能键盘打开（Enter / Space 原生触发 click）。
+                       按钮内容只能是 phrasing content，故内部 div / p 一律降级为 span（样式在 CSS 里 block 化）。 -->
+                  <button type="button" class="video-cover" data-video-type="local" aria-label="播放演示视频：跳跃上台阶">
+                    <video src="/assets/videos/串联腿小跳上台阶演示视频.mp4" preload="none" muted></video>
+                    <span class="video-cover__play">
+                      <span class="video-cover__play-icon"></span>
+                    </span>
+                    <span class="video-cover__label">跳跃上台阶</span>
+                  </button>
+                  <button type="button" class="video-cover" data-video-type="local" aria-label="播放演示视频：旋转跳跃">
+                    <video src="/assets/videos/串联腿跳跃演示视频.mp4" preload="none" muted></video>
+                    <span class="video-cover__play">
+                      <span class="video-cover__play-icon"></span>
+                    </span>
+                    <span class="video-cover__label">旋转跳跃演示</span>
+                  </button>
+                  <button type="button" class="video-cover" data-video-type="local" aria-label="播放演示视频：飞坡">
+                    <video src="/assets/videos/串联腿飞坡演示视频.mp4" preload="none" muted></video>
+                    <span class="video-cover__play">
+                      <span class="video-cover__play-icon"></span>
+                    </span>
+                    <span class="video-cover__label">飞坡演示</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 成果 -->
+            </article>
+
+          <!-- ===== 项目二：全向轮步兵 ===== -->
+            <article class="project-item animate-on-scroll stagger-2">
+              <div class="project-item__header">
+                <span class="project-item__num">
+                  <span class="mono-label mono-label--dark">002</span>
+                </span>
+                <div class="project-item__meta">
+                  <p class="project-item__role">电控组负责人</p>
+                </div>
+              </div>
+
+              <h3 class="project-item__title">RoboMaster 全向轮步兵机器人</h3>
+
+              <p class="project-item__desc">
+                基于 STM32G4 完成全向轮底盘运动学解算，实现复杂战场环境下的平滑移动与精准定位。
+                采用 FreeRTOS 设计多任务调度架构，设计双环 PID + 前馈控制策略提升云台轨迹跟踪精度。
+                基于 CAN 总线设计整车通信网络，保证控制指令低延迟传输。
+              </p>
+
+              <div class="project-item__section project-item__section--results">
+                <p class="mono-label mono-label--dark">成果</p>
+                <ul class="project-item__results">
+                  <li>底盘运动精度提升 <span class="js-count" data-to="30" data-suffix="%">30%</span>，响应速度提升 <span class="js-count" data-to="25" data-suffix="%">25%</span></li>
+                  <li>高校联盟赛 3v3 (安徽站) 国家一等奖</li>
+                  <li>步兵对抗赛 国家二等奖</li>
+                </ul>
+              </div>
+
+              <div class="project-item__tags">
+                <span class="project-tag">STM32G4</span>
+                <span class="project-tag">FreeRTOS</span>
+                <span class="project-tag">PID + 前馈</span>
+                <span class="project-tag">CAN 总线</span>
+                <span class="project-tag">运动学解算</span>
+              </div>
+
+              <!-- 成果 -->
+
+              <div class="project-item__image">
+                <img src="/assets/images/全向轮机器人项目照片.jpg" alt="全向轮步兵" />
+              </div>
+            </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 工业机器人项目：双臂操控两条路线 ========== -->
+    <section class="section section--dark text-watermark" style="padding-top: 0;">
+      <div class="section__body">
+        <div class="project-list project-list--bordered">
+
+          <!-- ===== 项目三：G1-D Tesseract 双臂运动控制 ===== -->
+            <article class="project-item animate-on-scroll">
+              <div class="project-item__header">
+                <span class="project-item__num">
+                  <span class="mono-label mono-label--dark">003</span>
+                </span>
+                <div class="project-item__meta">
+                  <p class="project-item__role">机械臂运控负责人</p>
+                </div>
+              </div>
+
+              <h3 class="project-item__title">宇树 G1-D 机械臂 · Tesseract 双臂运动控制</h3>
+
+              <p class="project-item__desc">
+                上层仅下发一个三维目标位姿，由 Tesseract + Trac-IK/KDL 逆解与 OMPL 碰撞检测规划无碰撞路径，
+                经 Unitree SDK2 DDS（CRC32 + 全 35 关节锁定）50Hz 下发真机执行。
+                完成 VHACD 凸分解提速（单点规划 1.75s → 0.21~0.60s，约 5×）、双臂异步执行
+                （单 DDS publisher + 左右独立轨迹流互不阻塞），并叠加 200Hz 视觉伺服层
+                （卡尔曼预测 + Ruckig 平滑 + wdls 速度级 IK）追踪 30Hz 动态目标完成精定位抓卡。
+              </p>
+
+              <div class="project-item__section project-item__section--results">
+                <p class="mono-label mono-label--dark">成果</p>
+                <ul class="project-item__results">
+                  <li>双臂异步控制真机验证通过，左右臂规划执行互不阻塞</li>
+                  <li>VHACD 凸分解将单点规划周期从 1.75s 降至 0.21~0.60s（约 <span class="js-count" data-to="5" data-suffix="×">5×</span>）</li>
+                  <li>200Hz 视觉伺服闭环追踪动态目标，sim / real 同一份代码双模式运行</li>
+                </ul>
+              </div>
+
+              <div class="project-item__tags">
+                <span class="project-tag">ROS2 Humble/Foxy</span>
+                <span class="project-tag">Tesseract + OMPL</span>
+                <span class="project-tag">双臂异步控制</span>
+                <span class="project-tag">DDS 真机直驱</span>
+                <span class="project-tag">200Hz 视觉伺服</span>
+              </div>
+
+              <!-- 演示视频大卡（无图片占位，视频直接占整卡位） -->
+              <div class="project-item__video">
+                <button type="button" class="video-cover video-cover--hero" data-video-type="local" aria-label="播放演示视频：Tesseract 双臂到位运控">
+                  <video src="/assets/videos/tesseract_reaching运控.mp4" preload="none" muted></video>
+                  <span class="video-cover__play">
+                    <span class="video-cover__play-icon"></span>
+                  </span>
+                  <span class="video-cover__label">Tesseract 双臂到位运控</span>
+                </button>
+              </div>
+
+              <!-- 演示视频（复用 001 的 .video-cover 结构：封面用真 <button>，内容仅 phrasing content） -->
+              <div class="project-item__section">
+                <p class="mono-label mono-label--dark">演示视频</p>
+                <div class="video-grid">
+                  <button type="button" class="video-cover" data-video-type="local" aria-label="播放演示视频：视觉识别抓放卡演示">
+                    <video src="/assets/videos/抓卡demo演示视频.mp4" preload="none" muted></video>
+                    <span class="video-cover__play">
+                      <span class="video-cover__play-icon"></span>
+                    </span>
+                    <span class="video-cover__label">视觉识别抓放卡演示</span>
+                  </button>
+                  <button type="button" class="video-cover" data-video-type="local" aria-label="播放演示视频：视觉伺服动态抓卡">
+                    <video src="/assets/videos/视觉伺服动态抓卡.mp4" preload="none" muted></video>
+                    <span class="video-cover__play">
+                      <span class="video-cover__play-icon"></span>
+                    </span>
+                    <span class="video-cover__label">视觉伺服动态抓卡</span>
+                  </button>
+                  <button type="button" class="video-cover" data-video-type="local" aria-label="播放演示视频：伺服鲁棒性测试">
+                    <video src="/assets/videos/脏数据伺服控制鲁棒性.mp4" preload="none" muted></video>
+                    <span class="video-cover__play">
+                      <span class="video-cover__play-icon"></span>
+                    </span>
+                    <span class="video-cover__label">伺服鲁棒性测试</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 成果 -->
+            </article>
+
+          <!-- ===== 项目四：G1-D Isaac RL 到位控制 ===== -->
+            <article class="project-item animate-on-scroll stagger-2">
+              <div class="project-item__header">
+                <span class="project-item__num">
+                  <span class="mono-label mono-label--dark">004</span>
+                </span>
+                <div class="project-item__meta">
+                  <p class="project-item__role">机械臂运控负责人</p>
+                </div>
+              </div>
+
+              <h3 class="project-item__title">宇树 G1-D 机械臂 · Isaac RL 端到端到位控制</h3>
+
+              <p class="project-item__desc">
+                在 Isaac Lab 中用 rsl_rl PPO 训练 reaching 策略（4096 并行环境 + 步数驱动课程 +
+                域随机化），best 模型导出 ONNX 部署至机载 Jetson Orin NX，策略直接输出关节增量、
+                50Hz 直驱机械臂到位——不依赖 OMPL / IK 传统运动规划。目标按球域采样，训练与部署
+                共用同一份契约；到位判定为 TF 真实位姿连续 3 拍命中（位置 &lt; 3cm 且姿态 &lt; 5°）。
+              </p>
+
+              <div class="project-item__section project-item__section--results">
+                <p class="mono-label mono-label--dark">成果</p>
+                <ul class="project-item__results">
+                  <li>云端 50k 全量训练完成，到位率 <span class="js-count" data-to="90.9" data-decimals="1" data-suffix="%">90.9%</span> ≥ 90% 验收线</li>
+                  <li>ONNX 策略 50Hz 直驱 NX 真机，无规划节点、链路短</li>
+                  <li>/arm_move 真实位姿到位判定（位置 &lt; 3cm 且姿态 &lt; 5°）真机复验通过</li>
+                </ul>
+              </div>
+
+              <div class="project-item__tags">
+                <span class="project-tag">Isaac Lab / rsl_rl</span>
+                <span class="project-tag">端到端强化学习</span>
+                <span class="project-tag">ONNX Runtime</span>
+                <span class="project-tag">sim2real 域随机化</span>
+                <span class="project-tag">Python</span>
+              </div>
+
+
+              <!-- 演示视频：无图片占位，视频直接占整卡位（.project-item__image 同尺寸 16:9 大卡） -->
+              <div class="project-item__video">
+                  <button type="button" class="video-cover video-cover--hero" data-video-type="local" aria-label="播放演示视频：RL 端到端到位运控">
+                    <video src="/assets/videos/RL_Reaching运控.mp4" preload="none" muted></video>
+                    <span class="video-cover__play">
+                      <span class="video-cover__play-icon"></span>
+                    </span>
+                    <span class="video-cover__label">RL 端到端到位运控</span>
+                  </button>
+              </div>
+
+              <!-- 成果 -->
+            </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 实习经历 ========== -->
+    <section class="section" id="internship">
+      <div class="section__header animate-on-scroll">
+        <p class="section__kicker">04 / Internship</p>
+        <h2 class="section__title">实习经历</h2>
+      </div>
+      <div class="section__body animate-on-scroll stagger-2">
+        <p class="text-lead text-lead--spaced">
+          三个月实习里，我作为宇树 G1-D 人形机器人机械臂运控负责人，参与高速路口闸机机器人收递卡项目，
+          主导运控模块从 0 到 1 的方案设计、跨端联调与真机交付。
+        </p>
+        <div class="timeline-list">
+          <div class="timeline-list__item">
+            <p class="timeline-list__date">2026.07 - 2026.10</p>
+            <div class="timeline-list__content">
+              <h3 class="timeline-list__title">武汉晴山科技有限公司 — 机器人系统集成实习工程师</h3>
+              <p class="timeline-list__meta">高速路口闸机机器人收递卡项目 · 宇树 G1-D</p>
+              <ul class="internship__list">
+                <li><strong>全权主导</strong>G1-D 机械臂运控模块：从运动控制方案选型、算法开发到真机部署全流程闭环，独立交付可复现的完整运控链路</li>
+                <li><strong>跨端协同</strong>：牵头对接视觉算法团队，共同定义「实时识别坐标 → 运动控制指令」的流式接口与通信协议，打通静态抓取与动态目标追踪两类核心场景</li>
+                <li><strong>系统集成</strong>：协调机械、电控、视觉三方联调节奏，排查跨模块时序与坐标标定问题，保障整机在真实闸机场景下稳定演示</li>
+                <li><strong>成果</strong>：项目完程度较高并推动进入商业落地准备阶段；实习产出沉淀为运动规划与强化学习两条技术路线（详见项目区 003 / 004）</li>
+              </ul>
+              <p class="internship__note">STATUS: 项目待商业落地 · 技术细节见项目区 003 / 004</p>
+            </div>
+            <p class="timeline-list__award">机械臂运控负责人</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ========== 关于我 ========== -->
     <!-- 荣誉奖项 -->
-    <section class="section" id="about">
+    <section class="section" id="honors">
       <div class="section__header animate-on-scroll">
-        <p class="section__kicker">Honors & Awards</p>
+        <p class="section__kicker">05 / Honors & Awards</p>
         <h2 class="section__title">荣誉奖项</h2>
       </div>
       <div class="section__body">
@@ -569,32 +979,38 @@
 
           <div class="timeline-list__item">
             <p class="timeline-list__date">2026</p>
-            <h3 class="timeline-list__title">RoboMaster 高校联盟赛 3v3 (安徽站) — 国家一等奖</h3>
+            <h3 class="timeline-list__title">RoboMaster 高校联盟赛 3v3 (安徽站)</h3>
+            <p class="timeline-list__award">国家一等奖</p>
           </div>
 
           <div class="timeline-list__item">
             <p class="timeline-list__date">2026</p>
-            <h3 class="timeline-list__title">RoboMaster 超级对抗赛 (南部赛区) — 国家二等奖</h3>
+            <h3 class="timeline-list__title">RoboMaster 超级对抗赛 (南部赛区)</h3>
+            <p class="timeline-list__award">国家二等奖</p>
           </div>
 
           <div class="timeline-list__item">
             <p class="timeline-list__date">2026</p>
-            <h3 class="timeline-list__title">RoboMaster 高校步兵对抗赛 — 国家二等奖</h3>
+            <h3 class="timeline-list__title">RoboMaster 高校步兵对抗赛</h3>
+            <p class="timeline-list__award">国家二等奖</p>
           </div>
 
           <div class="timeline-list__item">
             <p class="timeline-list__date">2025</p>
-            <h3 class="timeline-list__title">蓝桥杯嵌入式设计与开发 — 省级三等奖</h3>
+            <h3 class="timeline-list__title">蓝桥杯嵌入式设计与开发</h3>
+            <p class="timeline-list__award">省级三等奖</p>
           </div>
 
           <div class="timeline-list__item">
             <p class="timeline-list__date">2025</p>
-            <h3 class="timeline-list__title">全国计算机等级考试二级 (C 语言)</h3>
+            <h3 class="timeline-list__title">全国计算机等级考试 (C 语言)</h3>
+            <p class="timeline-list__award">二级</p>
           </div>
 
           <div class="timeline-list__item">
             <p class="timeline-list__date">2025</p>
-            <h3 class="timeline-list__title">大学英语六级 (CET-6) 462分</h3>
+            <h3 class="timeline-list__title">大学英语六级 (CET-6)</h3>
+            <p class="timeline-list__award">462 分</p>
           </div>
 
         </div>
@@ -602,9 +1018,9 @@
     </section>
 
     <!-- 生活侧写 -->
-    <section class="section section--dark text-watermark">
+    <section class="section section--dark text-watermark" id="life">
       <div class="section__header animate-on-scroll">
-        <p class="section__kicker">Beyond the Lab</p>
+        <p class="section__kicker">06 / Beyond the Lab</p>
         <h2 class="section__title">工作之外的我</h2>
       </div>
       <div class="section__body">
@@ -663,16 +1079,16 @@
     </section>
 
     <!-- 联系方式 -->
-    <section class="section section--dark text-watermark">
+    <section class="section section--dark text-watermark" id="contact">
       <div class="section__header animate-on-scroll">
-        <p class="section__kicker">Contact</p>
+        <p class="section__kicker">07 / Contact</p>
         <h2 class="section__title">联系方式</h2>
       </div>
       <div class="section__body">
         <div class="contact-list animate-on-scroll stagger-2">
 
-          <a href="https://github.com/Zhouzzw" target="_blank" rel="noopener" class="contact-item-big" style="text-decoration: none;">
-            <svg class="contact-item-big__icon" viewBox="0 0 24 24" fill="currentColor" style="color: var(--color-white);">
+          <a href="https://github.com/Zhouzzw" target="_blank" rel="noopener" class="contact-item-big">
+            <svg class="contact-item-big__icon" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
             </svg>
             <div>
@@ -681,8 +1097,18 @@
             </div>
           </a>
 
-          <a href="tel:13035102279" class="contact-item-big" style="text-decoration: none;">
-            <svg class="contact-item-big__icon" viewBox="0 0 24 24" fill="currentColor" style="color: var(--color-white);">
+          <a href="mailto:2661762781@qq.com" class="contact-item-big">
+            <svg class="contact-item-big__icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+            <div>
+              <p class="contact-item-big__label">Email</p>
+              <p class="contact-item-big__value">2661762781@qq.com</p>
+            </div>
+          </a>
+
+          <a href="tel:13035102279" class="contact-item-big">
+            <svg class="contact-item-big__icon" viewBox="0 0 24 24" fill="currentColor">
               <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.58.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z"/>
             </svg>
             <div>
@@ -691,15 +1117,23 @@
             </div>
           </a>
 
-          <a href="mailto:2661762781@qq.com" class="contact-item-big" style="text-decoration: none;">
-            <svg class="contact-item-big__icon" viewBox="0 0 24 24" fill="currentColor" style="color: var(--color-white);">
-              <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+          <!-- 微信：微信号需常显（可复制/可读屏/无 JS 也能拿到），二维码作为补充
+               放在二级弹层（待素材）。非链接项，故用 div + 独立复制按钮。 -->
+          <div class="contact-item-big">
+            <!-- 微信经典双气泡标：单路径几何取自 simple-icons v13（CC0），
+                 两个气泡间的间隙与四个眼睛孔都由路径自身的子路径构成，无需 mask -->
+            <svg class="contact-item-big__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.406-.032zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/>
             </svg>
             <div>
-              <p class="contact-item-big__label">Email</p>
-              <p class="contact-item-big__value">2661762781@qq.com</p>
+              <p class="contact-item-big__label">WeChat</p>
+              <p class="contact-item-big__value">zzw13726855179</p>
             </div>
-          </a>
+            <div class="contact-item-big__actions">
+              <button type="button" class="contact-chip" data-qr="wechat">二维码</button>
+              <button type="button" class="contact-chip" data-copy="zzw13726855179">复制</button>
+            </div>
+          </div>
 
         </div>
       </div>
@@ -709,34 +1143,38 @@
 
   <!-- ========== 页脚 v2.1 ========== -->
   <footer class="footer">
-    <pre class="footer__ascii" aria-hidden="true">██╗  ██╗███████╗ ██████╗ ██╗   ██╗
-██║  ██║╚══███╔╝██╔═══██╗██║   ██║
-███████║  ███╔╝ ██║   ██║██║   ██║
-██╔══██║ ███╔╝  ██║   ██║██║   ██║
-██║  ██║███████║╚██████╔╝╚██████╔╝
-╚═╝  ╚═╝╚══════╝ ╚═════╝  ╚═════╝
-██╗    ██╗██╗███████╗███████╗
-██║    ██║██║██╔════╝██╔════╝
-██║ █╗ ██║██║█████╗  █████╗
-██║███╗██║██║██╔══╝  ██╔══╝
-╚███╔███╔╝██║██║     ██║
- ╚══╝╚══╝ ╚═╝╚═╝     ╚═╝</pre>
+    <svg class="footer__ascii" viewBox="0 0 98 9" role="img" aria-label="ZHOU ZIWEI" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="brand-grad" x1="0" y1="0" x2="0.55" y2="1">
+      <stop offset="0" stop-color="#FFC46B"/>
+      <stop offset="0.5" stop-color="#FF9100"/>
+      <stop offset="1" stop-color="#E07000"/>
+    </linearGradient>
+  </defs>
+  <g fill="#6B3A00" transform="translate(0.9 0.9)">
+    <path d="M0 0h8v1h-8z M0 1h8v1h-8z M4 2h4v1h-4z M3 3h4v1h-4z M2 4h4v1h-4z M1 5h4v1h-4z M0 6h4v1h-4z M0 7h8v1h-8z M0 8h8v1h-8z M10 0h2v1h-2z M16 0h2v1h-2z M10 1h2v1h-2z M16 1h2v1h-2z M10 2h2v1h-2z M16 2h2v1h-2z M10 3h2v1h-2z M16 3h2v1h-2z M10 4h8v1h-8z M10 5h8v1h-8z M10 6h2v1h-2z M16 6h2v1h-2z M10 7h2v1h-2z M16 7h2v1h-2z M10 8h2v1h-2z M16 8h2v1h-2z M21 0h6v1h-6z M20 1h2v1h-2z M26 1h2v1h-2z M20 2h2v1h-2z M26 2h2v1h-2z M20 3h2v1h-2z M26 3h2v1h-2z M20 4h2v1h-2z M26 4h2v1h-2z M20 5h2v1h-2z M26 5h2v1h-2z M20 6h2v1h-2z M26 6h2v1h-2z M20 7h2v1h-2z M26 7h2v1h-2z M21 8h6v1h-6z M30 0h2v1h-2z M36 0h2v1h-2z M30 1h2v1h-2z M36 1h2v1h-2z M30 2h2v1h-2z M36 2h2v1h-2z M30 3h2v1h-2z M36 3h2v1h-2z M30 4h2v1h-2z M36 4h2v1h-2z M30 5h2v1h-2z M36 5h2v1h-2z M30 6h2v1h-2z M36 6h2v1h-2z M30 7h2v1h-2z M36 7h2v1h-2z M31 8h6v1h-6z M50 0h8v1h-8z M50 1h8v1h-8z M54 2h4v1h-4z M53 3h4v1h-4z M52 4h4v1h-4z M51 5h4v1h-4z M50 6h4v1h-4z M50 7h8v1h-8z M50 8h8v1h-8z M60 0h8v1h-8z M60 1h8v1h-8z M63 2h2v1h-2z M63 3h2v1h-2z M63 4h2v1h-2z M63 5h2v1h-2z M63 6h2v1h-2z M60 7h8v1h-8z M60 8h8v1h-8z M70 0h2v1h-2z M76 0h2v1h-2z M70 1h2v1h-2z M76 1h2v1h-2z M70 2h2v1h-2z M76 2h2v1h-2z M70 3h2v1h-2z M76 3h2v1h-2z M70 4h2v1h-2z M76 4h2v1h-2z M70 5h3v1h-3z M75 5h3v1h-3z M70 6h2v1h-2z M73 6h2v1h-2z M76 6h2v1h-2z M70 7h2v1h-2z M76 7h2v1h-2z M70 8h2v1h-2z M76 8h2v1h-2z M80 0h8v1h-8z M80 1h2v1h-2z M80 2h2v1h-2z M80 3h2v1h-2z M80 4h5v1h-5z M80 5h5v1h-5z M80 6h2v1h-2z M80 7h2v1h-2z M80 8h8v1h-8z M90 0h8v1h-8z M90 1h8v1h-8z M93 2h2v1h-2z M93 3h2v1h-2z M93 4h2v1h-2z M93 5h2v1h-2z M93 6h2v1h-2z M90 7h8v1h-8z M90 8h8v1h-8z"/>
+  </g>
+  <g fill="url(#brand-grad)">
+    <path d="M0 0h8v1h-8z M0 1h8v1h-8z M4 2h4v1h-4z M3 3h4v1h-4z M2 4h4v1h-4z M1 5h4v1h-4z M0 6h4v1h-4z M0 7h8v1h-8z M0 8h8v1h-8z M10 0h2v1h-2z M16 0h2v1h-2z M10 1h2v1h-2z M16 1h2v1h-2z M10 2h2v1h-2z M16 2h2v1h-2z M10 3h2v1h-2z M16 3h2v1h-2z M10 4h8v1h-8z M10 5h8v1h-8z M10 6h2v1h-2z M16 6h2v1h-2z M10 7h2v1h-2z M16 7h2v1h-2z M10 8h2v1h-2z M16 8h2v1h-2z M21 0h6v1h-6z M20 1h2v1h-2z M26 1h2v1h-2z M20 2h2v1h-2z M26 2h2v1h-2z M20 3h2v1h-2z M26 3h2v1h-2z M20 4h2v1h-2z M26 4h2v1h-2z M20 5h2v1h-2z M26 5h2v1h-2z M20 6h2v1h-2z M26 6h2v1h-2z M20 7h2v1h-2z M26 7h2v1h-2z M21 8h6v1h-6z M30 0h2v1h-2z M36 0h2v1h-2z M30 1h2v1h-2z M36 1h2v1h-2z M30 2h2v1h-2z M36 2h2v1h-2z M30 3h2v1h-2z M36 3h2v1h-2z M30 4h2v1h-2z M36 4h2v1h-2z M30 5h2v1h-2z M36 5h2v1h-2z M30 6h2v1h-2z M36 6h2v1h-2z M30 7h2v1h-2z M36 7h2v1h-2z M31 8h6v1h-6z M50 0h8v1h-8z M50 1h8v1h-8z M54 2h4v1h-4z M53 3h4v1h-4z M52 4h4v1h-4z M51 5h4v1h-4z M50 6h4v1h-4z M50 7h8v1h-8z M50 8h8v1h-8z M60 0h8v1h-8z M60 1h8v1h-8z M63 2h2v1h-2z M63 3h2v1h-2z M63 4h2v1h-2z M63 5h2v1h-2z M63 6h2v1h-2z M60 7h8v1h-8z M60 8h8v1h-8z M70 0h2v1h-2z M76 0h2v1h-2z M70 1h2v1h-2z M76 1h2v1h-2z M70 2h2v1h-2z M76 2h2v1h-2z M70 3h2v1h-2z M76 3h2v1h-2z M70 4h2v1h-2z M76 4h2v1h-2z M70 5h3v1h-3z M75 5h3v1h-3z M70 6h2v1h-2z M73 6h2v1h-2z M76 6h2v1h-2z M70 7h2v1h-2z M76 7h2v1h-2z M70 8h2v1h-2z M76 8h2v1h-2z M80 0h8v1h-8z M80 1h2v1h-2z M80 2h2v1h-2z M80 3h2v1h-2z M80 4h5v1h-5z M80 5h5v1h-5z M80 6h2v1h-2z M80 7h2v1h-2z M80 8h8v1h-8z M90 0h8v1h-8z M90 1h8v1h-8z M93 2h2v1h-2z M93 3h2v1h-2z M93 4h2v1h-2z M93 5h2v1h-2z M93 6h2v1h-2z M90 7h8v1h-8z M90 8h8v1h-8z"/>
+  </g>
+</svg>
 
     <div class="footer__grid">
       <div class="footer__cta">
         <p class="footer__cta-title">有想法一起做机器人？</p>
-        <a href="#about" class="cta-split">
+        <a href="#contact" class="cta-split">
           <span class="cta-split__left">联系我</span>
-          <span class="cta-split__right" aria-hidden="true">→</span>
+          <span class="cta-split__right" aria-hidden="true"><span class="cta-split__arrow">↗</span></span>
         </a>
       </div>
 
       <nav class="footer__nav">
         <ul class="footer__col">
           <li><a href="#hero">首页</a></li>
-          <li><a href="#projects">项目</a></li>
           <li><a href="#techstack">技术栈</a></li>
-          <li><a href="#about">关于</a></li>
+          <li><a href="#projects">项目</a></li>
+          <li><a href="#internship">实习竞赛</a></li>
+          <li><a href="#life">关于</a></li>
         </ul>
         <ul class="footer__col">
           <li><a href="https://github.com/Zhouzzw" target="_blank" rel="noopener">GitHub</a></li>
@@ -747,9 +1185,26 @@
 
     <div class="footer__bottom">
       <span>&copy; 2026 周子惟. All rights reserved.</span>
-      <span>BUILT WITH VITE · EMBEDDED · ROBOTICS · CONTROL</span>
+      <span>BUILT WITH VITE · EMBEDDED · ROS2 · EMBODIED AI</span>
     </div>
   </footer>
+
+  <!-- ========== 微信二维码弹层 ==========
+       标记写在 HTML 而非 JS 注入：Vite 需要重写 img 的 src（含 base 前缀），
+       JS 字符串里的路径不会被处理；对话语义放标记里对读屏也更友好。
+       关闭时 display:none，不进无障碍树；开关与焦点管理见 main.js 的 openDialog/closeDialog。 -->
+  <div class="video-modal qr-modal" id="qr-modal" role="dialog" aria-modal="true" aria-labelledby="qr-modal-title">
+    <div class="qr-modal__inner">
+      <button type="button" class="video-modal__close qr-modal__close" data-dialog-close aria-label="关闭二维码">&times;</button>
+      <p class="qr-modal__title" id="qr-modal-title">WeChat · 扫码添加</p>
+      <img class="qr-modal__img" src="/assets/images/微信二维码.png"
+           alt="周子惟的微信二维码，使用微信扫一扫即可添加好友"
+           width="509" height="506" loading="lazy" decoding="async" />
+      <p class="qr-modal__id">微信号 <strong>zzw13726855179</strong></p>
+      <p class="qr-modal__hint">桌面端用微信「扫一扫」；手机端长按上方二维码识别，或直接复制微信号</p>
+      <button type="button" class="contact-chip qr-modal__copy" data-copy="zzw13726855179">复制</button>
+    </div>
+  </div>
 
   <script type="module" src="/assets/js/main.js"></script>
   <script type="module" src="/assets/js/animations.js"></script>

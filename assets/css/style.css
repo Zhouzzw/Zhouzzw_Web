@@ -16,7 +16,8 @@
   --color-ghost-grey:   #DEDEDE;   /* 深色上的次级文字 */
   --color-mid-grey:     #CBCBCB;   /* 分隔线/弱化元素 */
   --color-accent:       #FF9100;   /* 橙色点缀（极克制使用） */
-  --color-ok:           #3DBE4B;   /* 状态脉冲点绿色 */
+  --color-accent-deep:  #A05200;   /* 浅色底上的橙色文字/焦点环（--color-accent 在米白上仅 1.95:1，此档 4.90:1 达 AA） */
+  --color-muted:        #8A8A8A;   /* 深色遮罩上的弱化图标/控件（如视频弹窗关闭按钮） */
   --color-border:       rgba(0, 0, 0, 0.08);
   --color-border-dark:  rgba(255, 255, 255, 0.12);
 
@@ -27,13 +28,10 @@
   --color-tok-function: #DCDCAA;
   --color-tok-number:   #B5CEA8;
   --color-tok-default:  #D4D4D4;
-  --color-glass:        rgba(241, 238, 231, 0.85);
-  --color-glass-dark:   rgba(13, 13, 15, 0.85);
 
   /* 排版 */
   --font-sans:          'Geist', 'Noto Sans SC', system-ui, sans-serif;
   --font-mono:          'Geist Mono', 'JetBrains Mono', 'Fira Code', monospace;
-  --font-cjk:           'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
 
   /* 流体排版 — 基于 clamp()，移动端 ~ 桌面端平滑过渡
      基准：375px → 1440px，字号随视口线性增长 */
@@ -52,10 +50,8 @@
   /* 字重 */
   --weight-regular:     400;
   --weight-medium:      500;
-  --weight-semibold:    600;
 
   /* 间距 — 4pt 网格，加大留白 */
-  --space-1:            0.25rem;   /* 4px */
   --space-2:            0.5rem;    /* 8px */
   --space-3:            0.75rem;   /* 12px */
   --space-4:            1rem;      /* 16px */
@@ -65,33 +61,16 @@
   --space-12:           3rem;      /* 48px */
   --space-16:           4rem;      /* 64px */
   --space-20:           5rem;      /* 80px */
-  --space-24:           6rem;      /* 96px */
   --space-32:           8rem;      /* 128px */
   --space-40:           10rem;     /* 160px */
 
-  /* 兼容旧变量名（平滑过渡） */
-  --space-xs:           0.25rem;
-  --space-sm:           0.5rem;
-  --space-md:           1rem;
-  --space-lg:           1.5rem;
-  --space-xl:           2rem;
-  --space-2xl:          3rem;
-  --space-3xl:          4rem;
-  --space-4xl:          6rem;
-  --space-5xl:          8rem;
-
-  /* 导航 */
-  --nav-height:         60px;
-
   /* 圆角 — 极小、克制 */
-  --radius-2:           2px;
   --radius-4:           4px;
   --radius-8:           8px;
   --radius-full:        9999px;
 
   /* 过渡曲线 — 参考站 cubic-bezier(0.23, 1, 0.32, 1) */
   --ease-out:           cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in-out:        cubic-bezier(0.65, 0, 0.35, 1);
   --ease-standard:      cubic-bezier(0.4, 0, 0.2, 1);
   --duration-fast:      150ms;
   --duration-base:      280ms;
@@ -104,12 +83,30 @@
 
   /* 点阵纹理 — CRT/终端质感 */
   --dotted-bg:          repeating-conic-gradient(rgba(255,255,255,0.22) 0% 25%, transparent 0% 50%);
-  --dotted-bg-dark:     repeating-conic-gradient(rgba(0,0,0,0.06) 0% 25%, transparent 0% 50%);
+
+  /* 交互高光坐标 — B5 卡片鼠标跟随（main.js 按指针位置写 px；默认居中，
+     在此声明以满足红线「用 var() 前必须已声明」） */
 
   /* 容器最大宽 */
   --container-max:      1440px;
+
+  /* 水平边距（gutter）三档：
+     <768 移动档 16px ｜ 769–1023 平板档 ｜ ≥1024 桌面档 80px。
+     平板档此前无人接管（正文贴边 16px，A12），此处按视口流式：768px→16px、1024px→80px。
+     全站引用统一走 --gutter，档位切换只发生在下面两个媒体查询里，元素不再各自写断点。 */
   --gutter-mobile:      1rem;    /* 16px */
   --gutter-desktop:     5rem;    /* 80px */
+  --gutter-tablet:      clamp(1rem, 25vw - 176px, 5rem);
+  --gutter:             var(--gutter-mobile);
+}
+
+/* gutter 档位切换：769 起进入平板档（与 mobile.css 的 max-width:768px 互补，红线 #1），1024 起进入桌面档 */
+@media (min-width: 769px) {
+  :root { --gutter: var(--gutter-tablet); }
+}
+
+@media (min-width: 1024px) {
+  :root { --gutter: var(--gutter-desktop); }
 }
 
 /* --- Reset --- */
@@ -170,18 +167,25 @@ a {
   transition: color var(--duration-fast) var(--ease-standard);
 }
 
-/* 参考站虚线下划线链接风格 */
-a.link-dashed {
-  text-decoration: underline;
-  text-decoration-style: dashed;
-  text-underline-offset: 3px;
-  text-decoration-thickness: from-font;
-}
-
 img {
   display: block;
   max-width: 100%;
   height: auto;
+}
+
+/* --- 键盘焦点 --- */
+/* UA 默认焦点环（outline auto 1px 近黑）落在 #232323 / #000 上几乎不可见 */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* 浅色岛上橙环仅 1.95:1，改用深一档橙（4.90:1） */
+#hero :focus-visible,
+#intro :focus-visible,
+#internship :focus-visible,
+#honors :focus-visible {
+  outline-color: var(--color-accent-deep);
 }
 
 /* 等宽标签类 — 参考站 kicker/caption 风格 */
@@ -207,26 +211,7 @@ img {
   width: 100%;
   max-width: var(--container-max);
   margin: 0 auto;
-  padding: 0 var(--gutter-mobile);
-}
-
-@media (min-width: 1024px) {
-  .container {
-    padding: 0 var(--gutter-desktop);
-  }
-}
-
-/* 12 列栅格 */
-.grid-12 {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: var(--space-4);
-}
-
-@media (min-width: 1024px) {
-  .grid-12 {
-    gap: var(--space-4);
-  }
+  padding: 0 var(--gutter);
 }
 
 .sr-only {
@@ -239,33 +224,43 @@ img {
   border: 0;
 }
 
-/* 点阵纹理叠加 */
-.dotted-overlay {
-  position: relative;
-}
-
-.dotted-overlay::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: var(--dotted-bg);
-  background-size: 4px 4px;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.dotted-overlay > * {
-  position: relative;
-  z-index: 1;
-}
-
 /* 文本平衡（防止孤行） */
 .text-balance {
   text-wrap: balance;
 }
 
-/* 锚点滚动偏移 — 避开固定导航，避免标题被遮挡 */
+/* 区块导语：正文上浮一档并限宽 60ch（原为逐段内联样式） */
+.text-lead {
+  font-size: var(--text-body-large);
+  max-width: 60ch;
+}
+
+/* 导语与下方内容的额外间距 */
+.text-lead--spaced {
+  margin-bottom: var(--space-10);
+}
+
+/* 图片裁切焦点下移（主体位于画面下方时用） */
+.object-bottom {
+  object-position: center 90%;
+}
+
+/* 数字滚动计数（B4）：终值写在 HTML 里（无 JS / 爬虫 / 减动效下直接可读）。
+   inline-block 防数字跨行折断；tabular-nums 让逐帧数字等宽不跳动。
+   动画期间 JS 再按终值实测锁 min-width，增长不推挤同句文字。 */
+.js-count {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 锚点落点 — 区块顶边与视口顶边严格对齐，避免上一区块残留在视口顶部。
+   导航是居中浮动药丸（底边 84px），且各区块 padding-top ≥64px、标题靠左，不会被遮。
+   例外：#projects 的 padding-top 为 0、顶边就是终端分隔条，需让出药丸高度。 */
 section[id] {
+  scroll-margin-top: 0;
+}
+
+#projects {
   scroll-margin-top: 96px;
 }
 
@@ -306,46 +301,12 @@ section[id] {
   background: rgba(0, 0, 0, 0.25);
 }
 
-/* 深色背景下的滚动条 */
-.bg-dark ::-webkit-scrollbar-track,
-.dark-bg ::-webkit-scrollbar-track {
-  background: var(--color-black);
-}
-
-.bg-dark ::-webkit-scrollbar-thumb,
-.dark-bg ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
-}
-
 /* --- 关键帧动画 --- */
 
-/* Hero 刻度滚动提示 */
-@keyframes heroScrollCue {
-  0% { transform: translateY(-8px); }
-  100% { transform: translateY(100%); }
-}
-
-/* 光标闪烁（终端风格） */
+/* 光标闪烁（终端风格）— 消费者：B3 hero__term-cursor（2026-09-16 接入） */
 @keyframes cursorBlink {
   0%, 49.9% { opacity: 1; }
   50%, 100% { opacity: 0; }
-}
-
-/* 状态脉冲点 */
-@keyframes statusPing {
-  0% {
-    opacity: 0.6;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(2.4);
-  }
-}
-
-/* 环形文字旋转 */
-@keyframes radialSpin {
-  to { transform: rotate(360deg); }
 }
 
 /* 渐入上移 */
@@ -360,10 +321,51 @@ section[id] {
   }
 }
 
-/* 渐入 */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+/* --- 滚动入场（渐进增强） ---
+   .anim 由 <head> 内联脚本在「支持 IntersectionObserver」时同步添加；
+   未添加时元素保持可见 —— 无 JS / 爬虫 / 打印都不依赖 JS 才能读到正文。
+   动画只用 opacity + transform，不触发 layout。 */
+.animate-on-scroll {
+  opacity: 1;
+}
+
+.anim .animate-on-scroll {
+  opacity: 0;
+}
+
+/* 用长格式而非 animation 简写：简写会把 animation-delay 重置为 0，
+   从而覆盖下方 .stagger-* 的错峰延迟 */
+.anim .animate-on-scroll.is-visible {
+  animation-name: fadeUp;
+  animation-duration: 0.7s;
+  animation-timing-function: var(--ease-out);
+  animation-fill-mode: both;
+}
+
+/* 同区块内多模块错峰入场 */
+.anim .stagger-1 { animation-delay: 0.06s; }
+.anim .stagger-2 { animation-delay: 0.12s; }
+.anim .stagger-3 { animation-delay: 0.18s; }
+.anim .stagger-4 { animation-delay: 0.24s; }
+
+/* --- 顶部滚动进度条（装饰性；纯 transform，无布局影响） --- */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+  z-index: 150;                 /* 在导航(100)之上、视频弹窗(200)之下 */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* 全局兜底会把动画时长压到 0.01ms，但 delay 仍在，这里显式归位 */
+  .anim .animate-on-scroll { opacity: 1; }
+  .anim .animate-on-scroll.is-visible { animation: none; }
 }
 
 /* ============================================
@@ -380,7 +382,7 @@ section[id] {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='300'%3E%3Cg transform='rotate(-15 300 150)' fill='white' fill-opacity='0.045' font-family='monospace' font-size='16'%3E%3Ctext x='0' y='48'%3EEMBEDDED · ROBOTICS · CONTROL · ZHOU ZIWEI ·%3C/text%3E%3Ctext x='0' y='96'%3EEMBEDDED · ROBOTICS · CONTROL · ZHOU ZIWEI ·%3C/text%3E%3Ctext x='0' y='144'%3EEMBEDDED · ROBOTICS · CONTROL · ZHOU ZIWEI ·%3C/text%3E%3Ctext x='0' y='192'%3EEMBEDDED · ROBOTICS · CONTROL · ZHOU ZIWEI ·%3C/text%3E%3Ctext x='0' y='240'%3EEMBEDDED · ROBOTICS · CONTROL · ZHOU ZIWEI ·%3C/text%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='300'%3E%3Cg transform='rotate(-15 300 150)' fill='white' fill-opacity='0.045' font-family='monospace' font-size='16'%3E%3Ctext x='0' y='48'%3EROS2 · LQR · VMC · ROBOTICS · RL · FREERTOS ·%3C/text%3E%3Ctext x='0' y='96'%3EROS2 · LQR · VMC · ROBOTICS · RL · FREERTOS ·%3C/text%3E%3Ctext x='0' y='144'%3EROS2 · LQR · VMC · ROBOTICS · RL · FREERTOS ·%3C/text%3E%3Ctext x='0' y='192'%3EROS2 · LQR · VMC · ROBOTICS · RL · FREERTOS ·%3C/text%3E%3Ctext x='0' y='240'%3EROS2 · LQR · VMC · ROBOTICS · RL · FREERTOS ·%3C/text%3E%3C/g%3E%3C/svg%3E");
   background-size: 600px 300px;
   background-repeat: repeat;
   pointer-events: none;
@@ -407,7 +409,75 @@ section[id] {
   height: 100%;
 }
 
-/* --- 双药丸 CTA 按钮 --- */
+/* --- 终端提示符分隔（模块间过渡）— 圆角终端条，两端对等外延 --- */
+.term-divider {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  font-family: var(--font-mono);
+  font-size: 1.0625rem;
+  color: var(--color-ghost-grey);
+  /* 只留上下细线，不填底色：填黑后与同为「深色圆角横条」的导航药丸
+     读成同一组件的两个实例（锚点跳转时两者仅隔 12px） */
+  border-top: 1px solid var(--color-border-dark);
+  border-bottom: 1px solid var(--color-border-dark);
+  max-width: none;  /* 覆盖全局 p{max-width:65ch}，否则被截断在 ~665px */
+  padding: 14px 20px;
+  /* 两端对称内缩：比正文列更宽、不与段首平齐 —— 才能读作分隔物而非一行正文 */
+  margin: 0 calc(var(--space-2) - var(--gutter)) var(--space-10);
+}
+
+@media (min-width: 1024px) {
+  .term-divider {
+    margin-left: calc(var(--space-8) - var(--gutter));   /* 两侧各外延 48px，距视口 32px */
+    margin-right: calc(var(--space-8) - var(--gutter));
+  }
+}
+
+/* 命令行：单行不折行，避免长路径在窄屏换行把圆点挤下去 */
+.term-divider__cmd {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* 标题栏左侧三圆点 */
+.term-divider__dots {
+  display: flex;
+  gap: 7px;
+  flex-shrink: 0;
+}
+
+.term-divider__dots span {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.term-divider__prompt {
+  color: var(--color-accent);
+  margin-right: 0.5em;
+}
+
+.term-divider__cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  background: var(--color-accent);
+  vertical-align: text-bottom;
+  margin-left: 0.35em;
+  animation: term-blink 1.1s steps(1) infinite;
+}
+
+@keyframes term-blink {
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .term-divider__cursor { animation: none; }
+}
+
+/* --- CTA 按钮（画面切换式动效：带箭头的新画面整体推入 / 推出） --- */
 .cta-split {
   display: inline-flex;
   align-items: stretch;
@@ -416,7 +486,7 @@ section[id] {
   background-image: var(--dotted-bg);
   background-size: 4px 4px;
   border: 1px solid var(--color-border-dark);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-8);   /* 圆角矩形（原药丸形已按需求收缩） */
   overflow: hidden;
   box-shadow: var(--shadow-card);
   text-decoration: none;
@@ -439,275 +509,132 @@ section[id] {
   align-items: center;
   padding: 0 28px;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 14px;
+  font-weight: 600;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   color: var(--color-white);
 }
 
+/* 箭头画面窗口：默认画面 = 黑底 + 橙色箭头（箭头恒居中，自身无动画） */
 .cta-split__right {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 48px;
-  font-size: 18px;
+  font-size: 22px;                     /* 箭头适当放大 */
+  font-weight: 700;                    /* 加粗（符号字形随字重变化有限，配下方描边） */
+  -webkit-text-stroke: 0.5px currentColor;   /* 描边补粗：两个画面的箭头同步生效 */
   color: var(--color-accent);
   border-left: 1px solid var(--color-border-dark);
-  transition: background var(--duration-fast) var(--ease-standard);
-}
-
-.cta-split:hover .cta-split__right {
-  background: rgba(255, 255, 255, 0.06);
-}
-
-/* --- 芯片引脚风格卡片 --- */
-.chip-card {
-  position: relative;
-  background: var(--color-black-deep);
-  border: 1px solid var(--color-border-dark);
-  border-radius: var(--radius-8);
-  padding: 40px 48px;
-  margin-bottom: 80px;
-}
-
-.chip-card::before,
-.chip-card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 22px;
-  background-color: transparent;
-}
-
-.chip-card::before { left: -1px; }
-.chip-card::after  { right: -1px; }
-
-.chip-card::before {
-  background-image:
-    radial-gradient(circle at -5px 15%, #232323 0 11px, transparent 11.5px),
-    radial-gradient(circle at -5px 50%, #232323 0 11px, transparent 11.5px),
-    radial-gradient(circle at -5px 85%, #232323 0 11px, transparent 11.5px);
-  background-repeat: no-repeat;
-}
-
-.chip-card::after {
-  background-image:
-    radial-gradient(circle at -5px 15%, #232323 0 11px, transparent 11.5px),
-    radial-gradient(circle at -5px 50%, #232323 0 11px, transparent 11.5px),
-    radial-gradient(circle at -5px 85%, #232323 0 11px, transparent 11.5px);
-  background-repeat: no-repeat;
-}
-
-/* --- IDE 代码编辑器窗口 --- */
-.ide-window {
-  position: relative;
-  border: 1px solid var(--color-border-dark);
-  border-radius: var(--radius-8);
   overflow: hidden;
-  background: #0A0A0A;
-  box-shadow: var(--shadow-dark);
-  max-width: 720px;
 }
 
-.ide-window::after {
+/* 默认画面的箭头：静止层（z 序最底：被新画面覆盖、随新画面退出自然露出） */
+.cta-split__arrow {
+  position: relative;
+  z-index: 0;
+  display: block;
+  line-height: 1;
+}
+
+/* 新画面底块（橙）：默认在画面左下角外 → hover 沿 ↗ 对角推入（左下 → 右上，平移非生长） */
+.cta-split__right::before {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: var(--dotted-bg);
-  background-size: 4px 4px;
-  opacity: 0.5;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.ide-window > * {
-  position: relative;
   z-index: 1;
+  background: var(--color-accent);
+  transform: translate(-101%, 101%);
+  transition: transform 0.22s var(--ease-out) 0.05s;   /* 退出：沿 ↙ 退回左下角（让箭头先动，块随后） */
 }
 
-.ide-window__tabs {
-  height: 40px;
-  display: flex;
-  align-items: flex-end;
-  gap: 0;
-  padding: 0 8px;
-  background: #0D0D0D;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.ide-window__tab {
-  padding: 10px 16px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.5);
-  border-top: 2px solid transparent;
-  cursor: default;
-  white-space: nowrap;
-}
-
-.ide-window__tab.is-active {
-  color: var(--color-white);
-  background: #0A0A0A;
-  border-top-color: var(--color-accent);
-}
-
-.ide-window__body {
-  display: flex;
-  min-height: 220px;
-}
-
-.ide-window__sidebar {
-  width: 160px;
-  padding: 12px 0;
-  background: #0D0D0D;
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-}
-
-.ide-window__dir {
-  padding: 4px 16px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.35);
-  text-transform: uppercase;
-}
-
-.ide-window__file {
-  padding: 4px 16px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.55);
-}
-
-.ide-window__file.is-current {
-  color: var(--color-white);
-  background: rgba(255, 255, 255, 0.08);
-  border-left: 2px solid var(--color-accent);
-}
-
-.ide-window__code {
-  flex: 1;
-  margin: 0;
-  padding: 16px 20px;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  line-height: 1.7;
-  color: var(--color-tok-default);
-  overflow: auto;
-  white-space: pre;
-}
-
-.ide-window__footer {
-  height: 28px;
+/* 新画面所带的箭头（黑）：默认在画面左下角外 → hover 随画面沿 ↗ 滑入居中（相对位置恒为居中） */
+.cta-split__right::after {
+  content: '↗';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: 24px;
-  padding: 0 16px;
-  background: #0D0D0D;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.4);
+  justify-content: center;
+  line-height: 1;
+  color: var(--color-black-deep);
+  transform: translate(-40px, 40px);
+  transition: transform 0.16s cubic-bezier(0.55, 0, 0.9, 1);   /* 退出：沿 ↙ 加速退回画面外 */
 }
 
-/* IDE 语法高亮 token */
+/* 鼠标端：hover = 带箭头的新画面从按钮左下角沿 ↗ 推入替代原画面（块与箭头同时出发，块先到位） */
+@media (hover: hover) and (pointer: fine) {
+  .cta-split:hover .cta-split__right::before {
+    transform: translate(0, 0);
+    transition: transform 0.18s var(--ease-out);
+  }
+
+  .cta-split:hover .cta-split__right::after {
+    transform: translate(0, 0);
+    transition: transform 0.26s var(--ease-out);
+  }
+
+  /* 按下：画面保持点亮 + 箭头在画面内轻冲（同 ↗ 指向，无跳变） */
+  .cta-split:active .cta-split__right::after {
+    animation: ctaArrowNudge 0.32s var(--ease-out) 0.02s;
+  }
+}
+
+@keyframes ctaArrowNudge {
+  0%   { transform: translate(0, 0); }
+  40%  { transform: translate(5px, -5px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* 触屏：按下 = 新画面沿 ↗ 推入点亮（与 hover 同款，无跳变） */
+.cta-split:active .cta-split__right::before {
+  transform: translate(0, 0);
+  transition: transform 0.18s var(--ease-out);
+}
+
+.cta-split:active .cta-split__right::after {
+  transform: translate(0, 0);
+}
+
+/* 按下的下压反馈（归位；hover 的 -2px 上浮在此让位） */
+.cta-split:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-card);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-split__right::before,
+  .cta-split__right::after,
+  .cta-split__arrow { transition: none; }
+
+  .cta-split:hover .cta-split__right::after,
+  .cta-split:active .cta-split__right::after { animation: none; }
+}
+
+/* 终端语法高亮 token（终端档案 life.txt 在用） */
 .tok-k { color: var(--color-tok-keyword); }   /* 关键字 */
 .tok-c { color: var(--color-tok-comment);  }   /* 注释 */
 .tok-s { color: var(--color-tok-string);   }   /* 字符串 */
 .tok-f { color: var(--color-tok-function); }   /* 函数 */
 .tok-n { color: var(--color-tok-number);   }   /* 数字 */
 
-/* --- Hero 状态栏 --- */
-.hero__status-bar {
-  display: inline-flex;
-  align-items: center;
-  gap: 0;
-  background: var(--color-black-deep);
-  background-image: var(--dotted-bg);
-  background-size: 4px 4px;
-  border: 1px solid var(--color-border-dark);
-  border-radius: var(--radius-full);
-  padding: 10px 24px;
-  box-shadow: var(--shadow-dark);
-}
-
-.status-bar__item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0 20px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-}
-
-.status-bar__item + .status-bar__item {
-  border-left: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-.status-bar__label {
-  color: rgba(255, 255, 255, 0.55);
-}
-
-.status-bar__value {
-  color: var(--color-ghost-grey);
-}
-
-.status-bar__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--color-ok);
-  position: relative;
-  flex-shrink: 0;
-}
-
-.status-bar__dot::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: var(--color-ok);
-  animation: statusPing 2s ease-out infinite;
-}
-
-/* --- 环形文字装饰 --- */
+/* --- Hero 视觉区（螺旋文字 SVG）---
+   全局默认隐藏；≥1024px 由 desktop.css 显示，<768px 由 mobile.css 再次隐藏。
+   该区标了 aria-hidden，属纯装饰。 */
 .hero__visual {
   display: none;
-}
-
-.radial-text__svg {
-  width: 100%;
-  height: 100%;
-}
-
-.radial-text__ring {
-  transform-origin: 50% 50%;
-  transform-box: fill-box;
-}
-
-.radial-text__ring--outer {
-  animation: radialSpin 40s linear infinite;
-}
-
-.radial-text__ring--mid {
-  animation: radialSpin 55s linear infinite reverse;
-}
-
-.radial-text__ring--inner {
-  animation: radialSpin 70s linear infinite;
 }
 
 /* --- Hero 螺旋文字 SVG（多圈同心环 + 同向差速旋转，模拟螺旋转动） --- */
 .spiral-text__svg {
   width: 100%;
   height: 100%;
-  filter: drop-shadow(0 0 60px rgba(0, 0, 0, 0.4));
+  /* 原 filter: drop-shadow(0 0 60px rgba(0,0,0,0.4)) 已删：深色背景上视觉贡献为零
+     （停转后 A/B 像素 diff = 0.000%），却因每帧随动画重算 60px 模糊成为首屏卡顿主因
+     （实测稳态 17 → 44 FPS）。勿加回。 */
 }
 
 .spiral-text__ring {
@@ -715,35 +642,56 @@ section[id] {
   transform-box: fill-box;
 }
 
-/* 16 圈螺旋：全部同方向旋转，外圈快内圈慢，形成螺旋卷入感 */
-.spiral-text__ring--r1  { animation: spiralSpin 160s linear infinite; }
-.spiral-text__ring--r2  { animation: spiralSpin 150s linear infinite; }
-.spiral-text__ring--r3  { animation: spiralSpin 140s linear infinite; }
-.spiral-text__ring--r4  { animation: spiralSpin 130s linear infinite; }
-.spiral-text__ring--r5  { animation: spiralSpin 120s linear infinite; }
-.spiral-text__ring--r6  { animation: spiralSpin 110s linear infinite; }
-.spiral-text__ring--r7  { animation: spiralSpin 100s linear infinite; }
-.spiral-text__ring--r8  { animation: spiralSpin 90s linear infinite; }
-.spiral-text__ring--r9  { animation: spiralSpin 80s linear infinite; }
-.spiral-text__ring--r10 { animation: spiralSpin 70s linear infinite; }
-.spiral-text__ring--r11 { animation: spiralSpin 60s linear infinite; }
-.spiral-text__ring--r12 { animation: spiralSpin 55s linear infinite; }
-.spiral-text__ring--r13 { animation: spiralSpin 50s linear infinite; }
-.spiral-text__ring--r14 { animation: spiralSpin 45s linear infinite; }
-.spiral-text__ring--r15 { animation: spiralSpin 42s linear infinite; }
-.spiral-text__ring--r16 { animation: spiralSpin 40s linear infinite; }
+/* 最外几环超出容器被硬裁切，且与标题抢注意力：由外向内做透明度衰减，
+   让切边隐入背景（环数与旋转动画不变） */
+.spiral-text__ring--r1 { opacity: 0.18; }
+.spiral-text__ring--r2 { opacity: 0.38; }
+.spiral-text__ring--r3 { opacity: 0.62; }
+.spiral-text__ring--r4 { opacity: 0.84; }
+
+/* 16 圈螺旋：全部同方向旋转，外圈快内圈慢，形成螺旋卷入感。
+   启动门控 html.spiral-on：首屏加载期间不转（避免与字体/图片/入场动画抢光栅化），
+   由 index.html head 内联脚本在 load 后延迟添加（A2）。 */
+html.spiral-on .spiral-text__ring--r1  { animation: spiralSpin 160s linear infinite; }
+html.spiral-on .spiral-text__ring--r2  { animation: spiralSpin 150s linear infinite; }
+html.spiral-on .spiral-text__ring--r3  { animation: spiralSpin 140s linear infinite; }
+html.spiral-on .spiral-text__ring--r4  { animation: spiralSpin 130s linear infinite; }
+html.spiral-on .spiral-text__ring--r5  { animation: spiralSpin 120s linear infinite; }
+html.spiral-on .spiral-text__ring--r6  { animation: spiralSpin 110s linear infinite; }
+html.spiral-on .spiral-text__ring--r7  { animation: spiralSpin 100s linear infinite; }
+html.spiral-on .spiral-text__ring--r8  { animation: spiralSpin 90s linear infinite; }
+html.spiral-on .spiral-text__ring--r9  { animation: spiralSpin 80s linear infinite; }
+html.spiral-on .spiral-text__ring--r10 { animation: spiralSpin 70s linear infinite; }
+html.spiral-on .spiral-text__ring--r11 { animation: spiralSpin 60s linear infinite; }
+html.spiral-on .spiral-text__ring--r12 { animation: spiralSpin 55s linear infinite; }
+html.spiral-on .spiral-text__ring--r13 { animation: spiralSpin 50s linear infinite; }
+html.spiral-on .spiral-text__ring--r14 { animation: spiralSpin 45s linear infinite; }
+html.spiral-on .spiral-text__ring--r15 { animation: spiralSpin 42s linear infinite; }
+html.spiral-on .spiral-text__ring--r16 { animation: spiralSpin 40s linear infinite; }
 
 @keyframes spiralSpin {
   to { transform: rotate(360deg); }
 }
 
+/* 不可见即暂停（A3）：滚出视口 / 切到后台时由 animations.js 给 .hero__visual 挂 is-paused，
+   16 圈旋转停摆（特异性 0,3,0 > 动画规则的 0,2,1，可靠覆盖） */
+.hero__visual.is-paused .spiral-text__ring {
+  animation-play-state: paused;
+}
+
+/* 减动效（A4）：螺旋保持静态装饰，不旋转 */
+@media (prefers-reduced-motion: reduce) {
+  html.spiral-on .spiral-text__ring { animation: none; }
+}
+
 /* --- 页脚升级 --- */
+/* 品牌字：8×9 点阵像素字（内联 SVG · 蓝→青→绿渐变 + 同色描边）。
+   原为 6px 灰 ASCII 字符画（不可读 · review A9），2026-09-16 改为彩色像素字。 */
 .footer__ascii {
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: 6px;
-  line-height: 1.0;
-  color: rgba(255, 255, 255, 0.12);
+  display: block;
+  width: 100%;
+  max-width: 640px;
+  height: auto;
   user-select: none;
 }
 
@@ -800,7 +748,7 @@ section[id] {
 .footer__bottom span {
   font-family: var(--font-mono);
   font-size: 10px;
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.55);   /* I8：0.35 实测 3.01:1 不达标；0.55 实测 6.27:1 达 AA */
   text-transform: uppercase;
   letter-spacing: 0.02em;
 }
