@@ -624,6 +624,17 @@
   transform: scale(1.01);
 }
 
+/* 单视频大卡（无图片占位时直接用视频占整卡位，尺寸同 .project-item__image） */
+.project-item__video {
+  grid-column: 2 / -1;
+  margin-top: var(--space-4);
+}
+
+.project-item__video .video-cover--hero,
+.project-item__video .video-cover--hero video {
+  border-radius: var(--radius-8);
+}
+
 /* 视频网格 */
 .video-grid {
   display: grid;
@@ -1406,7 +1417,15 @@
   position: relative;
   width: 100%;
   max-width: 960px;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 16 / 9;                 /* 默认横版；竖版片段由 JS 按视频真实比例改写 width/height */
+  min-height: 0;            /* flex 项的「内容最小高」会把弹层撑到按竖版比例（实测 960×1707），须显式清零 */
+  max-height: calc(100svh - 2 * var(--space-8));
+}
+
+/* 内容层必须有确定高度，否则内层 video 的 height:100% 会失效、退回内在比例并溢出弹层 */
+.video-modal__content {
+  width: 100%;
+  height: 100%;
 }
 
 .video-modal__inner iframe,
@@ -1415,6 +1434,11 @@
   height: 100%;
   border: none;
   border-radius: var(--radius-8);
+}
+
+/* 弹层内一律完整显示（竖版片段左右留黑边），不做任何裁切 */
+.video-modal__inner video {
+  object-fit: contain;
 }
 
 .video-modal__close {
@@ -1464,6 +1488,7 @@
 .video-cover video {
   pointer-events: none;
 }
+
 
 /* --- 微信二维码弹层（复用 .video-modal 的遮罩与开关，内容自成一卡） --- */
 .qr-modal__inner {

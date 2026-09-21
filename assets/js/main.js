@@ -165,8 +165,36 @@ function initVideoModal() {
   }
 
   const content = modal.querySelector('.video-modal__content');
+  const inner = modal.querySelector('.video-modal__inner');
   const closeBtn = modal.querySelector('.video-modal__close');
   const close = () => closeDialog(modal);
+
+  /* 弹层尺寸按视频真实比例自适应（竖版片段不再靠左右黑边凑 16:9）：
+     在视口可用区内等比缩放，上限 max-width 960 / 视口高 − 弹层内边距。 */
+  const MODAL_PAD = 64;   // var(--space-8) × 2
+  let fitVideo = null;
+  function fitModalTo(v) {
+    if (!v.videoWidth || !v.videoHeight) return;
+    const maxW = Math.min(960, window.innerWidth - MODAL_PAD);
+    const maxH = window.innerHeight - MODAL_PAD;
+    const ratio = v.videoWidth / v.videoHeight;
+    let w = maxW;
+    let h = w / ratio;
+    if (h > maxH) {
+      h = maxH;
+      w = h * ratio;
+    }
+    inner.style.aspectRatio = 'auto';
+    inner.style.width = `${Math.round(w)}px`;
+    inner.style.height = `${Math.round(h)}px`;
+  }
+  function resetModalSize() {
+    inner.style.aspectRatio = '';
+    inner.style.width = '';
+    inner.style.height = '';
+    fitVideo = null;
+  }
+  window.addEventListener('resize', () => { if (fitVideo) fitModalTo(fitVideo); }, { passive: true });
 
   covers.forEach(cover => {
     cover.addEventListener('click', () => {
@@ -187,10 +215,14 @@ function initVideoModal() {
         // playsinline：缺失时 iOS Safari 会强制全屏播放
         content.innerHTML = `
           <video src="${src}" controls autoplay playsinline></video>`;
+        const v = content.querySelector('video');
+        fitVideo = v;
+        v.addEventListener('loadedmetadata', () => fitModalTo(v));
+        fitModalTo(v);   // 元数据已在缓存时 loadedmetadata 不再触发，主动试一次
       }
 
       // 收尾回调：任何关闭路径（按钮 / ESC / 点遮罩）都要移除 video，否则会在后台继续播放
-      openDialog(modal, '.video-modal__close', () => { content.innerHTML = ''; });
+      openDialog(modal, '.video-modal__close', () => { content.innerHTML = ''; resetModalSize(); });
     });
   });
 

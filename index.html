@@ -838,9 +838,43 @@
                 <span class="project-tag">200Hz 视觉伺服</span>
               </div>
 
-              <!-- 项目图片 -->
-              <div class="project-item__image">
-                <img src="/assets/images/g1d-arm-tesseract.jpg" alt="宇树 G1-D 双臂运动控制" loading="lazy" />
+              <!-- 演示视频大卡（无图片占位，视频直接占整卡位） -->
+              <div class="project-item__video">
+                <button type="button" class="video-cover video-cover--hero" data-video-type="local" aria-label="播放演示视频：Tesseract 双臂到位运控">
+                  <video src="/assets/videos/tesseract_reaching运控.mp4" preload="none" muted></video>
+                  <span class="video-cover__play">
+                    <span class="video-cover__play-icon"></span>
+                  </span>
+                  <span class="video-cover__label">Tesseract 双臂到位运控</span>
+                </button>
+              </div>
+
+              <!-- 演示视频（复用 001 的 .video-cover 结构：封面用真 <button>，内容仅 phrasing content） -->
+              <div class="project-item__section">
+                <p class="mono-label mono-label--dark">演示视频</p>
+                <div class="video-grid">
+                  <button type="button" class="video-cover" data-video-type="local" aria-label="播放演示视频：视觉识别抓放卡演示">
+                    <video src="/assets/videos/抓卡demo演示视频.mp4" preload="none" muted></video>
+                    <span class="video-cover__play">
+                      <span class="video-cover__play-icon"></span>
+                    </span>
+                    <span class="video-cover__label">视觉识别抓放卡演示</span>
+                  </button>
+                  <button type="button" class="video-cover" data-video-type="local" aria-label="播放演示视频：视觉伺服动态抓卡">
+                    <video src="/assets/videos/视觉伺服动态抓卡.mp4" preload="none" muted></video>
+                    <span class="video-cover__play">
+                      <span class="video-cover__play-icon"></span>
+                    </span>
+                    <span class="video-cover__label">视觉伺服动态抓卡</span>
+                  </button>
+                  <button type="button" class="video-cover" data-video-type="local" aria-label="播放演示视频：伺服鲁棒性测试">
+                    <video src="/assets/videos/脏数据伺服控制鲁棒性.mp4" preload="none" muted></video>
+                    <span class="video-cover__play">
+                      <span class="video-cover__play-icon"></span>
+                    </span>
+                    <span class="video-cover__label">伺服鲁棒性测试</span>
+                  </button>
+                </div>
               </div>
 
               <!-- 成果 -->
@@ -883,9 +917,16 @@
                 <span class="project-tag">Python</span>
               </div>
 
-              <!-- 项目图片 -->
-              <div class="project-item__image">
-                <img src="/assets/images/g1d-arm-isaac-rl.jpg" alt="宇树 G1-D 强化学习到位控制" loading="lazy" />
+
+              <!-- 演示视频：无图片占位，视频直接占整卡位（.project-item__image 同尺寸 16:9 大卡） -->
+              <div class="project-item__video">
+                  <button type="button" class="video-cover video-cover--hero" data-video-type="local" aria-label="播放演示视频：RL 端到端到位运控">
+                    <video src="/assets/videos/RL_Reaching运控.mp4" preload="none" muted></video>
+                    <span class="video-cover__play">
+                      <span class="video-cover__play-icon"></span>
+                    </span>
+                    <span class="video-cover__label">RL 端到端到位运控</span>
+                  </button>
               </div>
 
               <!-- 成果 -->
