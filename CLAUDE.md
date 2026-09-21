@@ -82,6 +82,7 @@
 - 平板档留白（769–1023px）：`.section` 与 `#techstack` 顶部走 `clamp(6rem, 12.5vw, 8rem)`（96px@768 → 128px@1024 流式）—— 基线 80px / #techstack 64px 都会被导航（底边 84px）压住；此档同时把断点边界写为 `1023.98px`（与 `min-width:1024px` 互补，堵分数宽度缺口）
 - Hero 标题字号两档**严格连续**：双列档（≥1024）`min(--text-headline-2, (50vw − gutter)/9)`；单列档（<1024）`min(--text-headline-2, (100vw − 2·gutter − 16px)/9, 3rem)` —— `3rem(48px)` 恰为桌面档在 1024px 的取值，1023px 与 1024px 同为 48px（消除原 −33% 反向跳变）；列宽约束保证「上下位机全栈工程师」9 个全角字永不孤行（扣 16px 为滚动条余量）
 - 视频弹窗播放：封面是 **`<button>`**（键盘可达，Enter / Space 由平台原生触发）+ `aria-label`，内部 `<video preload="none">`（`main.js` 经 IntersectionObserver 门控后截 0.5s 首帧作静帧）；封面只负责打开弹层
+- 视频封面 hover 反馈（2026-09-21 按用户要求替换旧版「整圈变橙」）：**播放键边缘的橙色光圈自 12 点顺时针「画圆」** —— SVG 圆环 `stroke-dashoffset` 194.78 → 0（`r=31`，0.65s `var(--ease-standard)`，最接近圆规手感；移出 0.22s 收笔）；`prefers-reduced-motion` 下瞬时显示不画。**不要再用 `border-color: var(--color-accent)` 让整圈变橙**。环由 `main.js` 注入（装饰性，无 JS 只少一圈光）
 - **封面一律 16:9 居中裁切（竖版片段同样裁切，保证网格风格统一）；弹层按视频真实比例自适应、完整不裁切** —— 两条硬约束：① `.video-modal__content` 必须有确定高度（`width/height: 100%`），缺它时内层 video 的 `height:100%` 失效、退回内在比例并溢出弹层与视口（竖版实测 960×1707，表现为「弹层画面严重偏移」）；② `.video-modal__inner { min-height: 0 }` 不能删（flex 项的内容最小高会按竖版比例顶开盒子）。盒尺寸由 `main.js` 的 `fitModalTo()` 在 `loadedmetadata` 按视频比例计算（上限 960 宽 / 视口高 − 64），关闭时 `resetModalSize()` 复位
 - 联系方式：微信行提供「二维码」弹层与「复制微信号」两枚 chip；微信号必须明文常显（可读屏/可复制/无 JS 也能拿到），二维码只是补充
 - 弹层统一走 `main.js` 的 `openDialog` / `closeDialog`：`role="dialog"` + `aria-modal`、打开前记住触发元素关闭后还原焦点、ESC 与点遮罩关闭、Tab 焦点陷阱；关闭收尾动作（如清空 `<video>`）通过 `openDialog` 的第三个参数注册，避免某条关闭路径漏执行
@@ -110,7 +111,7 @@
    grep -oh 'var(--[a-zA-Z0-9-]*' assets/css/*.css index.html assets/js/*.js | sed 's/var(//' | sort -u > /tmp/r.txt
    comm -3 /tmp/d.txt /tmp/r.txt          # 空 = 通过
    ```
-   当前基线：**声明 64 / 引用 64**（2026-09-16 B5 新增 `--spot-x` / `--spot-y`；断点族修复新增 `--gutter` / `--gutter-tablet`）。
+   当前基线：**声明 64 / 引用 63**（2026-09-21 复核：`--radius-full` 自 CTA 圆角改 8px 后已无引用 —— 差集只余这一条，属已知遗留，清理或复用待定）。
 3. **改样式前先清内联** —— 内联 `style` 优先级高于 class，会**静默压制**样式表里的规则（`.section--dark { background }` 就因此整轮没生效）。**布局重排必须排在清内联之后**；新代码不要写内联，重复的提成工具类（现有 `.text-lead` / `.text-lead--spaced` / `.object-bottom`）。
 4. **页面高度依赖视口高度，跨 `--h` 不比较** —— `.hero` 用 `100svh`（桌面）/ `90svh`（移动），视口高 900 与 844 会让整页差 56px。回归比对必须**锁定同一 `--h`**，且只信「同一轮 run 内 base↔cur」的差值，跨版本 / 跨参数的绝对值一律不可比。
    当前高度基准（CDP 实测）：**1440×900＝15698px · 390×844＝15968px · 360×844＝15986px**（003 大卡 + 小卡区 3 格后的值，2026-09-21；封面统一 16:9 裁切，竖版片段不例外）。
