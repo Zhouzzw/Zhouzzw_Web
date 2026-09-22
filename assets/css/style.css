@@ -554,9 +554,13 @@ section[id] {
   align-items: center;
   justify-content: center;
   width: 48px;
-  font-size: 22px;                     /* 箭头适当放大 */
-  font-weight: 700;                    /* 加粗（符号字形随字重变化有限，配下方描边） */
-  -webkit-text-stroke: 0.5px currentColor;   /* 描边补粗：两个画面的箭头同步生效 */
+  /* 箭头字形：Geist 的 U+2197（↗）是「方头、笔画粗、箭杆短」的造型，与设计意图的细长斜箭头不符；
+     显式指定自托管 Noto Sans SC —— 细长斜箭头，且不依赖系统字体（跨设备一致）。
+     历史：09-17 定稿的「22px + 700 + 0.5px 描边」在 09-21 字体自托管后显得臃肿（Geist 箭头字形生效），
+     09-22 按用户要求恢复修长观感（改字体 + 去描边 + 字号补偿）。 */
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 24px;                     /* Noto 箭头字形光学尺寸偏小，22 → 24 补偿 */
+  font-weight: 700;                    /* 保留笔画分量（描边已移除，字形本身足够清晰） */
   color: var(--color-accent);
   border-left: 1px solid var(--color-border-dark);
   overflow: hidden;

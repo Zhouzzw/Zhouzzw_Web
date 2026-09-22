@@ -60,7 +60,7 @@
 
   .cta-split__right {
     width: 44px;
-    font-size: 20px;
+    font-size: 22px;   /* 与桌面同口径：Noto 箭头字形光学尺寸偏小，20 → 22 补偿 */
   }
 
   /* --- Section 间距 --- */
