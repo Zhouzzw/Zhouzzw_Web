@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:cf": "vite build --base=/ --outDir dist-cb",
+    "build:cf": "vite build --base=/ --outDir dist-cf",
     "deploy:cf": "bash tools/deploy-cloudflare.sh",
     "preview": "vite preview"
   },

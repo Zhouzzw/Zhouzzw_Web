@@ -17,7 +17,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 PROJECT_NAME="zhouzzw-web"
-OUT_DIR="dist-cb"
+OUT_DIR="dist-cf"
 
 if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
   cat <<'EOF'
