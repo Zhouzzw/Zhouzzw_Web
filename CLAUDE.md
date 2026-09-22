@@ -85,7 +85,7 @@
 - 平板档留白（769–1023px）：`.section` 与 `#techstack` 顶部走 `clamp(6rem, 12.5vw, 8rem)`（96px@768 → 128px@1024 流式）—— 基线 80px / #techstack 64px 都会被导航（底边 84px）压住；此档同时把断点边界写为 `1023.98px`（与 `min-width:1024px` 互补，堵分数宽度缺口）
 - Hero 标题字号两档**严格连续**：双列档（≥1024）`min(--text-headline-2, (50vw − gutter)/9)`；单列档（<1024）`min(--text-headline-2, (100vw − 2·gutter − 16px)/9, 3rem)` —— `3rem(48px)` 恰为桌面档在 1024px 的取值，1023px 与 1024px 同为 48px（消除原 −33% 反向跳变）；列宽约束保证「上下位机全栈工程师」9 个全角字永不孤行（扣 16px 为滚动条余量）
 - 视频弹窗播放：封面是 **`<button>`**（键盘可达，Enter / Space 由平台原生触发）+ `aria-label`，内部 `<video preload="none" poster="...">` —— **封面一律用 `assets/posters/` 的静帧图（2026-09-21 起不再用 JS seek 截帧）**：JS 截帧每张封面要拉流数 MB，弱网实测 12.6s 才出画面；poster 方案 0 个媒体请求、无 JS 也出图、微信内置浏览器同样可靠。封面只负责打开弹层
-- 弹层加载/播放反馈（2026-09-21）：本地视频弹层 = `<video poster controls autoplay playsinline>` + **覆盖层**（大号「▶ 播放」按钮 + mono 状态行）—— 移动端 autoplay 普遍被拦截、弱网缓冲要十几秒，覆盖层把这两种"看起来是黑的"情形变成明确动作与进度：`点击播放` / `加载中 x%`（按 `buffered/duration` 计算，`playing` 后整层隐藏）。⚠️ 覆盖层用 `[hidden]` 控制显隐，CSS 里必须写 `.video-modal__overlay[hidden]{display:none}`（`display:flex` 会顶掉 hidden 的默认行为）
+- 弹层加载/播放反馈（2026-09-21 引入；**2026-09-22 改为「默认隐藏」**）：本地视频弹层 = `<video poster controls playsinline>` + **覆盖层**（大号「▶ 播放」+ mono 状态行）。**覆盖层默认 `hidden`，只在两种真正需要时亮出**：① `play()` 被浏览器拦截 → 「点击播放」+ 播放键；② `waiting` 缓冲中 → 「加载中 x%」（**不给播放键**，只报进度）。`playing` 即隐藏 —— 能自动播放时**全程不出现**（旧实现默认显示，一打开就盖住 poster，用户反馈"像多盖了一层"）。实现要点：用 **JS 主动 `v.play()` 取代 `<video autoplay>`**（否则拿不到 promise、无法判断是否被拦，`loadedmetadata` 也不再用来兜底显示）；`showOverlay(text, withButton)` 第二参控制是否给播放键。⚠️ CSS 必须保留 `.video-modal__overlay[hidden]{display:none}`（`display:flex` 会顶掉 hidden 的默认行为）
 - 视频封面 hover 反馈（2026-09-21 按用户要求替换旧版「整圈变橙」）：**播放键边缘的橙色光圈自 12 点顺时针「画圆」** —— SVG 圆环 `stroke-dashoffset` 194.78 → 0（`r=31`，0.65s `var(--ease-standard)`，最接近圆规手感；移出 0.22s 收笔）；`prefers-reduced-motion` 下瞬时显示不画。**不要再用 `border-color: var(--color-accent)` 让整圈变橙**。环由 `main.js` 注入（装饰性，无 JS 只少一圈光）
 - **封面一律 16:9 居中裁切（竖版片段同样裁切，保证网格风格统一）；弹层按视频真实比例自适应、完整不裁切** —— 两条硬约束：① `.video-modal__content` 必须有确定高度（`width/height: 100%`），缺它时内层 video 的 `height:100%` 失效、退回内在比例并溢出弹层与视口（竖版实测 960×1707，表现为「弹层画面严重偏移」）；② `.video-modal__inner { min-height: 0 }` 不能删（flex 项的内容最小高会按竖版比例顶开盒子）。盒尺寸由 `main.js` 的 `fitModalTo()` 在 `loadedmetadata` 按视频比例计算（上限 960 宽 / 视口高 − 64），关闭时 `resetModalSize()` 复位
 - 联系方式：微信行提供「二维码」弹层与「复制微信号」两枚 chip；微信号必须明文常显（可读屏/可复制/无 JS 也能拿到），二维码只是补充
@@ -93,7 +93,7 @@
 - 关键词标签「近距磁吸」（2026-09-21 落地，**同日移除 B5 卡片跟随高光** —— 用户判定「光标高亮区域冗余」）：`.project-tag` 在指针进入 R=140px 后被拉向指针、最强 8px（`k=(1−d/R)²`，参数写死在 `main.js` 的 `initMagneticTags`），离开回弹（`transform 0.28s`），被吸时转强调橙；门控与旧 B5 同口径（`@media (hover:hover) and (pointer:fine)` + JS 同步判断，触屏零监听），`prefers-reduced-motion` 直接不挂。实现纪律：一帧最多一次 rAF + **先读完几何再统一写 transform**（读写分离）+ 视口外分组整组跳过。⚠️ 位移上限 8px 是安全线，再大会让点击目标漂移、标签互相压字
 - 简介区布局：单列（正文靠左 + 下接满宽 4:3 大图、`object-position: 20% 35%`）。**A4 的 12 栅格方案（文字 6 列 + 照片 5 列右偏）已于 2026-09-16 实现后经用户看效果否决并退回**，勿再提
 - 项目卡布局（A6，≥1024）：`.project-item` 三列 `132px | 1fr | 1fr` —— 编号列 + **描述左列 + 成果右列并排**（成果段挂 `.project-item__section--results` 占第 3 列）；标题 / 标签 / 图片 / 视频段仍跨 `2 / -1`；**成果列表与描述同级字号**（`--text-body-large`）。`--results` 的 `grid-column` 须写在 `.project-item__section` 基类**之后**（同特异性靠顺序取胜）；<1024 为 flex 竖排，`grid-column` 不参与
-- 技术栈技能条目（C3，2026-09-16 三轮迭代后定稿 **F 方案**）：每项 = **双行小卡片**（上行名称 / 下行「进度条 + 档位文字」），列表两列网格；`li[data-lv]` 驱动条长 —— **5 熟练（100%）/ 3 熟悉（60%）/ 1 了解（20%）**，档位文字亮度同步分档（0.8 / 0.55 / 0.4 白）。**条色 = 暖米灰 `#C8C1B2`**（用户四选一定稿）—— **站点强调橙只留给交互与焦点，不做长期装饰**（橙色铺满 40 条即"花哨"感的根源）。⚠️ **档位数据仍为占位，待用户给定真实档位**（只改 `data-lv` 与档位文字）。实现注意：column 布局下 `align-items: stretch` 必须显式声明（被 center 覆盖会让子项收缩、条宽变 0）。🚫 已否决：E 方案（五格刻度 + 尾标，观感仍乱）· 橙色条 · 参考图蓝绿像素字配色
+- 技术栈技能条目（C3，2026-09-16 三轮迭代后定稿 **F 方案**）：每项 = **双行小卡片**（上行名称 / 下行「进度条 + 档位文字」），列表两列网格；`li[data-lv]` 驱动条长 —— **5 熟练（100%）/ 3 熟悉（60%）/ 1 了解（20%）**，档位文字亮度同步分档（0.8 / 0.55 / 0.4 白）。**条色 = 暖米灰 `#C8C1B2`**（用户四选一定稿）—— **站点强调橙只留给交互与焦点，不做长期装饰**（橙色铺满 35 条即"花哨"感的根源）。⚠️ **档位与条目已按用户口径校准一批**（2026-09-22：项目 40 → 35，C++ / Python / IIC / SPI → 熟悉；改档位只需动 `data-lv` 与 `.tech-skill__lv` 文字）。实现注意：column 布局下 `align-items: stretch` 必须显式声明（被 center 覆盖会让子项收缩、条宽变 0）。🚫 已否决：E 方案（五格刻度 + 尾标，观感仍乱）· 橙色条 · 参考图蓝绿像素字配色
 - 页脚品牌字（2026-09-16）：`ZHOU ZIWEI` 由 6px 灰 ASCII 字符画改为**内联 SVG 像素字**（8×9 点阵路径；橙色系渐变 `#FFC46B → #FF9100 → #E07000` + 右下 `0.9` 格暗橙 `#6B3A00` **投影**，复现终端像素字的立体厚度感），修掉 review A9「品牌字不可读」；宽度 `100%` + **`max-width: 640px`**（原 1040px 偏大，用户要求收缩一档到 ≈59px 高），移动端不再隐藏（宽度自适应）。🚫 不用参考图的蓝绿配色。字模为手写 8×9 点阵（`#` / `.` 字符画），path 按「每行水平行程合并」生成（`M{x} {y}h{w}v1h-{w}z`）；改字母时照此规则重算即可
 - CTA 按钮动效（`.cta-split`，2026-09-16 借鉴 CodeBuddy 推广按钮、2026-09-17 按用户三轮反馈定稿为**画面切换式**）：按钮右端是固定的「箭头画面窗口」`__right`（48px），两态各是一张**完整画面** —— 默认 = 黑底 + 橙箭头（`.cta-split__arrow` 静止层 z0）；hover = 橙底（`__right::before` z1）+ 黑箭头（`__right::after` z2）。**进入** = 新画面（块+箭头）自**左下角沿 ↗ 对角推入**：块 `translate(-101%,101%)→(0,0)` 0.18s、箭头 `translate(-40px,40px)→(0,0)` 0.26s（块先到位、箭头随画面滑入，超出画面部分由 overflow 裁剪**而非淡入**）。**退出** = 沿 ↙ 退回（箭头 0.16s 加速飞出 + 块 0.22s 延迟 0.05s 跟进）。⚠️ **两态箭头恒居中、相对位置零跳变**（像素校验两态 bbox 逐像素一致）——勿加任何 `translate` 偏置（旧版"静止偏左下 / hover 偏右上"与"箭头跳跃"均已被用户否决）。外观：**8px 圆角矩形**（非药丸）+ 文字 14px/600（移动端 12px）+ 箭头 **24px/700 且显式指定 `font-family: 'Noto Sans SC'`**（移动端 22px）。⚠️ **箭头字形必须锁定 Noto Sans SC**：Geist 的 U+2197（↗）是「方头、笔画粗、箭杆短」造型，09-21 字体自托管后 Geist 真正生效，箭头一度变得臃肿笨重；09-22 按用户要求恢复细长斜箭头 —— 做法 = 改字体族 + **移除 `-webkit-text-stroke: 0.5px`**（描边是变粗的元凶之一）+ 字号 22→24 补偿 Noto 较小的光学尺寸。改字号前先跑 `/tmp/probe/arrow-cta.mjs` 对比。按下 = `ctaArrowNudge` 轻冲（↗ 5px）；hover 门控 `@media (hover:hover) and (pointer:fine)`（触屏 `:active` 同款推入）；减动效只留静态色
 - 移动端导航内联横排（无汉堡折叠，`<480px` 隐藏"首页"项）
@@ -104,6 +104,7 @@
 - **CSS**: BEM-like 命名 + CSS 自定义属性做主题变量
 - **JS**: 模块化分文件，`type="module"` 引入，避免全局污染
 - **图片**: 当前为压缩后的 JPEG（长边 ≤1920 + `-q:v 3`）；`<picture>` + WebP 是待办的可选优化
+- **文案**: ① 卡片叙事用「场景 → 技术链路 → 瓶颈 → 效果」+ 成果 3 条递进（规划层 → 感知层 → 最终效果）；② **删文案前先确认信息在成果区 / 标签 / 列表有独立承载**（零信息损失才删，2026-09-22 批 4 处删除均按此执行）；③ 带 `js-count` 数字动画的行只改叙述文字，`data-to` / `data-suffix` 不动；④ 断行：全端用 `<br />`、仅桌面用 `<br class="br-desktop-only">`（<1024 隐藏），**断点只落在「本来就该有空格」的边界**（汉字之间不断行 —— HTML 会把源码换行折叠为一个空格）；⑤ 词内不拆（如「真正 / 具身智能」）包 `.text-nowrap`
 - **视频**: 用 YouTube/Bilibili iframe embed 或 `<video>` 标签 + poster 封面
 
 ## 工程红线（历次踩坑沉淀 · 改动前必读）
@@ -118,9 +119,9 @@
    当前基线：**声明 62 / 引用 61**（2026-09-21 移除 B5 跟随高光后，`--spot-x` / `--spot-y` 一并删除；差集只余 `--radius-full` —— 自 CTA 圆角改 8px 后无引用，属已知遗留）。
 3. **改样式前先清内联** —— 内联 `style` 优先级高于 class，会**静默压制**样式表里的规则（`.section--dark { background }` 就因此整轮没生效）。**布局重排必须排在清内联之后**；新代码不要写内联，重复的提成工具类（现有 `.text-lead` / `.text-lead--spaced` / `.object-bottom`）。
 4. **页面高度依赖视口高度，跨 `--h` 不比较** —— `.hero` 用 `100svh`（桌面）/ `90svh`（移动），视口高 900 与 844 会让整页差 56px。回归比对必须**锁定同一 `--h`**，且只信「同一轮 run 内 base↔cur」的差值，跨版本 / 跨参数的绝对值一律不可比。
-   当前高度基准（CDP 实测 · 2026-09-21 字体自托管后）：**1440×900＝15634px · 390×844＝15968px · 360×844＝16011px**。相比外链字体时期（15698 / 15968 / 15986）桌面 −64px、360 档 +25px —— 差异全部来自「Geist / Geist Mono 首次真正生效」（原 jsdelivr 字体 CSS 一直是 **404**，页面长期用系统字体渲染拉丁与数字），属预期内的字体度量变化，不是布局回归。
+   当前高度基准（CDP 实测 · 2026-09-22 **文案精修批**）：**1440×900＝15452px · 390×844＝15425px · 360×844＝15419px**。本轮 −182 / −246 / −270 来自文案精简（项目区与实习区导语删除、G1-D 正文 5→4 行、成果定型 3 条），属预期内容变化。历史对照：外链字体时期为 15698 / 15968 / 15986；技术栈 40→35 项 + 简介精简后为 15634 / 15671 / 15689（本轮起点）。桌面 −64px（相对外链期）来自「Geist / Geist Mono 首次真正生效」（原 jsdelivr 字体 CSS 一直是 **404**，页面长期用系统字体渲染拉丁与数字），属预期内的字体度量变化。
    配套验证手段：用 `git worktree add --detach <tmp> <旧 commit>` 另起一个 dev server，在同 run 内做**逐元素几何比对** —— 这是「清理 / 重构类改动零位移」最可靠的证明方式，别只看单页总高度。
-5. **review 报告动手后必须回写状态标记** —— 任何一项落地后立刻回写 ✅ / 🟡 / 🚫 并同步 `TODO.md`，否则下一轮会把已完成项当待办重做（已多次发生）。`docs/review-v3.md` 已于 2026-09-16 瘦身为**「未决事项 + 已否决 + 已确认结论 + 复现环境」**：**已完成项不再往正文堆细节**（细节回落 PROGRESS/git），新增待办往「一、待处理」加，落地后从正文移除并同步 TODO.md。
+5. **review 报告动手后必须回写状态标记** —— 任何一项落地后立刻回写 ✅ / 🟡 / 🚫 并同步 `TODO.md`，否则下一轮会把已完成项当待办重做（已多次发生）。**未决事项的唯一住所 = `TODO.md` + PROGRESS 快照**（`docs/review-v3.md` 已于 2026-09-22 移除）：**已完成项不堆细节**（细节回落 PROGRESS / git），落地后从 TODO.md 移除。
    **同族教训（2026-09-16 已累积 4 例：B6 / B7 / A3 / A4）**：**视觉 / 布局类改动实施后先出截图给用户确认，再做文档收尾与提交** —— 四项均为「量化验证全部通过、用户看效果后仍被否决」；几何 / 页高 / 对比度验证覆盖不了观感。给方案时宜并列 2 个方向供选，降低整案被否概率。
 6. **`filter`（drop-shadow / blur）不要挂在"内容持续动画"的元素上** —— 静止时滤镜结果可缓存（几乎零成本），一旦其内部每帧变化就必须**每帧重算模糊**：螺旋 SVG 的 `drop-shadow(0 0 60px)` 曾让稳态 44 → 17 FPS、加载期跌到 12 FPS（2026-09-17 已删）。处置套路：先**停转后 A/B 像素 diff** 确认视觉贡献（实测 0.000% → 直接删；有贡献再找静态替代如 radial-gradient）——⚠️ 对比动画元素必须**停转后再截图**，否则 diff 混入旋转相位噪声（曾把 10.6% 的相位差误读为滤镜贡献）。长跑装饰动画另配两道闸（螺旋已落地）：**首屏延迟启动**（`html.spiral-on`，load+600ms；无 JS 时静态不转，零退化）+ **不可见即暂停**（`.hero__visual.is-paused` ↔ `animation-play-state`，含 `visibilitychange`）。验证：`/tmp/probe/fps-profile.mjs <preset>`（baseline / no-filter / no-spin / hide-visual / no-both 五变体一键测加载期+稳态 FPS）。
 
@@ -138,25 +139,23 @@ npm run preview  # 本地预览构建产物 → http://localhost:4173/Zhouzzw_We
 
 部署是自动的：push 到 `v2` 会触发 `.github/workflows/deploy.yml`（`npm ci` → `npm run build` → `actions/deploy-pages`）。不需要手动跑部署命令，`dist/` 也不提交进仓库。`v3-full` 为并行完整版分支，**不**触发部署（workflow 只监听 v2）；CF 侧为手动 `npm run deploy:cf`。
 
-### 三个部署目标（base 不同，切勿混用）
+### 两个部署目标（base 不同，切勿混用）
 
 | 目标 | 地址 | 构建 | 部署 |
 |------|------|------|------|
-| **Cloudflare Pages**（正式/国内入口） | **`https://zhouzzw.online`**（+ `www`；备用 `zhouzzw-web.pages.dev`） | `npm run build:cf` → `dist-cb/`（base `/`） | `npm run deploy:cf`（wrangler，脚本已含 `--branch=main`） |
+| **Cloudflare Pages**（正式/国内入口） | **`https://zhouzzw.online`**（+ `www`；备用 `zhouzzw-web.pages.dev`） | `npm run build:cf` → `dist-cf/`（base `/`） | `npm run deploy:cf`（wrangler，脚本已含 `--branch=main`） |
 | GitHub Pages（海外镜像） | `https://zhouzzw.github.io/Zhouzzw_Web/` | `npm run build` → `dist/`（base `/Zhouzzw_Web/`） | push `v2` 触发 Actions |
-| CloudBase（腾讯云） | `…tcloudbaseapp.com` | `dist-cb/` | 手动上传（见 README） |
 
-五条硬约束（2026-09-22 踩坑沉淀）：
+四条硬约束（2026-09-22 踩坑沉淀）：
 
-1. **CloudBase 默认域名不可投放** —— 腾讯云对默认域名强制「测试域名」中间页 + 访问量风控，官方定位「仅用于测试」。需备案 + 绑自定义域名才可用。
-2. **Cloudflare Pages 单文件上限 25 MiB**（免费版）—— `deploy:cf` 会预校验；视频超限先转码（`-crf 29` 可把 1080p30 文本类素材压到 ~1.2 Mbps）。
-3. **Cloudflare Pages 有 SPA 回退** —— 未匹配路径返回 **200 + index.html**；判断线上资源是否真缺失必须看 `content_type`，别只看状态码。
-4. **wrangler 的分支决定生产/预览** —— 当前 git 分支 ≠ 项目 production branch（`main`）时只更新 `<分支>.zhouzzw-web.pages.dev`；要更新生产域名显式加 `--branch=main`（`tools/deploy-cloudflare.sh` 已内置）。
-5. **元数据的域名与分享图**（2026-09-22 域名上线沉淀）—— ① 元数据（canonical / og:url / og:image / twitter:image / JSON-LD / sitemap / robots）**必须与线上正式域名一致**，换域名时 7 处一起改（「站点能访问」≠「完整上线」）；② **`og:image` 不要引用构建产物路径** —— Vite 给静态资源加 hash，写死 `assets/images/x.jpg` 必然 404（本项目分享缩略图曾长期拉不到）；分享图放 `public/`（现为 `og-cover.jpg`，1200×630），路径稳定不随构建变化。
+1. **Cloudflare Pages 单文件上限 25 MiB**（免费版）—— `deploy:cf` 会预校验；视频超限先转码（`-crf 29` 可把 1080p30 文本类素材压到 ~1.2 Mbps）。
+2. **Cloudflare Pages 有 SPA 回退** —— 未匹配路径返回 **200 + index.html**；判断线上资源是否真缺失必须看 `content_type`，别只看状态码。
+3. **wrangler 的分支决定生产/预览** —— 当前 git 分支 ≠ 项目 production branch（`main`）时只更新 `<分支>.zhouzzw-web.pages.dev`；要更新生产域名显式加 `--branch=main`（`tools/deploy-cloudflare.sh` 已内置）。
+4. **元数据的域名与分享图**（2026-09-22 域名上线沉淀）—— ① 元数据（canonical / og:url / og:image / twitter:image / JSON-LD / sitemap / robots）**必须与线上正式域名一致**，换域名时 7 处一起改（「站点能访问」≠「完整上线」）；② **`og:image` 不要引用构建产物路径** —— Vite 给静态资源加 hash，写死 `assets/images/x.jpg` 必然 404（本项目分享缩略图曾长期拉不到）；分享图放 `public/`（现为 `og-cover.jpg`，1200×630），路径稳定不随构建变化。
 
 - ⚠️ **git 远程为 SSH**（`git@github.com:Zhouzzw/Zhouzzw_Web.git`）：HTTPS 在此环境有 TLS 握手故障，勿改回 https URL；SSH 密钥已配置且验证通过。
 
-- ⚠️ **`vite.config.js` 的 `base: '/Zhouzzw_Web/'` 不能删**。仓库名是 `Zhouzzw_Web`，项目站点带子路径；少了这个 base，所有 `/assets/...` 都会 404。**Cloudflare Pages / CloudBase 挂在域名根路径，构建时用 `--base=/` 覆盖**（`npm run build:cf`），两份产物（`dist/` 与 `dist-cb/`）不可混用。
+- ⚠️ **`vite.config.js` 的 `base: '/Zhouzzw_Web/'` 不能删**。仓库名是 `Zhouzzw_Web`，项目站点带子路径；少了这个 base，所有 `/assets/...` 都会 404。**Cloudflare Pages 挂在域名根路径，构建时用 `--base=/` 覆盖**（`npm run build:cf`），两份产物（`dist/` 与 `dist-cf/`）不可混用。
 - ⚠️ **大文件进不了 git**：GitHub 单文件 100MB 硬限制（Pages 站点软上限 1GB）。视频入库统一走 `-vf scale=1920:1080:flags=lanczos,fps=30 -c:v libx264 -crf 26 -pix_fmt yuv420p -c:a aac -b:a 128k -movflags +faststart`。⚠️ 体积随内容与时长浮动（文本 / 终端类素材 1080p30 实测 1.6–2.6Mbps），**原「≤10MB」约定已被 4 段 G1-D 长视频（14.9–32.7MB）突破，收紧方案待拍板（见 TODO P3）**。原始素材备份在仓库外：新片源 `/home/qskj-2/视频/最终演示视频/`、早期素材 `d:/DSEKTOP/原始素材备份/`。
 - ⚠️ 项目用 `type="module"`，`index.html` **不能直接双击打开**（file:// 下 CORS 拦截模块脚本），必须通过 Vite 服务器或构建后部署。
 - 方案已按 Vite 定型，不要再提议改造成纯静态 HTML。
