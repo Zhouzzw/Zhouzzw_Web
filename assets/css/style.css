@@ -272,6 +272,17 @@ img {
 }
 
 /* 图片裁切焦点下移（主体位于画面下方时用） */
+/* 防中文词内断裂：包住不宜被拆开的词/术语（如「真正」被拆成 真/正） */
+.text-nowrap {
+  white-space: nowrap;
+}
+
+/* 桌面专用换行：<br class="br-desktop-only" />，≥1024px 生效；
+   <1024 隐藏 —— 移动端行宽放不下长句，硬断会留下孤行或拆词 */
+@media (max-width: 1023.98px) {
+  .br-desktop-only { display: none; }
+}
+
 .object-bottom {
   object-position: center 90%;
 }

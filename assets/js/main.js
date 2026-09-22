@@ -217,8 +217,8 @@ function initVideoModal() {
         // 覆盖层给出「点击播放 / 加载中 x%」，让用户知道是"在加载"而不是"坏了"。
         const poster = inlineVideo?.getAttribute('poster') || '';
         content.innerHTML = `
-          <video src="${src}"${poster ? ` poster="${poster}"` : ''} controls autoplay playsinline></video>
-          <div class="video-modal__overlay" data-overlay>
+          <video src="${src}"${poster ? ` poster="${poster}"` : ''} controls playsinline></video>
+          <div class="video-modal__overlay" data-overlay hidden>
             <button type="button" class="video-modal__play" data-play aria-label="播放视频"><span aria-hidden="true">▶</span></button>
             <p class="video-modal__hint" data-hint>加载中…</p>
           </div>`;
@@ -234,20 +234,23 @@ function initVideoModal() {
           if (!total) return '加载中…';
           return `加载中 ${Math.min(99, Math.round(buffered / total * 100))}%`;
         };
-        const showOverlay = (text) => {
+        // 覆盖层默认隐藏（2026-09-22 方案 A）：能自动播放时全程不出现，不再一打开就盖住 poster。
+        // 仅两种情况亮出：autoplay 被浏览器拦截（给「点击播放」按钮）/ 缓冲中（给「加载中 x%」文字）
+        const showOverlay = (text, withButton) => {
           overlay.hidden = false;
-          playBtn.hidden = started;      // 已经播过就不再给「播放」按钮，只留缓冲提示
+          playBtn.hidden = !withButton || started;   // 缓冲提示不带动播放键；播放开始后也不再给
           hint.textContent = text;
         };
-        const start = () => { v.play().catch(() => showOverlay('点击播放')); };
+        const start = () => { v.play().catch(() => showOverlay('点击播放', true)); };
 
         v.addEventListener('playing', () => { started = true; overlay.hidden = true; });
-        v.addEventListener('waiting', () => showOverlay(loadingText()));
+        v.addEventListener('waiting', () => showOverlay(loadingText(), false));
         v.addEventListener('progress', () => { if (!overlay.hidden && !v.paused) hint.textContent = loadingText(); });
-        v.addEventListener('loadedmetadata', () => { if (!started && v.paused) showOverlay('点击播放'); });
-        v.addEventListener('pause', () => { if (!started) showOverlay('点击播放'); });
         overlay.addEventListener('click', start);
         playBtn.addEventListener('click', (e) => { e.stopPropagation(); start(); });
+
+        // 主动发起播放（取代 <video autoplay>）：这样被拦截时能拿到 promise 结果并给出「点击播放」
+        start();
 
         fitVideo = v;
         v.addEventListener('loadedmetadata', () => fitModalTo(v));
