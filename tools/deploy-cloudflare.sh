@@ -49,8 +49,12 @@ fi
 echo "  ✓ 全部文件合规"
 
 echo "▶ 部署到 Cloudflare Pages（项目：$PROJECT_NAME）"
+# ⚠️ --branch=main 不能省：wrangler 以「当前分支 vs 项目 production branch」判定生产/预览。
+#    当前开发分支是 v3-full ≠ main，缺这个参数只会更新 <分支>.zhouzzw-web.pages.dev（预览），
+#    自定义域名 zhouzzw.online 绑的是生产环境，看不到任何变化。
 npx wrangler pages deploy "$OUT_DIR" \
   --project-name="$PROJECT_NAME" \
+  --branch=main \
   --commit-dirty=true
 
 echo
