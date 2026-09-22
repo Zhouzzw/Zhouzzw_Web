@@ -1,0 +1,18 @@
+# Cloudflare Pages 部署配置（国内可达入口）
+#
+# 部署：
+#   export CLOUDFLARE_API_TOKEN=<Pages:Edit 权限的 API Token>
+#   npm run deploy:cf
+#
+# ⚠️ 为什么用 dist-cb 而不是 dist：
+#   - GitHub Pages 的站点挂在子路径 /Zhouzzw_Web/ → 需 base = /Zhouzzw_Web/
+#   - Cloudflare Pages 挂在域名根路径        → 需 base = /
+#   dist-cb 由 `npm run build:cf` 产出（base=/），两者不可混用。
+#
+# ⚠️ Cloudflare Pages 单文件上限 25 MiB（免费版）：
+#   assets/videos/视觉伺服动态抓卡.mp4 原始 32.7MB 会超限，
+#   用 tools/shrink-video-for-cf.sh 转到 CRF 29（约 20MB）后再构建。
+
+name = "zhouzzw-web"
+pages_build_output_dir = "dist-cb"
+compatibility_date = "2025-09-22"
