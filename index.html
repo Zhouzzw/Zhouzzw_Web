@@ -68,11 +68,9 @@
   }
   </script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/font/css/geist-sans.min.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/font/css/geist-mono.min.css" />
+  <!-- 字体全部自托管（2026-09-21）：Geist / Geist Mono / Noto Sans SC 子集
+       原先的 Google Fonts 与 jsdelivr 外链在国内不可达且阻塞首屏，已移除。
+       @font-face 声明在 assets/css/style.css 顶部。 -->
 
   <link rel="stylesheet" href="/assets/css/style.css" />
   <link rel="stylesheet" href="/assets/css/desktop.css" />
@@ -609,39 +607,39 @@
               <div class="tools-shelf__grid">
 
                 <div class="tool-icon" title="MATLAB">
-                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matlab/matlab-original.svg" alt="MATLAB" loading="lazy" />
+                  <img class="tool-icon__img" src="/assets/icons/matlab-original.svg" alt="MATLAB" loading="lazy" />
                 </div>
 
                 <div class="tool-icon" title="Python">
-                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" loading="lazy" />
+                  <img class="tool-icon__img" src="/assets/icons/python-original.svg" alt="Python" loading="lazy" />
                 </div>
 
                 <div class="tool-icon" title="Visual Studio Code">
-                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt="VS Code" loading="lazy" />
+                  <img class="tool-icon__img" src="/assets/icons/vscode-original.svg" alt="VS Code" loading="lazy" />
                 </div>
 
                 <div class="tool-icon" title="Visual Studio">
-                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/visualstudio/visualstudio-plain.svg" alt="Visual Studio" loading="lazy" />
+                  <img class="tool-icon__img" src="/assets/icons/visualstudio-plain.svg" alt="Visual Studio" loading="lazy" />
                 </div>
 
                 <div class="tool-icon" title="Git">
-                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" loading="lazy" />
+                  <img class="tool-icon__img" src="/assets/icons/git-original.svg" alt="Git" loading="lazy" />
                 </div>
 
                 <div class="tool-icon tool-icon--light" title="GitHub">
-                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" loading="lazy" />
+                  <img class="tool-icon__img" src="/assets/icons/github-original.svg" alt="GitHub" loading="lazy" />
                 </div>
 
-                <div class="tool-icon" title="Linux">
-                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" alt="Linux" loading="lazy" />
+                <div class="tool-icon tool-icon--light" title="Linux">
+                  <img class="tool-icon__img" src="/assets/icons/linux-plain.svg" alt="Linux" loading="lazy" />
                 </div>
 
                 <div class="tool-icon" title="Raspberry Pi 树莓派">
-                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/raspberrypi/raspberrypi-original.svg" alt="Raspberry Pi" loading="lazy" />
+                  <img class="tool-icon__img" src="/assets/icons/raspberrypi-original.svg" alt="Raspberry Pi" loading="lazy" />
                 </div>
 
                 <div class="tool-icon tool-icon--light" title="ROS2">
-                  <img class="tool-icon__img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ros/ros-original.svg" alt="ROS2" loading="lazy" />
+                  <img class="tool-icon__img" src="/assets/icons/ros-original.svg" alt="ROS2" loading="lazy" />
                 </div>
 
               </div>

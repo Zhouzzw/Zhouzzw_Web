@@ -4,6 +4,37 @@
    米白 + 纯黑 + 橙色点缀 · 编辑设计 · 工程师美学
    ============================================ */
 
+/* --- 自托管字体（2026-09-21）---
+   原先从 fonts.googleapis.com + cdn.jsdelivr.net 拉字体：Google 全域在国内被墙、
+   jsdelivr 时通时断，且三者都是「阻塞渲染」的样式表 —— 无代理的国内用户会白屏数秒。
+   现全部本地化：外链数 5 → 0，站点不再依赖任何墙外资源。
+   · Geist / Geist Mono：可变字体，单文件覆盖 100–900 全字重（替代原 jsdelivr 的两个 CSS）
+   · Noto Sans SC：按站点实际用字（903 汉字 + 符号）子集化的可变字体，17.7MB → 259KB
+   子集更新方法见 assets/fonts/README.md */
+@font-face {
+  font-family: 'Geist';
+  src: url('../fonts/Geist-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('../fonts/GeistMono-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Noto Sans SC';
+  src: url('../fonts/NotoSansSC-subset.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* --- CSS 自定义属性 (设计令牌) --- */
 :root {
   /* 色彩 — 米白/纯黑/橙 三色体系 */
