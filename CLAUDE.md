@@ -95,7 +95,7 @@
 - 项目卡布局（A6，≥1024）：`.project-item` 三列 `132px | 1fr | 1fr` —— 编号列 + **描述左列 + 成果右列并排**（成果段挂 `.project-item__section--results` 占第 3 列）；标题 / 标签 / 图片 / 视频段仍跨 `2 / -1`；**成果列表与描述同级字号**（`--text-body-large`）。`--results` 的 `grid-column` 须写在 `.project-item__section` 基类**之后**（同特异性靠顺序取胜）；<1024 为 flex 竖排，`grid-column` 不参与
 - 技术栈技能条目（C3，2026-09-16 三轮迭代后定稿 **F 方案**）：每项 = **双行小卡片**（上行名称 / 下行「进度条 + 档位文字」），列表两列网格；`li[data-lv]` 驱动条长 —— **5 熟练（100%）/ 3 熟悉（60%）/ 1 了解（20%）**，档位文字亮度同步分档（0.8 / 0.55 / 0.4 白）。**条色 = 暖米灰 `#C8C1B2`**（用户四选一定稿）—— **站点强调橙只留给交互与焦点，不做长期装饰**（橙色铺满 40 条即"花哨"感的根源）。⚠️ **档位数据仍为占位，待用户给定真实档位**（只改 `data-lv` 与档位文字）。实现注意：column 布局下 `align-items: stretch` 必须显式声明（被 center 覆盖会让子项收缩、条宽变 0）。🚫 已否决：E 方案（五格刻度 + 尾标，观感仍乱）· 橙色条 · 参考图蓝绿像素字配色
 - 页脚品牌字（2026-09-16）：`ZHOU ZIWEI` 由 6px 灰 ASCII 字符画改为**内联 SVG 像素字**（8×9 点阵路径；橙色系渐变 `#FFC46B → #FF9100 → #E07000` + 右下 `0.9` 格暗橙 `#6B3A00` **投影**，复现终端像素字的立体厚度感），修掉 review A9「品牌字不可读」；宽度 `100%` + **`max-width: 640px`**（原 1040px 偏大，用户要求收缩一档到 ≈59px 高），移动端不再隐藏（宽度自适应）。🚫 不用参考图的蓝绿配色。字模为手写 8×9 点阵（`#` / `.` 字符画），path 按「每行水平行程合并」生成（`M{x} {y}h{w}v1h-{w}z`）；改字母时照此规则重算即可
-- CTA 按钮动效（`.cta-split`，2026-09-16 借鉴 CodeBuddy 推广按钮、2026-09-17 按用户三轮反馈定稿为**画面切换式**）：按钮右端是固定的「箭头画面窗口」`__right`（48px），两态各是一张**完整画面** —— 默认 = 黑底 + 橙箭头（`.cta-split__arrow` 静止层 z0）；hover = 橙底（`__right::before` z1）+ 黑箭头（`__right::after` z2）。**进入** = 新画面（块+箭头）自**左下角沿 ↗ 对角推入**：块 `translate(-101%,101%)→(0,0)` 0.18s、箭头 `translate(-40px,40px)→(0,0)` 0.26s（块先到位、箭头随画面滑入，超出画面部分由 overflow 裁剪**而非淡入**）。**退出** = 沿 ↙ 退回（箭头 0.16s 加速飞出 + 块 0.22s 延迟 0.05s 跟进）。⚠️ **两态箭头恒居中、相对位置零跳变**（像素校验两态 bbox 逐像素一致）——勿加任何 `translate` 偏置（旧版"静止偏左下 / hover 偏右上"与"箭头跳跃"均已被用户否决）。外观：**8px 圆角矩形**（非药丸）+ 文字 14px/600（移动端 12px）+ 箭头 22px/700 + `-webkit-text-stroke: 0.5px`（移动端 20px）。按下 = `ctaArrowNudge` 轻冲（↗ 5px）；hover 门控 `@media (hover:hover) and (pointer:fine)`（触屏 `:active` 同款推入）；减动效只留静态色
+- CTA 按钮动效（`.cta-split`，2026-09-16 借鉴 CodeBuddy 推广按钮、2026-09-17 按用户三轮反馈定稿为**画面切换式**）：按钮右端是固定的「箭头画面窗口」`__right`（48px），两态各是一张**完整画面** —— 默认 = 黑底 + 橙箭头（`.cta-split__arrow` 静止层 z0）；hover = 橙底（`__right::before` z1）+ 黑箭头（`__right::after` z2）。**进入** = 新画面（块+箭头）自**左下角沿 ↗ 对角推入**：块 `translate(-101%,101%)→(0,0)` 0.18s、箭头 `translate(-40px,40px)→(0,0)` 0.26s（块先到位、箭头随画面滑入，超出画面部分由 overflow 裁剪**而非淡入**）。**退出** = 沿 ↙ 退回（箭头 0.16s 加速飞出 + 块 0.22s 延迟 0.05s 跟进）。⚠️ **两态箭头恒居中、相对位置零跳变**（像素校验两态 bbox 逐像素一致）——勿加任何 `translate` 偏置（旧版"静止偏左下 / hover 偏右上"与"箭头跳跃"均已被用户否决）。外观：**8px 圆角矩形**（非药丸）+ 文字 14px/600（移动端 12px）+ 箭头 **24px/700 且显式指定 `font-family: 'Noto Sans SC'`**（移动端 22px）。⚠️ **箭头字形必须锁定 Noto Sans SC**：Geist 的 U+2197（↗）是「方头、笔画粗、箭杆短」造型，09-21 字体自托管后 Geist 真正生效，箭头一度变得臃肿笨重；09-22 按用户要求恢复细长斜箭头 —— 做法 = 改字体族 + **移除 `-webkit-text-stroke: 0.5px`**（描边是变粗的元凶之一）+ 字号 22→24 补偿 Noto 较小的光学尺寸。改字号前先跑 `/tmp/probe/arrow-cta.mjs` 对比。按下 = `ctaArrowNudge` 轻冲（↗ 5px）；hover 门控 `@media (hover:hover) and (pointer:fine)`（触屏 `:active` 同款推入）；减动效只留静态色
 - 移动端导航内联横排（无汉堡折叠，`<480px` 隐藏"首页"项）
 
 ## 开发规范
@@ -134,24 +134,25 @@ npm run build    # 构建到 dist/（单页）
 npm run preview  # 本地预览构建产物 → http://localhost:4173/Zhouzzw_Web/
 ```
 
-**线上地址（多入口）**：见 `README.md` 的入口表。国内入口为 Cloudflare Pages（`zhouzzw-web.pages.dev`，待绑自定义域名）；GitHub Pages 为 https://zhouzzw.github.io/Zhouzzw_Web/ 。
+**线上地址（多入口）**：见 `README.md` 的入口表。**正式入口 = https://zhouzzw.online**（Cloudflare Pages，2026-09-22 绑定自定义域名，根域 + `www` 双入口）；GitHub Pages 为 https://zhouzzw.github.io/Zhouzzw_Web/（海外镜像）。
 
-部署是自动的：push 到 `v2` 会触发 `.github/workflows/deploy.yml`（`npm ci` → `npm run build` → `actions/deploy-pages`）。不需要手动跑部署命令，`dist/` 也不提交进仓库。`v3-full` 为并行完整版分支，**不**触发部署（workflow 只监听 v2）。
+部署是自动的：push 到 `v2` 会触发 `.github/workflows/deploy.yml`（`npm ci` → `npm run build` → `actions/deploy-pages`）。不需要手动跑部署命令，`dist/` 也不提交进仓库。`v3-full` 为并行完整版分支，**不**触发部署（workflow 只监听 v2）；CF 侧为手动 `npm run deploy:cf`。
 
 ### 三个部署目标（base 不同，切勿混用）
 
 | 目标 | 地址 | 构建 | 部署 |
 |------|------|------|------|
-| **Cloudflare Pages**（国内入口） | `https://zhouzzw-web.pages.dev`（待绑自定义域名） | `npm run build:cf` → `dist-cb/`（base `/`） | `npm run deploy:cf`（wrangler） |
-| GitHub Pages（海外入口） | `https://zhouzzw.github.io/Zhouzzw_Web/` | `npm run build` → `dist/`（base `/Zhouzzw_Web/`） | push `v2` 触发 Actions |
+| **Cloudflare Pages**（正式/国内入口） | **`https://zhouzzw.online`**（+ `www`；备用 `zhouzzw-web.pages.dev`） | `npm run build:cf` → `dist-cb/`（base `/`） | `npm run deploy:cf`（wrangler，脚本已含 `--branch=main`） |
+| GitHub Pages（海外镜像） | `https://zhouzzw.github.io/Zhouzzw_Web/` | `npm run build` → `dist/`（base `/Zhouzzw_Web/`） | push `v2` 触发 Actions |
 | CloudBase（腾讯云） | `…tcloudbaseapp.com` | `dist-cb/` | 手动上传（见 README） |
 
-四条硬约束（2026-09-22 踩坑沉淀）：
+五条硬约束（2026-09-22 踩坑沉淀）：
 
 1. **CloudBase 默认域名不可投放** —— 腾讯云对默认域名强制「测试域名」中间页 + 访问量风控，官方定位「仅用于测试」。需备案 + 绑自定义域名才可用。
 2. **Cloudflare Pages 单文件上限 25 MiB**（免费版）—— `deploy:cf` 会预校验；视频超限先转码（`-crf 29` 可把 1080p30 文本类素材压到 ~1.2 Mbps）。
 3. **Cloudflare Pages 有 SPA 回退** —— 未匹配路径返回 **200 + index.html**；判断线上资源是否真缺失必须看 `content_type`，别只看状态码。
-4. **wrangler 的分支决定生产/预览** —— 当前 git 分支 ≠ 项目 production branch（`main`）时只更新 `<分支>.zhouzzw-web.pages.dev`；要更新生产域名显式加 `--branch=main`。
+4. **wrangler 的分支决定生产/预览** —— 当前 git 分支 ≠ 项目 production branch（`main`）时只更新 `<分支>.zhouzzw-web.pages.dev`；要更新生产域名显式加 `--branch=main`（`tools/deploy-cloudflare.sh` 已内置）。
+5. **元数据的域名与分享图**（2026-09-22 域名上线沉淀）—— ① 元数据（canonical / og:url / og:image / twitter:image / JSON-LD / sitemap / robots）**必须与线上正式域名一致**，换域名时 7 处一起改（「站点能访问」≠「完整上线」）；② **`og:image` 不要引用构建产物路径** —— Vite 给静态资源加 hash，写死 `assets/images/x.jpg` 必然 404（本项目分享缩略图曾长期拉不到）；分享图放 `public/`（现为 `og-cover.jpg`，1200×630），路径稳定不随构建变化。
 
 - ⚠️ **git 远程为 SSH**（`git@github.com:Zhouzzw/Zhouzzw_Web.git`）：HTTPS 在此环境有 TLS 握手故障，勿改回 https URL；SSH 密钥已配置且验证通过。
 

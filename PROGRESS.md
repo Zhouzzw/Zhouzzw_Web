@@ -2,18 +2,115 @@
 
 > progress 会话快照（Δ 增量）。静态基线见 CLAUDE.md；未决事项见 TODO.md；更早快照见 `docs/archive/`。
 
-**当前**：v3-full 主线（v2 基础版已冻结；线上仍为 v2.4 https://zhouzzw.github.io/Zhouzzw_Web/）
+**当前**：v3-full 主线（v2 基础版已冻结）；**线上正式入口 = https://zhouzzw.online（Cloudflare Pages，2026-09-22 绑定自定义域名）**，GH Pages 为海外镜像
 
 ## 📋 快照索引
 
 | 日期 | 主题 | 摘要 | 状态 |
 |------|------|------|------|
+| 09-22 | CTA 箭头字形修正（字体自托管连带影响） | Geist 的 `↗` 是方头粗短造型 → 箭头显式改用自托管 Noto Sans SC + 去描边 + 24px 补偿；三态与页高三档零回归 | ✅ 完成 |
+| 09-22 | 自有域名上线：zhouzzw.online 全链路打通 | 注册局 NS → CF zone → Pages 双域名 HTTPS 200；顺带修 7 处硬编码 github.io、og:image 404、部署脚本缺 `--branch=main` | ✅ 完成 |
 | 09-22 | 国内可达性攻坚：外链清零 + Cloudflare 上线 | 字体/图标自托管（外链 5→0，Geist 首次真正生效）+ CF Pages 部署（34 文件 / 89MB / 全量通过）；CloudBase 默认域名实测否决；域名 `zhouzzw.online` 待绑 | ✅ 完成 |
 | 09-21 | 移动端视频黑屏修复与 v3 二次上线 | 封面改 `poster` 静帧（封面阶段 mp4 请求 0；弱网出图 12.6s→0.31s）+ 弹层覆盖层（点击播放/加载中 x%）；v2 合并点 8403a10 已上线 | ✅ 完成 |
 | 09-21 | 标签近距磁吸替代跟随高光 | `.project-tag` 近距磁吸（R=140 / 8px，回弹 + 橙色）；同日移除 B5 跟随高光与 `--spot-x/--spot-y`；令牌 62/61 | ✅ 完成 |
-| 09-21 | 播放键 hover 光圈画圆与暗区水印关键词 | 封面 hover 改「橙色光圈自 12 点顺时针画圆」；水印换成 ROS2 · LQR · VMC · ROBOTICS · RL · FREERTOS；CTA 方向维持 ↗ | ✅ 完成 |
 
 > 检索归档：`grep -n "#tag: <关键词>" docs/archive/*.md`。09-12「项目卡片分隔线」只提交未写快照（git `72254f6`）。
+
+## 🏷️ 2026-09-22 · CTA 箭头字形修正：自托管字体的连带影响
+
+**结论**：用户反馈「CTA 箭头变粗短，要恢复之前修长的样子」→ 排查确认**根因不是 CSS 参数，而是字体**：09-22 字体自托管后 Geist 的 `↗`（U+2197）字形首次真正生效，而它是「方头、笔画粗、箭杆短」造型（此前页面一直 fallback 到系统字体的细长斜箭头）。修法 = 给箭头**显式指定自托管 Noto Sans SC** + 移除 `-webkit-text-stroke` 描边 + 字号 22→24 补偿 Noto 较小的光学尺寸（移动端 20→22）。
+
+| 维度 | 状态 |
+|------|------|
+| 主线 | ✅ `v3-full`：CTA 箭头恢复细长斜箭头（**动效逻辑一字未动**） |
+| commit | 见 git log |
+| 遗留 | 观感已由用户看三态图拍板确认；其余待办见 TODO |
+
+### ✅ 完成（Δ 自域名上线批）
+
+| 项 | 位置 | 说明 |
+|----|------|------|
+| 箭头字形修正 | `assets/css/style.css` | `.cta-split__right` 加 `font-family: 'Noto Sans SC', sans-serif`、删 `-webkit-text-stroke: 0.5px`、`font-size: 22px → 24px` |
+| 移动端同步 | `assets/css/mobile.css` | 20px → 22px（同口径补偿） |
+| 验证 | `/tmp/probe/{arrow-compare.html,arrow-cta.mjs,cta.mjs}` | 11 字形 × 配置对比 → Noto 24/700 最优；三态截图：两态箭头同形同位置、动效读数 `(-40,40) → (-5.4,5.4) → (0,0)` 正常；页高三档 **15634 / 15968 / 16011** 零回归；令牌 62/61（仅 `--radius-full`） |
+| 文档 | `CLAUDE.md` 交互设计 · CTA 条目 | 标注「箭头字形必须锁定 Noto Sans SC」+ 原因与改法（改字号前先跑 arrow-cta.mjs 对比） |
+
+### 🔴 坑（勿重踩）
+
+| 现象 | 根因 | 解决 | tag |
+|------|------|------|-----|
+| 箭头突然从「细长斜箭头」变成「粗短方头」 | **符号字形随字体变化**：自托管让 Geist 的 `↗` 首次真正生效，此前一直 fallback 到系统字体（09-17 定稿时看到的是系统字形） | 符号类元素（箭头 ↗ / 度量符等）**显式指定字体族**，不依赖继承；换字体后回归检查所有符号字符 | #tag: css |
+| headless 下 hover 不触发（读数恒为初始位移） | `@media (hover:hover) and (pointer:fine)` 门控在 headless 默认 `(hover:none)` 下整段失效 | 探针启动加 `--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4`（已写入 `cta.mjs`） | #tag: 视觉验证 |
+
+### 💡 关键发现
+
+- #tag: css — **换字体 = 换字形**：自托管字体全面生效后，必须回归检查**符号 / 图标类字符**的观感（它们此前可能是系统字体在渲染，而设计评审时的"好看"未必来自目标字体）
+- #tag: design — 「修长 vs 臃肿」不只由字号决定：`font-family` 的字形设计 + `-webkit-text-stroke` 描边共同决定视觉重量（描边对细笔画符号的"增肥"效果尤其明显）
+
+### 🚀 下会话指令
+
+> 承接箭头修正：已确认，等与域名上线批一起提交
+
+1. 提交（见 git status；建议 `feat` 域名元数据 / `fix` 箭头字形 / `docs` 文档 三个 commit，或按需合并）
+2. 待拍板：v3 回滚 v2 · 其余 7 段视频瘦身（~89MB）· I4 `muted` 自动播
+3. 已否决（勿再提）：**箭头回退到「依赖系统字体」方案**（跨设备不一致，违背自托管初衷）· CloudBase 默认域名 · 域名转注册商
+4. 复现：`node /tmp/probe/arrow-cta.mjs`（字号/字重候选对比，注入式）· `cta.mjs`（三态）· `probe.mjs`（页高）
+5. 基线：页高 **15634 / 15968 / 16011** · 令牌 62/61 · 箭头 = **Noto 24px/700**（移动端 22px）
+
+## 🏷️ 2026-09-22 · 自有域名上线：zhouzzw.online 全链路打通
+
+**结论**：`zhouzzw.online`（阿里云首年 ¥1）完成 **注册局 → Cloudflare → Pages** 全链路绑定 —— 实名通过当天改 NS，注册局 1–2h 内同步，zone 转 Active 后 **根域 + www 双入口 HTTPS 200**（证书 GTS，至 12-21）。顺带修掉 3 个「绑域名必然暴露」的问题：**7 处硬编码 `github.io` 元数据**、**og:image 指向 404 路径**（分享缩略图长期拉不到）、**部署脚本缺 `--branch=main`**（`v3-full` 分支部署只落预览环境）。
+
+| 维度 | 状态 |
+|------|------|
+| 主线 | ✅ `https://zhouzzw.online` + `www` 双入口 200；生产已部署 |
+| commit | 见 git log（元数据 + 分享图 + 脚本 + 文档） |
+| 遗留 | 国内实测 → 定备案 · v3 回滚 v2 决策 · 其余 7 段视频瘦身 |
+
+### ✅ 完成（Δ 自可达性攻坚批）
+
+| 项 | 位置 | 说明 |
+|----|------|------|
+| NS 切换 + zone 接入 | 阿里云 / CF | 「DNS 修改」填 `april`/`yoxall.ns.cloudflare.com` → CF「**Connect a domain**」建 zone → Pages Custom domains 加根域 + www（自动 CNAME + 证书） |
+| 终验（线上） | — | 双域名 200（title 正确）· HTTP→HTTPS 301 · 证书 GTS 至 12-21 · 28 条资源 200 · 8 段视频 **206 + video/mp4**（可拖拽） |
+| 元数据切域名 | `index.html` `public/*` | **7 处** `github.io` → `zhouzzw.online`：canonical · og:url · og:image · twitter:image · JSON-LD · sitemap · robots |
+| 分享图重建 | `public/og-cover.jpg` | 原 og:image 指向 `assets/images/比赛人物照.jpg`，产物里是 **hash 名** → 两个入口都 404；改 `public/` 稳定路径 + 1200×630（107KB） |
+| 部署脚本修复 | `tools/deploy-cloudflare.sh` | 补 `--branch=main`（`v3-full` ≠ `main` 时只更新 `<分支>.pages.dev`） |
+| 生产部署 | CF Pages | 增量 4 文件 / 2.15s；meta / sitemap / robots / og-cover 全部复验 |
+
+### 🧭 决策
+
+| 决策 | 结论 | 沉淀 |
+|------|------|------|
+| 域名接入方式 | CF「**Connect a domain**」做 DNS 托管（免费）；**不**用「Transfer a domain」转注册商（付费续一年，无必要） | ✅ CLAUDE 硬约束 #5 + TODO 已否决 |
+| 分享图策略 | `og:image` 一律放 `public/`（现 `og-cover.jpg`，1200×630），**禁止引用构建产物 hash 路径** | ✅ CLAUDE 硬约束 #5 |
+| 元数据一致性 | 换域名时 canonical / og / sitemap / robots / JSON-LD **7 处同步改**，正式域名即规范 URL | ✅ CLAUDE 硬约束 #5 |
+
+### 🔴 坑（勿重踩）
+
+| 现象 | 根因 | 解决 | tag |
+|------|------|------|-----|
+| 本机 dig / nslookup 一律返回 `198.18.0.x` | 代理 fake-IP 劫持 UDP/53 | DNS 走 **DoH** 并多源交叉 | #tag: 视觉验证 |
+| 实名通过后仍 NXDOMAIN | 注册局数据未下发（控制台显示的 NS 仅是账户侧记录） | 等 1–2h（激活 → 吸收 NS 变更），DoH 观察 | #tag: 部署 |
+| CF 提示 "Transfer DNS management" | zone 不在账户 / 处于 `Pending Nameserver Update` | 先 Connect a domain 建 zone → 等 Active → 再加 Custom domains | #tag: 部署 |
+| 绑域名后返回 **522** | CF 边缘未把 hostname 路由到 Pages 项目（Verifying 过渡态） | 等 5–15 分钟转 Active；`pages.dev` 200 证项目正常 | #tag: 部署 |
+| 探针报「资源全回退成 HTML（200 + 102KB）」 | ① 手拼 URL 带进 `find` 的 `./` 前缀（`/assets./css/…`）② 产物是 **hash 名**，dev 期路径线上不存在 | 用**线上 HTML 里原样引用的 URL** 逐条验证，别手拼 | #tag: 视觉验证 |
+
+### 💡 关键发现
+
+- #tag: 部署 — **og:image 不能用构建产物路径**（Vite hash → 必然 404）；元数据是「绑域名」的隐藏工作量：**站点能访问 ≠ 完整上线**，canonical / og / sitemap / robots 决定收录与分享卡片
+- #tag: 部署 — CF 语义：`Connect a domain`（DNS 托管，免费，要的）vs `Transfer a domain`（注册商转移，付费，不要）；Pages 自定义域名必须 **zone 先 Active**
+
+### 🚀 下会话指令
+
+> 承接域名上线：链路已通，等国内实测结论
+
+1. **P0 国内实测**：手机流量（不挂代理）打开 `https://zhouzzw.online` + itdog.cn 全国测速 → 满意则**不备案**收工；慢则评估备案（¥80–160 + 1–3 周）
+2. 待拍板：v3 是否回滚 v2（`git checkout v2 && git revert -m 1 8403a10 && git push origin v2`）· 其余 7 段视频瘦身（~89MB）
+3. 待办：文案改写 D1–D14 回填
+4. 已否决（勿再提）：**转注册商到 Cloudflare Registrar（付费）** · CloudBase 默认域名 · EdgeOne 大陆免备案 · B5 跟随高光 · CTA 箭头 ↘
+5. 复现：`/tmp/domain-verify.sh`（链路验证）· `/tmp/check-domain.sh`（NS 进度）· `~/.cf_token`（部署凭据，勿入库）
+6. 基线：页高 **15634 / 15968 / 16011** · 令牌 62/61 · 双入口 `zhouzzw.online`（正式）+ `zhouzzw.github.io/Zhouzzw_Web/`（镜像）
 
 ## 🏷️ 2026-09-22 · 国内可达性攻坚：外链清零 + Cloudflare Pages 上线
 
@@ -174,54 +271,3 @@
 4. 复现：`/tmp/probe/magnetic.mjs`（磁吸 + 高光残留自检）· `/tmp/proto/cursor-lab.html`（5 方案原型，未入库）· node 需先 export PATH
 5. 基线：页高 **15698 / 15968 / 15986**（本批未变）· 令牌 **62 声明 / 61 引用**
 
-## 🏷️ 2026-09-21 · 播放键 hover 光圈画圆与暗区水印关键词
-
-**结论**：视频封面 hover 反馈由「播放键整圈变橙」改为**橙色光圈自 12 点顺时针画圆**（SVG `stroke-dashoffset` 194.78 → 0，0.65s `--ease-standard`）；暗区水印 5 行文案换成 `ROS2 · LQR · VMC · ROBOTICS · RL · FREERTOS ·`；**CTA 箭头 ↘ 方向改动已按用户要求撤回**，维持 ↗ 与「左下 → 右上」推入。
-
-| 维度 | 状态 |
-|------|------|
-| 主线 | ✅ `v3-full`：hover 光圈 + 水印文案（CTA 未改） |
-| commit | `feat` + `docs`，见 git log |
-| 遗留 | 光圈观感待用户确认（时长 / 线宽 / 旋向可调）· 体积策略与终日子可读性仍待拍板 · 线上仍为 v2.4 |
-
-### ✅ 完成（Δ 自视频挂载批）
-
-| 项 | 位置 | 说明 |
-|----|------|------|
-| 播放键光圈画圆 | `main.js` `desktop.css` | JS 向每个 `.video-cover__play-icon` 注入 SVG 圆环（`r=31`，周长 194.78）；未 hover `dashoffset:194.78`（不可见）→ hover `0`（0.65s `--ease-standard`）；SVG `rotate(-90deg)` 使起笔在 12 点、顺时针；移出 0.22s 收笔；减动效下瞬时显示不画 |
-| 去掉旧 hover 高亮 | `desktop.css` | 删 `.video-cover:hover .video-cover__play-icon { border-color: var(--color-accent) }`（整圈变橙的旧行为），保留 scale(1.1) 与遮罩变暗 |
-| 水印文案替换 | `style.css` | data-URI 内 5 个 `<text>` 换成 `ROS2 · LQR · VMC · ROBOTICS · RL · FREERTOS ·`（保留行尾 ` · ` 维持平铺）；填充 `fill='white'` / `fill-opacity='0.045'` / `rotate(-15)` / `600×300` 均未动 |
-| 令牌基线复核 | — | 双向差集重跑：**声明 64 / 引用 63**，唯一差额 `--radius-full`（09-17 CTA 圆角改 8px 后失去引用，属历史遗留） |
-| 验证 | 探针 `/tmp/probe/{ring,watermark}.mjs` | 光圈：未 hover 194.78 → 120ms 119.17（≈39%，可见起笔）→ 920ms 0（满环）→ 移出回 194.78 · 水印：`::before` 背景串已含 FREERTOS，2× 截图节奏正常 · `npm run build` + lint 通过 |
-
-### 🧭 决策
-
-| 决策 | 结论 | 沉淀 |
-|------|------|------|
-| hover 反馈语言 | 画圆光圈（`stroke-dashoffset` 驱动）替代整圈变橙；缓动取 `--ease-standard`（`ease-out` 起笔太快，缺圆规感） | ✅ CLAUDE.md 交互设计 |
-| 水印词表 | 采用用户给定 6 词；`FREEROTS` 按正字法写为 **`FREERTOS`**（与项目卡标签一致） | ✅ 本快照 |
-| CTA 箭头方向 | **维持 ↗ + 左下 → 右上推入，不改成 ↘**（用户本轮提出后撤回） | ✅ 本快照，勿再提 |
-
-### 🔴 坑（勿重踩）
-
-| 现象 | 根因 | 解决 | tag |
-|------|------|------|-----|
-| 探针读数恒不变 | ① 全局 smooth 滚动下 `scrollIntoView` 后立即取 rect 拿到旧坐标；② 读的元素不是被 hover 的那个 | ① `behavior:'instant'` + 等停稳再取几何；② 用同一选择器取「被 hover 元素」内部目标 | #tag: 视觉验证 |
-| `captureScreenshot` 的 clip 截出空白 | clip 走**页面坐标**，未叠加 `scrollY` | clip 的 y 加 `window.scrollY` | #tag: 视觉验证 |
-| 两步 mouseMoved 才触发 hover | headless 下单次瞬时移动不刷新 hover | 先落在附近再移到目标 + `pointerType:'mouse'` | #tag: 视觉验证 |
-| 换快照时吞掉下一个快照的标题 | `replace_in_file` 的 old_str 只匹配了下一个快照的标题行，new_str 未把它带回 | 用「下一个标题行」当锚点时，new_str 末尾必须原样带回该行；改完用 `grep -n '^## '` 点验标题数（本轮已发生并修复 09-17 快照） | #tag: docs |
-
-### 💡 关键发现
-
-- #tag: css — 「沿边缘画圆」最稳的实现是 SVG `stroke-dashoffset` 过渡（全浏览器可动画）；`conic-gradient` + `@property` 需较新版本，跨浏览器风险更高
-- #tag: design — 同一条 hover 反馈的观感由缓动决定：`ease-out` 前段过快，肉眼看不到「画」的过程
-
-### 🚀 下会话指令
-
-> 承接光圈与水印批：视觉部分待用户确认；CTA 方向已定不改成 ↘
-
-1. 待确认：光圈观感（0.65s / 2px 线宽 / 顺时针；可调时长·线宽·逆时针）
-2. 待拍板（承接上批）：视频体积策略（8 段 ~99MB）· 弹层终日子可读性 · I4 视频自动播放 · C3 档位数据 · v3-full 上线
-3. 已否决（勿再提）：**CTA 箭头改 ↘（本轮）** · 封面 9:16 不裁切 · A4 简介区 12 栅格 · A3 统一白底衬 · 全站暗色 · char-matrix · B6/B7 · CTA 旧动效
-4. 复现：`/tmp/probe/ring.mjs`（光圈三态）· `watermark.mjs`（水印放大截图）· `probe.mjs`（页高/封面/弹层）· node 需先 export PATH
-5. 基线：页高 **15698 / 15968 / 15986**（本批未变）· 令牌 **64 声明 / 63 引用**

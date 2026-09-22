@@ -6,8 +6,8 @@
 
 | 入口 | 地址 | 状态 | 说明 |
 |------|------|------|------|
-| **Cloudflare Pages** | https://zhouzzw-web.pages.dev | ✅ 已部署 | 89MB / 34 文件。⚠️ **`pages.dev` 在国内被 DNS 污染**，正式投放必须绑自定义域名 |
-| GitHub Pages | https://zhouzzw.github.io/Zhouzzw_Web/ | ✅ 线上 | 推送 `v2` 分支由 Actions 自动构建（海外入口） |
+| **Cloudflare Pages（正式入口）** | **https://zhouzzw.online** | ✅ 线上 | 2026-09-22 绑定自有域名，根域 + `www` 双入口，HTTPS 自动签发（Google Trust Services）。备用：`https://zhouzzw-web.pages.dev`（⚠️ `pages.dev` 国内 DNS 污染） |
+| GitHub Pages（海外镜像） | https://zhouzzw.github.io/Zhouzzw_Web/ | ✅ 线上 | 推送 `v2` 分支由 Actions 自动构建 |
 | CloudBase（腾讯云） | https://zhouzzw-web-d4gqooq50469f893d-1493094617.tcloudbaseapp.com/ | ⚠️ 不可投放 | 文件已上传、服务端 curl 全 200，但**腾讯云对默认域名强制"测试域名"中间页 + 风控**，须备案后绑自定义域名才可用 |
 
 > 三个入口的**资源根路径不同**，构建命令也因此不同（见下），切勿混用。
@@ -20,6 +20,7 @@ npm run deploy:cf     # = build:cf（base=/ → dist-cb/）+ wrangler pages depl
 ```
 
 - 项目名 `zhouzzw-web`，产物目录 `dist-cb/`
+- **自定义域名**（2026-09-22 绑定）：`zhouzzw.online` + `www.zhouzzw.online`，绑在 Pages 项目**生产环境**；DNS 托管在 Cloudflare（zone NS = `april` / `yoxall.ns.cloudflare.com`，注册商仍为阿里云）
 - ⚠️ **单文件上限 25 MiB**：部署脚本会自动预校验。`assets/videos/视觉伺服动态抓卡.mp4` 已从 32.7 MB 压到 **19.9 MB**（CRF 29）
 - ⚠️ **分支决定生产/预览**：当前 git 分支不是 `main` 时，wrangler 会当作**预览部署**，只更新 `<分支>.zhouzzw-web.pages.dev`；要更新生产域名必须显式 `--branch=main`
 - ⚠️ 未匹配的路径会被 **SPA 回退到 index.html（返回 200）** —— 排查资源 404 时别被"200 + text/html"骗了（用 `content_type` 判断）
