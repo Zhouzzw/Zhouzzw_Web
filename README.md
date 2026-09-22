@@ -63,7 +63,7 @@ npm run build:cf     # 产物 → dist-cf/（= vite build --base=/ --outDir dist
 │   ├── icons/              # 工具图标 9 个（devicon）
 │   ├── images/ posters/    # 图片与视频封面静帧
 │   └── videos/             # 演示视频 8 段
-├── public/                 # robots.txt / sitemap.xml（原样拷贝进构建产物）
+├── public/                 # robots.txt / sitemap.xml / og-cover.jpg（分享缩略图，原样拷贝进产物）
 └── vite.config.js
 ```
 

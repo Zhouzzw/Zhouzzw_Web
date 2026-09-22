@@ -11,7 +11,7 @@
 # ⚠️ 两个必须知道的约束：
 #   1. base 必须是 /（Cloudflare Pages 挂在域名根路径）→ 用 build:cf，不要用 build
 #   2. 单文件 ≤ 25 MiB：assets/videos/视觉伺服动态抓卡.mp4 已从 32.7MB 压到 19.9MB，
-#      若日后替换为大素材，需先 `bash tools/shrink-video.sh <file>` 再构建
+#      若日后替换为大素材，需先用 ffmpeg 转码（CRF 29，命令见 docs/运维手册.md 第三节）再构建
 
 set -euo pipefail
 cd "$(dirname "$0")/.."
