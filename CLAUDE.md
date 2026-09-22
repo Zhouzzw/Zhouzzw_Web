@@ -13,7 +13,7 @@
 | 样式 | PostCSS / 原生 CSS | 嵌套、变量、媒体查询 |
 | 动画 | CSS 过渡 + IntersectionObserver | scrollspy 高亮 + 滑动指示器 |
 | 图标 | 内联 SVG (Lucide 风格) | 按需加载 |
-| 字体 | Google Fonts CDN | Geist + Geist Mono + Noto Sans SC |
+| 字体 | **自托管**（2026-09-21 起；原 Google Fonts + jsdelivr 外链在国内不可达、阻塞首屏） | Geist + Geist Mono（可变）+ Noto Sans SC 子集，来源与更新方法见 `assets/fonts/README.md` |
 | 部署 | GitHub Pages + GitHub Actions | push 到 `v2` 自动构建部署 |
 
 > **不引入**任何重型框架或 UI 库。保持纯静态，方便调优和快速部署。
@@ -42,6 +42,8 @@
     │   ├── main.js         # scrollspy + 滑动指示器 + 视频弹窗 + 技术栈筛选 + 标签近距磁吸
     │   ├── animations.js   # IntersectionObserver 入场动画（2026-09-15 恢复启用）+ 数字滚动计数 .js-count（B4）+ Hero 打字机 .hero__term（B3），均 2026-09-16
     │   └── char-matrix.js  # Canvas 字符矩阵（备用，未接入页面）
+    ├── fonts/              # 自托管字体（2026-09-21）：Geist + Geist Mono 可变 woff2 + Noto Sans SC 子集，共 ~374KB；README.md 含来源/许可/子集更新法
+    ├── icons/              # 工具图标 9 个（devicon，共 44KB）；Linux 用 linux-plain + `.tool-icon--light`
     ├── posters/            # 视频封面静帧（8 张，0.5s 帧 / 长边 ≤1280 / ≤300KB）—— `<video poster>` 用
     ├── images/             # 图片资源（长边 ≤1920 已压缩）
     └── videos/             # 演示视频 8 段（1080p30 H.264 CRF 26 + faststart，共 ~99MB）：
@@ -116,13 +118,13 @@
    当前基线：**声明 62 / 引用 61**（2026-09-21 移除 B5 跟随高光后，`--spot-x` / `--spot-y` 一并删除；差集只余 `--radius-full` —— 自 CTA 圆角改 8px 后无引用，属已知遗留）。
 3. **改样式前先清内联** —— 内联 `style` 优先级高于 class，会**静默压制**样式表里的规则（`.section--dark { background }` 就因此整轮没生效）。**布局重排必须排在清内联之后**；新代码不要写内联，重复的提成工具类（现有 `.text-lead` / `.text-lead--spaced` / `.object-bottom`）。
 4. **页面高度依赖视口高度，跨 `--h` 不比较** —— `.hero` 用 `100svh`（桌面）/ `90svh`（移动），视口高 900 与 844 会让整页差 56px。回归比对必须**锁定同一 `--h`**，且只信「同一轮 run 内 base↔cur」的差值，跨版本 / 跨参数的绝对值一律不可比。
-   当前高度基准（CDP 实测）：**1440×900＝15698px · 390×844＝15968px · 360×844＝15986px**（003 大卡 + 小卡区 3 格后的值，2026-09-21；封面统一 16:9 裁切，竖版片段不例外）。
+   当前高度基准（CDP 实测 · 2026-09-21 字体自托管后）：**1440×900＝15634px · 390×844＝15968px · 360×844＝16011px**。相比外链字体时期（15698 / 15968 / 15986）桌面 −64px、360 档 +25px —— 差异全部来自「Geist / Geist Mono 首次真正生效」（原 jsdelivr 字体 CSS 一直是 **404**，页面长期用系统字体渲染拉丁与数字），属预期内的字体度量变化，不是布局回归。
    配套验证手段：用 `git worktree add --detach <tmp> <旧 commit>` 另起一个 dev server，在同 run 内做**逐元素几何比对** —— 这是「清理 / 重构类改动零位移」最可靠的证明方式，别只看单页总高度。
 5. **review 报告动手后必须回写状态标记** —— 任何一项落地后立刻回写 ✅ / 🟡 / 🚫 并同步 `TODO.md`，否则下一轮会把已完成项当待办重做（已多次发生）。`docs/review-v3.md` 已于 2026-09-16 瘦身为**「未决事项 + 已否决 + 已确认结论 + 复现环境」**：**已完成项不再往正文堆细节**（细节回落 PROGRESS/git），新增待办往「一、待处理」加，落地后从正文移除并同步 TODO.md。
    **同族教训（2026-09-16 已累积 4 例：B6 / B7 / A3 / A4）**：**视觉 / 布局类改动实施后先出截图给用户确认，再做文档收尾与提交** —— 四项均为「量化验证全部通过、用户看效果后仍被否决」；几何 / 页高 / 对比度验证覆盖不了观感。给方案时宜并列 2 个方向供选，降低整案被否概率。
 6. **`filter`（drop-shadow / blur）不要挂在"内容持续动画"的元素上** —— 静止时滤镜结果可缓存（几乎零成本），一旦其内部每帧变化就必须**每帧重算模糊**：螺旋 SVG 的 `drop-shadow(0 0 60px)` 曾让稳态 44 → 17 FPS、加载期跌到 12 FPS（2026-09-17 已删）。处置套路：先**停转后 A/B 像素 diff** 确认视觉贡献（实测 0.000% → 直接删；有贡献再找静态替代如 radial-gradient）——⚠️ 对比动画元素必须**停转后再截图**，否则 diff 混入旋转相位噪声（曾把 10.6% 的相位差误读为滤镜贡献）。长跑装饰动画另配两道闸（螺旋已落地）：**首屏延迟启动**（`html.spiral-on`，load+600ms；无 JS 时静态不转，零退化）+ **不可见即暂停**（`.hero__visual.is-paused` ↔ `animation-play-state`，含 `visibilitychange`）。验证：`/tmp/probe/fps-profile.mjs <preset>`（baseline / no-filter / no-spin / hide-visual / no-both 五变体一键测加载期+稳态 FPS）。
 
-7. **CDN 字体依赖与首屏媒体拉流**（2026-09-17）—— ① `textPath` 文字**不用 `lengthAdjust="spacingAndGlyphs"`**：字体 fallback 时字形会按各自宽度被压缩变形（"不同设备呈现不一样 / 效果差"的根源），改 `spacing` 只调字距、字形恒定（螺旋 16 圈已改；根治 = 字体自托管 + 子集化，螺旋约 30 个唯一字符、woff2 子集仅几 KB）。② 封面视频 `preload="none"` + **`poster` 静帧**，**封面阶段完全不再 `load()` 媒体**（2026-09-21 起）：早期实现加载即 `load()`（首屏被强制拉流 ≈4.2MB），中期改成 IO 门控 seek 截帧（弱网 12.6s 才出画面），现在封面只加载一张 ≤300KB 的 JPG —— 项目区封面阶段的 mp4 请求数为 **0**。
+7. **CDN 字体依赖与首屏媒体拉流**（2026-09-17）—— ① `textPath` 文字**不用 `lengthAdjust="spacingAndGlyphs"`**：字体 fallback 时字形会按各自宽度被压缩变形（"不同设备呈现不一样 / 效果差"的根源），改 `spacing` 只调字距、字形恒定（螺旋 16 圈已改；**根治已于 2026-09-21 落地 —— 字体全部自托管，不再有 fallback 变形风险**）。② 封面视频 `preload="none"` + **`poster` 静帧**，**封面阶段完全不再 `load()` 媒体**（2026-09-21 起）：早期实现加载即 `load()`（首屏被强制拉流 ≈4.2MB），中期改成 IO 门控 seek 截帧（弱网 12.6s 才出画面），现在封面只加载一张 ≤300KB 的 JPG —— 项目区封面阶段的 mp4 请求数为 **0**。③ **禁止再引入任何外链字体 / 图标 CDN**（2026-09-21）：全站外链已清零，`fonts.googleapis.com` 在国内必然失败、`cdn.jsdelivr.net` 时通时断，且二者都是**阻塞渲染**的样式表（无代理用户白屏数秒）。新增字符后重跑子集（`assets/fonts/README.md`）；图标一律入库到 `assets/icons/`，不要走 CDN。⚠️ 历史教训：原 jsdelivr 字体 CSS 路径在 `geist@1.3.1` 包里**根本不存在（404）** —— Geist 长期未生效、页面用系统字体渲染，直到自托管才暴露。
 
 ## 构建 & 部署
 
@@ -132,13 +134,28 @@ npm run build    # 构建到 dist/（单页）
 npm run preview  # 本地预览构建产物 → http://localhost:4173/Zhouzzw_Web/
 ```
 
-**线上地址**：https://zhouzzw.github.io/Zhouzzw_Web/
+**线上地址（多入口）**：见 `README.md` 的入口表。国内入口为 Cloudflare Pages（`zhouzzw-web.pages.dev`，待绑自定义域名）；GitHub Pages 为 https://zhouzzw.github.io/Zhouzzw_Web/ 。
 
 部署是自动的：push 到 `v2` 会触发 `.github/workflows/deploy.yml`（`npm ci` → `npm run build` → `actions/deploy-pages`）。不需要手动跑部署命令，`dist/` 也不提交进仓库。`v3-full` 为并行完整版分支，**不**触发部署（workflow 只监听 v2）。
 
+### 三个部署目标（base 不同，切勿混用）
+
+| 目标 | 地址 | 构建 | 部署 |
+|------|------|------|------|
+| **Cloudflare Pages**（国内入口） | `https://zhouzzw-web.pages.dev`（待绑自定义域名） | `npm run build:cf` → `dist-cb/`（base `/`） | `npm run deploy:cf`（wrangler） |
+| GitHub Pages（海外入口） | `https://zhouzzw.github.io/Zhouzzw_Web/` | `npm run build` → `dist/`（base `/Zhouzzw_Web/`） | push `v2` 触发 Actions |
+| CloudBase（腾讯云） | `…tcloudbaseapp.com` | `dist-cb/` | 手动上传（见 README） |
+
+四条硬约束（2026-09-22 踩坑沉淀）：
+
+1. **CloudBase 默认域名不可投放** —— 腾讯云对默认域名强制「测试域名」中间页 + 访问量风控，官方定位「仅用于测试」。需备案 + 绑自定义域名才可用。
+2. **Cloudflare Pages 单文件上限 25 MiB**（免费版）—— `deploy:cf` 会预校验；视频超限先转码（`-crf 29` 可把 1080p30 文本类素材压到 ~1.2 Mbps）。
+3. **Cloudflare Pages 有 SPA 回退** —— 未匹配路径返回 **200 + index.html**；判断线上资源是否真缺失必须看 `content_type`，别只看状态码。
+4. **wrangler 的分支决定生产/预览** —— 当前 git 分支 ≠ 项目 production branch（`main`）时只更新 `<分支>.zhouzzw-web.pages.dev`；要更新生产域名显式加 `--branch=main`。
+
 - ⚠️ **git 远程为 SSH**（`git@github.com:Zhouzzw/Zhouzzw_Web.git`）：HTTPS 在此环境有 TLS 握手故障，勿改回 https URL；SSH 密钥已配置且验证通过。
 
-- ⚠️ **`vite.config.js` 的 `base: '/Zhouzzw_Web/'` 不能删**。仓库名是 `Zhouzzw_Web`，项目站点带子路径；少了这个 base，所有 `/assets/...` 都会 404。
+- ⚠️ **`vite.config.js` 的 `base: '/Zhouzzw_Web/'` 不能删**。仓库名是 `Zhouzzw_Web`，项目站点带子路径；少了这个 base，所有 `/assets/...` 都会 404。**Cloudflare Pages / CloudBase 挂在域名根路径，构建时用 `--base=/` 覆盖**（`npm run build:cf`），两份产物（`dist/` 与 `dist-cb/`）不可混用。
 - ⚠️ **大文件进不了 git**：GitHub 单文件 100MB 硬限制（Pages 站点软上限 1GB）。视频入库统一走 `-vf scale=1920:1080:flags=lanczos,fps=30 -c:v libx264 -crf 26 -pix_fmt yuv420p -c:a aac -b:a 128k -movflags +faststart`。⚠️ 体积随内容与时长浮动（文本 / 终端类素材 1080p30 实测 1.6–2.6Mbps），**原「≤10MB」约定已被 4 段 G1-D 长视频（14.9–32.7MB）突破，收紧方案待拍板（见 TODO P3）**。原始素材备份在仓库外：新片源 `/home/qskj-2/视频/最终演示视频/`、早期素材 `d:/DSEKTOP/原始素材备份/`。
 - ⚠️ 项目用 `type="module"`，`index.html` **不能直接双击打开**（file:// 下 CORS 拦截模块脚本），必须通过 Vite 服务器或构建后部署。
 - 方案已按 Vite 定型，不要再提议改造成纯静态 HTML。
